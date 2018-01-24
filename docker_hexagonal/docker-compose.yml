@@ -1,0 +1,15 @@
+version: '3'
+services:
+  web:
+    build: .
+    ports:
+      - '5000:5000'
+    volumes:
+      - ..:/hexagonal
+  db:
+    image: postgres
+    restart: always
+    environment:
+      POSTGRES_PASSWORD: '${POSTGRES_PASSWORD}'
+    volumes:
+      - ../postgres_data:/var/lib/postgresql/data
