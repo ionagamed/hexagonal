@@ -5,10 +5,12 @@ services:
     ports:
       - '5000:5000'
     volumes:
-      - ..:/hexagonal
+      - .:/hexagonal
+    command: python run.py
+    restart: always
   db:
     image: postgres
-    restart: always
+    #    restart: always
     environment:
       POSTGRES_PASSWORD: '${POSTGRES_PASSWORD}'
     volumes:
