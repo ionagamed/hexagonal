@@ -24,6 +24,11 @@ dist/
 nbdist/
 .nb-gradle/
 
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
 ### hexaongal ignore ###
 server/hexagonal/config/*
 !server/hexagonal/config/test.py
