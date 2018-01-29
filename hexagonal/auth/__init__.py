@@ -1,6 +1,7 @@
-from ..__init__ import app, db
+from hexagonal import app, db
 from hashlib import sha256
 from itsdangerous import JSONWebSignatureSerializer
+from hexagonal.auth.jsonrpc import extensions
 
 
 class Account(db.Model):
@@ -10,9 +11,11 @@ class Account(db.Model):
     role = db.Column(db.String(40), index=True)
 
 
-ALLOWED_ROLES = [
-    'faculty-patron', 'student-patron', 'librarian'
-]
+ROLE_ACCESS_LEVEL = {
+    'student-patron': 1,
+    'faculty-patron': 2,
+    'librarian':      3
+}
 
 if 'AUTH_SECRET' not in app.config:
     raise EnvironmentError('No AUTH_SECRET in config')
@@ -56,14 +59,14 @@ try:
 except:
     db.create_all()
 
-try:
-    root = Account.query.filter_by(login=app.config['ROOT_LOGIN'])[0]
-    root.password = encrypt_password(app.config['ROOT_PASSWORD'])
-    root.role = app.config['ROOT_ROLE']
-    db.session.commit()
-except:
-    register_account(
+
+root = Account.query.filter_by(login=app.config['ROOT_LOGIN']).first()
+if root is None:
+    root = register_account(
         login=app.config['ROOT_LOGIN'],
         password=app.config['ROOT_PASSWORD'],
         role=app.config['ROOT_ROLE']
     )
+
+db.session.commit()
+

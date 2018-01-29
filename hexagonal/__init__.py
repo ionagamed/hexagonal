@@ -16,4 +16,4 @@ app.name = app.config.get('APP_NAME', 'hexagonal')
 db = SQLAlchemy(app)
 
 from hexagonal.jsonrpc import route
-from hexagonal.auth import functions as auth_functions
+from hexagonal.auth.jsonrpc import functions as auth_functions
