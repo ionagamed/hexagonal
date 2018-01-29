@@ -3,20 +3,23 @@ from hexagonal.jsonrpc.helpers import failure
 RPC_BINDINGS = {}
 
 
-def bind(handler, name=None):
+def bind(name=None):
     """
     Bind the function handler under a specific name to be available to calls
     Intended to use as a decorator
 
-    :param handler: function handler
     :param name: [optional] function name. if not specified, uses function's original name
-    :return: same function
+    :return: function wrapper
     """
 
-    if name is None:
-        name = handler.__name__
-    RPC_BINDINGS[name] = handler
-    return handler
+    def wrapper(handler):
+        name_ = name
+        if name_ is None:
+            name_ = handler.__name__
+        RPC_BINDINGS[name_] = handler
+        return handler
+
+    return wrapper
 
 
 def call(name, args=None):
