@@ -19,7 +19,7 @@ if 'AUTH_SECRET' not in app.config:
 
 
 def encrypt_password(password):
-    return sha256(password).hexdigest()  # yeah, i know
+    return sha256(password.encode('utf-8')).hexdigest()  # yeah, i know
 
 
 def register_account(login, password, role):
@@ -34,7 +34,7 @@ def register_account(login, password, role):
 
 
 def login_and_generate_token(login, password):
-    password = sha256(password).hexdigest()
+    password = encrypt_password(password)
     account = Account.query.filter_by(login=login, password=password).first()
     if account is None:
         raise ValueError('No such account')
@@ -43,7 +43,7 @@ def login_and_generate_token(login, password):
         return s.dumps({
             'login': login,
             'role': account.role
-        })
+        }).decode('utf-8')
 
 
 def decode_token(token):
@@ -57,7 +57,7 @@ except:
     db.create_all()
 
 try:
-    root = Account.query.filter_by(login=app.config['ROOT_LOGIN'])
+    root = Account.query.filter_by(login=app.config['ROOT_LOGIN'])[0]
     root.password = encrypt_password(app.config['ROOT_PASSWORD'])
     root.role = app.config['ROOT_ROLE']
     db.session.commit()
