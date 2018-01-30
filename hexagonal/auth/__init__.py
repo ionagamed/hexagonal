@@ -1,6 +1,6 @@
 from hexagonal import app, db
 from hashlib import sha256
-from itsdangerous import JSONWebSignatureSerializer
+from itsdangerous import TimedJSONWebSignatureSerializer
 from hexagonal.auth.jsonrpc import extensions
 
 
@@ -19,6 +19,8 @@ ROLE_ACCESS_LEVEL = {
 
 if 'AUTH_SECRET' not in app.config:
     raise EnvironmentError('No AUTH_SECRET in config')
+
+token_max_age = app.config.get('AUTH_MAX_TOKEN_AGE', 60 * 60 * 5)  # 5 hrs
 
 
 def encrypt_password(password):
@@ -42,7 +44,7 @@ def login_and_generate_token(login, password):
     if account is None:
         raise ValueError('No such account')
     else:
-        s = JSONWebSignatureSerializer(app.config['AUTH_SECRET'])
+        s = TimedJSONWebSignatureSerializer(app.config['AUTH_SECRET'], expires_in=token_max_age)
         return s.dumps({
             'login': login,
             'role': account.role
@@ -50,7 +52,7 @@ def login_and_generate_token(login, password):
 
 
 def decode_token(token):
-    s = JSONWebSignatureSerializer(app.config['AUTH_SECRET'])
+    s = TimedJSONWebSignatureSerializer(app.config['AUTH_SECRET'], expires_in=token_max_age)
     return s.loads(token)
 
 
