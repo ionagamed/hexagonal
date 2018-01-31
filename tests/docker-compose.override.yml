@@ -9,6 +9,3 @@ services:
   db:
     environment:
       POSTGRES_PASSWORD: 'testing'
-      POSTGRES_DATA: '/postgres_data'
-    volumes:
-      - /tmp/postgres_data:/var/lib/postgresql/data
