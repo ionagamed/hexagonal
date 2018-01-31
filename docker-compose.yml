@@ -6,13 +6,15 @@ services:
       - '5000:5000'
     volumes:
       - .:/hexagonal
-    command: python run.py
+    command: /wait-for-postgres.sh db python run.py
     restart: always
     depends_on:
       - db
+    environment:
+      PGPASSWORD: '${POSTGRES_PASSWORD}'
   db:
     image: postgres
-    #    restart: always
+    restart: always
     environment:
       POSTGRES_PASSWORD: '${POSTGRES_PASSWORD}'
     volumes:

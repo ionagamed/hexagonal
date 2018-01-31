@@ -1,0 +1,10 @@
+version: '3'
+services:
+  web:
+    command: /wait-for-postgres.sh db python -m pytest tests/
+    restart: 'no'
+    environment:
+      'PGPASSWORD': 'testing'
+  db:
+    environment:
+      'POSTGRES_PASSWORD': 'testing'
