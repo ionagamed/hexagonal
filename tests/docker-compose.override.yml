@@ -4,7 +4,9 @@ services:
     command: /wait-for-postgres.sh db python -m pytest tests/
     restart: 'no'
     environment:
-      'PGPASSWORD': 'testing'
+      PGPASSWORD: 'testing'
   db:
     environment:
-      'POSTGRES_PASSWORD': 'testing'
+      POSTGRES_PASSWORD: 'testing'
+    volumes:
+      - /tmp/postgres_data:/var/lib/postgresql/data

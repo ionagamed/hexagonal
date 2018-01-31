@@ -59,6 +59,7 @@ def decode_token(token):
 try:
     Account.query.all()
 except:
+    db.session.commit()
     db.create_all()
 
 

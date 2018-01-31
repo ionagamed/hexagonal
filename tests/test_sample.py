@@ -1,5 +1,6 @@
 import pytest
+from tests.jsonrpc import call
 
 
 def test_something():
-    assert 1 == 1
+    call('auth.login', ['asdf', 'ghj'])
