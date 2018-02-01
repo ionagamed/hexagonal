@@ -3,6 +3,14 @@ from hexagonal.auth.jsonrpc.exceptions import JSONRPCAccessDeniedException
 
 
 def minimum_access_level(level):
+    """
+    Decorator for bound functions which restricts the allowed users to at least `level` access level.
+    Throws :py:class:`hexagonal.auth.jsonrpc.exceptions.JSONRPCAccessDeniedException` when user isn't allowed.
+
+    :param level: minimal access level
+    :return: wrapped function
+    """
+
     if level not in ROLE_ACCESS_LEVEL:
         raise ValueError('level must be one of: ' + str(ROLE_ACCESS_LEVEL.keys()))
 

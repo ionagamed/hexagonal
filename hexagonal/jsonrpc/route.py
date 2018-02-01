@@ -8,6 +8,9 @@ import inspect
 
 @app.route('/api/v1/rpc', methods=['POST'])
 def rpc_route():
+    """
+    Main jsonrpc endpoint function.
+    """
     if 'Content-Type' not in request.headers or request.headers['Content-Type'] != 'application/json':
         return helpers.failure(
             'Please use application/json Content-Type in your requests',

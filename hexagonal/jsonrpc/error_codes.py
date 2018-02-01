@@ -1,3 +1,7 @@
+"""
+Contains common error codes for JSONRPC.
+"""
+
 PARSE_ERROR = -32700
 INVALID_REQUEST = -32600
 METHOD_NOT_FOUND = -32601

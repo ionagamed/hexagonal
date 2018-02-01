@@ -6,8 +6,8 @@ RPC_BINDINGS = {}
 
 def bind(name=None):
     """
-    Bind the function handler under a specific name to be available to calls
-    Intended to use as a decorator
+    Bind the function handler under a specific name to be available to calls.
+    Intended to use as a decorator.
 
     :param name: [optional] function name. if not specified, uses function's original name
     :return: function wrapper
@@ -25,13 +25,13 @@ def bind(name=None):
 
 def call(name, args=None, optional=None):
     """
-    Perform the actual call of a function by name and args object
+    Perform the actual call of a function by name and args object.
 
-    args can be None - then function is called without arguments
-    args can be a list - then function is called with positional arguments
-    args can be a dict - then function is called with named arguments
+    `args` can be None - then function is called without arguments.
+    `args` can be a list - then function is called with positional arguments.
+    `args` can be a dict - then function is called with named arguments.
 
-    optional is a dict with named arguments which are passed to a function, if present in the declaration
+    `optional` is a dict with named arguments which are passed to a function, if present in the declaration.
 
     :param name: function name
     :param args: arguments of the function
