@@ -12,6 +12,7 @@ services:
       - db
     environment:
       PGPASSWORD: '${POSTGRES_PASSWORD}'
+      ENV: '${ENV}'
   db:
     image: postgres
     restart: always
