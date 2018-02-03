@@ -25,13 +25,13 @@ def bind_crud(class_name=None, methods=None, crud_namespace='crud', generate_by_
 
     Methods' signatures are:
      * cls.create(**fields) - fields are passed directly to SQLAlchemy model constructor
-     * cls.get(**filters) - filters are passed directly to SQLAlchemy. Returns a list
-     * cls.update(**filters, **update) - update is a dict, whose members are new field values for the instance
-     * cls.delete(**filters) - explains itself
+     * cls.get(filters) - filters are passed directly to SQLAlchemy. Returns a list
+     * cls.update(filters, **update) - update is a dict, whose members are new field values for the instance
+     * cls.delete(filters) - explains itself
 
     If `generate_by_id_methods` is True (default) then the following are generated:
      * cls.get_by_id(cls_id) - returns a single instance
-     * cls.update_by_id(cls_id, **update)
+     * cls.update_by_id(cls_id, update)
      * cls.delete_by_id(cls_id)
 
     :param class_name: required class name. If None (default) - lowercase actual decorated class name is used
@@ -65,6 +65,7 @@ def bind_crud(class_name=None, methods=None, crud_namespace='crud', generate_by_
         if 'create' in methods:
             @bind(prefix + 'create')
             def create(**fields):
+                del fields['_token_data']
                 instance = cls(**fields)
                 db.session.add(instance)
                 db.session.commit()
@@ -72,6 +73,7 @@ def bind_crud(class_name=None, methods=None, crud_namespace='crud', generate_by_
         if 'get' in methods:
             @bind(prefix + 'get')
             def get(**filters):
+                del filters['_token_data']
                 instances = cls.query.filter_by(**filters).all()
                 return instances
 
@@ -85,8 +87,9 @@ def bind_crud(class_name=None, methods=None, crud_namespace='crud', generate_by_
 
         if 'update' in methods:
             @bind(prefix + 'update')
-            def update(**filter, **fields):
-                instances = cls.query.filter_by(filter)
+            def update(filters, **fields):
+                del fields['_token_data']
+                instances = cls.query.filter_by(filters)
                 for i in instances:
                     for k, v in fields.items():
                         setattr(i, k, v)
@@ -99,12 +102,17 @@ def bind_crud(class_name=None, methods=None, crud_namespace='crud', generate_by_
                     if id_name not in kwargs:
                         raise ValueError('kwargs doesn\'t contain {}'.format(id_name))
                     instance = cls.query.filter_by(id=kwargs[id_name]).first()
+                    for k, v in kwargs.items():
+                        if k != id_name:
+                            setattr(instance, k, v)
+                    db.session.add(instance)
+                    db.session.commit()
                     return instance
 
         if 'delete' in methods:
             @bind(prefix + 'delete')
-            def delete(**filter):
-                cls.query.filter_by(filter).delete()
+            def delete(filters):
+                cls.query.filter_by(filters).delete()
 
             if generate_by_id_methods:
                 @bind(prefix + 'delete_by_id')

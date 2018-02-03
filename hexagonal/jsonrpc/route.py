@@ -3,7 +3,17 @@ from hexagonal.jsonrpc import helpers, error_codes
 from hexagonal.jsonrpc.exceptions import JSONRPCBaseException
 from flask import request
 import json
-import inspect
+
+
+class JSONRPCExtensibleMethodEncoder(json.JSONEncoder):
+    """
+    Just calls `__json__` if available on any object received
+    """
+    def default(self, o):
+        m = getattr(o, '__json__')
+        if not m:
+            return json.JSONEncoder.default(self, o)
+        return o.__json__()
 
 
 @app.route('/api/v1/rpc', methods=['POST'])
@@ -63,7 +73,7 @@ def rpc_route():
             'jsonrpc': '2.0',
             'id': request_id,
             'result': result
-        })
+        }, cls=JSONRPCExtensibleMethodEncoder)
     except JSONRPCBaseException as e:
         return helpers.failure(str(e), e.error_code, request_id), e.http_code
     except Exception as e:
