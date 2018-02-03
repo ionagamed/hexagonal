@@ -1,3 +1,7 @@
+"""
+Contains wrappers for jsonrpc to actual auth functions
+"""
+
 from hexagonal import auth, jsonrpc
 from hexagonal.auth.helpers import minimum_access_level
 

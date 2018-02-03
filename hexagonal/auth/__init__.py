@@ -1,4 +1,4 @@
-from hexagonal import app, db
+from hexagonal import app, db, env
 from hashlib import sha256
 from itsdangerous import TimedJSONWebSignatureSerializer
 from hexagonal.auth.jsonrpc import extensions
@@ -24,10 +24,24 @@ token_max_age = app.config.get('AUTH_MAX_TOKEN_AGE', 60 * 60 * 5)  # 5 hrs
 
 
 def encrypt_password(password):
+    """
+    Encrypt the password for storage in database
+
+    :param password: to be encrypted
+    :return: the encrypted password
+    """
     return sha256(password.encode('utf-8')).hexdigest()  # yeah, i know
 
 
 def register_account(login, password, role):
+    """
+    Register a new account
+
+    :param login: login of the new account
+    :param password: password of the new account
+    :param role: role of the new account
+    :return: instance of the created :py:class:`Account`
+    """
     account = Account(
         login=login,
         password=encrypt_password(password),
@@ -39,6 +53,14 @@ def register_account(login, password, role):
 
 
 def login_and_generate_token(login, password):
+    """
+    Try to login the user with specified credentials.
+    If no such user exists (either not valid login, or not valid password) raises ValueError.
+
+    :param login: login of trying user
+    :param password: password of trying user
+    :return: new generated token (see :py:func:`decode_token`)
+    """
     password = encrypt_password(password)
     account = Account.query.filter_by(login=login, password=password).first()
     if account is None:
@@ -52,24 +74,32 @@ def login_and_generate_token(login, password):
 
 
 def decode_token(token):
+    """
+    Try to decode token, which was (or wasn't) received from the user.
+    Throws an exception upon failure (invalid token for any reason).
+
+    :param token: to be decoded
+    :return: token data, which was embedded there
+    """
     s = TimedJSONWebSignatureSerializer(app.config['AUTH_SECRET'], expires_in=token_max_age)
     return s.loads(token)
 
 
-try:
-    Account.query.all()
-except:
+if env != 'docs':
+    try:
+        Account.query.all()
+    except:
+        db.session.commit()
+        db.create_all()
+
+
+    root = Account.query.filter_by(login=app.config['ROOT_LOGIN']).first()
+    if root is None:
+        root = register_account(
+            login=app.config['ROOT_LOGIN'],
+            password=app.config['ROOT_PASSWORD'],
+            role=app.config['ROOT_ROLE']
+        )
+
     db.session.commit()
-    db.create_all()
-
-
-root = Account.query.filter_by(login=app.config['ROOT_LOGIN']).first()
-if root is None:
-    root = register_account(
-        login=app.config['ROOT_LOGIN'],
-        password=app.config['ROOT_PASSWORD'],
-        role=app.config['ROOT_ROLE']
-    )
-
-db.session.commit()
 

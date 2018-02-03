@@ -33,3 +33,4 @@ __pycache__/
 server/hexagonal/config/*
 !server/hexagonal/config/test.py
 postgres_data
+docs

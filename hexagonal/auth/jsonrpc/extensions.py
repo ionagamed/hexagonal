@@ -5,6 +5,13 @@ from flask import request
 
 @jsonrpc_request_extension
 def pull_token_data():
+    """
+    Parses the token from the 'Authorization' header in request, and then decodes it.
+    See :py:func:`hexagonal.auth.decode_token`
+
+    :return: optional parsed date from the token
+    """
+
     if 'Authorization' in request.headers:
         current_token_data = auth.decode_token(request.headers['Authorization'])
 
