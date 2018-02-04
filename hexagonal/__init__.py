@@ -19,6 +19,12 @@ if env == 'docs':
 db = SQLAlchemy(app)
 
 
+@app.after_request
+def add_json_content_header(response):
+    response.headers['Content-Type'] = 'application/json'
+    return response
+
+
 from hexagonal.jsonrpc import route
 
 from hexagonal.auth.jsonrpc import functions as auth_functions

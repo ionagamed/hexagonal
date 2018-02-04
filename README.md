@@ -20,9 +20,10 @@ first running the application, and then issuing the `jsonrpc.get_available_metho
         
     HTTP/1.0 200 OK
     Content-Length: 1889
-    Content-Type: text/html; charset=utf-8
-    Date: Sun, 04 Feb 2018 10:47:56 GMT
+    Content-Type: application/json
+    Date: Sun, 04 Feb 2018 10:57:31 GMT
     Server: Werkzeug/0.14.1 Python/3.6.3
+    
     {
         "id": null,
         "jsonrpc": "2.0",
@@ -39,3 +40,4 @@ first running the application, and then issuing the `jsonrpc.get_available_metho
             "jsonrpc.get_available_methods": "\n    Get all available methods registered in jsonrpc.\n\n    :return: dict of 'function_name': 'docstring' or null\n    "
         }
     }
+
