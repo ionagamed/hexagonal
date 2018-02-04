@@ -1,8 +1,10 @@
 from hexagonal import db
 
 from hexagonal.model.document import Document
+from hexagonal.model.helpers import model_crud_compound
 
 
+@model_crud_compound()
 class Book(Document):
     __tablename__ = 'books'
 

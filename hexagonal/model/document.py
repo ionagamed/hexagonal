@@ -2,7 +2,6 @@ from hexagonal import db
 
 from hexagonal.model.author import document_author
 
-
 document_keyword = db.Table(
     'document_keyword',
     db.Model.metadata,

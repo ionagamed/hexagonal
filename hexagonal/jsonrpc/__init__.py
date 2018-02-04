@@ -64,14 +64,18 @@ def call(name, args=None, optional=None):
 
 
 @bind('jsonrpc.get_available_methods')
-def get_available_methods():
+def get_available_methods(exclude_name_part=None):
     """
     Get all available methods registered in jsonrpc.
 
     :return: dict of 'function_name': 'docstring' or null
     """
 
+    if exclude_name_part is not None and not isinstance(exclude_name_part, str):
+        raise TypeError('exclude_name_prefix must be either None or str')
+
     result = {}
     for k, v in RPC_BINDINGS.items():
-        result[k] = v.__doc__
+        if exclude_name_part is None or exclude_name_part not in k:
+            result[k] = v.__doc__
     return result

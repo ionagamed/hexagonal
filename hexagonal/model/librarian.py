@@ -1,5 +1,3 @@
-from hexagonal import db
-
 from hexagonal.model.user import User
 
 

@@ -13,7 +13,7 @@ Allowed methods for the methods param of the `bind_crud` function
 """
 
 
-def bind_crud(class_name=None, methods=None, crud_namespace='crud', generate_by_id_methods=True):
+def bind_crud(class_name=None, methods=None, crud_namespace='crud', generate_by_id_methods=True, annotation=None):
     """
     Bind all CRUD operations for the decorated class.
 
@@ -38,11 +38,15 @@ def bind_crud(class_name=None, methods=None, crud_namespace='crud', generate_by_
     :param methods: allowed methods. Must be a subset of ['create', 'get', 'update', 'delete'], or None, if all are good
     :param crud_namespace: namespace used to split other defined methods from generated
     :param generate_by_id_methods: generates methods
+    :param annotation: additional annotation for the generated methods. If None (default) - not called at all
     :return: wrapper function
     """
 
     if methods is None:
         methods = CRUD_ALLOWED_METHODS[:]
+
+    if annotation is None:
+        annotation = lambda fn: fn
 
     for i in methods:
         if i not in CRUD_ALLOWED_METHODS:
@@ -70,6 +74,7 @@ def bind_crud(class_name=None, methods=None, crud_namespace='crud', generate_by_
 
         if 'create' in methods:
             @bind(prefix + 'create')
+            @annotation
             @docstring_param(class_name_)
             def create(**fields):
                 """
@@ -88,6 +93,7 @@ def bind_crud(class_name=None, methods=None, crud_namespace='crud', generate_by_
 
         if 'get' in methods:
             @bind(prefix + 'get')
+            @annotation
             @docstring_param(class_name_)
             def get(**filters):
                 """
@@ -104,6 +110,7 @@ def bind_crud(class_name=None, methods=None, crud_namespace='crud', generate_by_
 
             if generate_by_id_methods:
                 @bind(prefix + 'get_by_id')
+                @annotation
                 @docstring_param(class_name_, id_name)
                 def get_by_id(**kwargs):
                     """
@@ -120,6 +127,7 @@ def bind_crud(class_name=None, methods=None, crud_namespace='crud', generate_by_
 
         if 'update' in methods:
             @bind(prefix + 'update')
+            @annotation
             @docstring_param(class_name_)
             def update(filters, **fields):
                 """
@@ -141,6 +149,7 @@ def bind_crud(class_name=None, methods=None, crud_namespace='crud', generate_by_
 
             if generate_by_id_methods:
                 @bind(prefix + 'update_by_id')
+                @annotation
                 @docstring_param(class_name_, id_name)
                 def update_by_id(**kwargs):
                     """
@@ -163,6 +172,7 @@ def bind_crud(class_name=None, methods=None, crud_namespace='crud', generate_by_
 
         if 'delete' in methods:
             @bind(prefix + 'delete')
+            @annotation
             @docstring_param(class_name_)
             def delete(filters):
                 """
@@ -177,6 +187,7 @@ def bind_crud(class_name=None, methods=None, crud_namespace='crud', generate_by_
 
             if generate_by_id_methods:
                 @bind(prefix + 'delete_by_id')
+                @annotation
                 @docstring_param(class_name_, id_name)
                 def delete_by_id(**kwargs):
                     """

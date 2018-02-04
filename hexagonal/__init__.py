@@ -27,6 +27,9 @@ def add_json_content_header(response):
 
 from hexagonal.jsonrpc import route
 
+from hexagonal.model.user import User
+from hexagonal.model.librarian import Librarian
+
 from hexagonal.model.author import Author
 from hexagonal.model.av_material import AVMaterial
 from hexagonal.model.book import Book
@@ -37,10 +40,11 @@ from hexagonal.model.journal import Journal
 from hexagonal.model.journal_article import JournalArticle
 from hexagonal.model.journal_issue import JournalIssue
 from hexagonal.model.keyword import Keyword
-from hexagonal.model.librarian import Librarian
 from hexagonal.model.patron import Patron
 from hexagonal.model.publisher import Publisher
 from hexagonal.model.student_patron import StudentPatron
-from hexagonal.model.user import User
+
+from hexagonal.model.helpers import model_crud_compound
+model_crud_compound(Librarian)
 
 from hexagonal.auth.jsonrpc import functions as auth_functions

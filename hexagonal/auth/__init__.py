@@ -2,7 +2,6 @@ from hexagonal import app, db, env
 from hashlib import sha256
 from itsdangerous import TimedJSONWebSignatureSerializer
 from hexagonal.auth.jsonrpc import extensions
-from hexagonal.jsonrpc_crud import bind_crud
 from hexagonal.model.user import User
 
 

@@ -1,6 +1,8 @@
 from hexagonal import db
+from hexagonal.model.helpers import model_crud_compound
 
 
+@model_crud_compound()
 class Journal(db.Model):
     __tablename__ = 'journals'
 
