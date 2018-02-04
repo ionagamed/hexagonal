@@ -10,12 +10,15 @@ document_keyword = db.Table(
 )
 
 
+from hexagonal.model.keyword import Keyword
+
+
 class Document(db.Model):
     __tablename__ = 'documents'
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(80), unique=True, index=True, nullable=False)
     price = db.Column(db.Integer, nullable=False, default=0)
-    copies = db.Column(db.Integer, nullable=False, default=1)
+    copies = db.relationship('DocumentCopy', back_populates='document')
 
     keywords = db.relationship('Keyword', secondary=document_keyword, back_populates='documents')
     authors = db.relationship('Author', secondary=document_author, back_populates='documents')

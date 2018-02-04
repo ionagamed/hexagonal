@@ -1,7 +1,7 @@
 import os
 from importlib import import_module
 
-from flask import Flask
+from flask import Flask, request
 from flask_sqlalchemy import SQLAlchemy
 
 from hexagonal.jsonrpc import helpers, error_codes
@@ -22,6 +22,8 @@ db = SQLAlchemy(app)
 @app.after_request
 def add_json_content_header(response):
     response.headers['Content-Type'] = 'application/json'
+    response.headers['Access-Control-Allow-Origin'] = '*'
+    response.headers['Access-Control-Allow-Headers'] = 'Content-Type, Authorization'
     return response
 
 
@@ -34,17 +36,16 @@ from hexagonal.model.author import Author
 from hexagonal.model.av_material import AVMaterial
 from hexagonal.model.book import Book
 from hexagonal.model.document import Document
+from hexagonal.model.document_copy import DocumentCopy
 from hexagonal.model.editor import Editor
 from hexagonal.model.faculty_patron import FacultyPatron
 from hexagonal.model.journal import Journal
 from hexagonal.model.journal_article import JournalArticle
 from hexagonal.model.journal_issue import JournalIssue
 from hexagonal.model.keyword import Keyword
+from hexagonal.model.loan import Loan
 from hexagonal.model.patron import Patron
 from hexagonal.model.publisher import Publisher
 from hexagonal.model.student_patron import StudentPatron
-
-from hexagonal.model.helpers import model_crud_compound
-model_crud_compound(Librarian)
 
 from hexagonal.auth.jsonrpc import functions as auth_functions

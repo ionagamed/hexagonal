@@ -1,8 +1,6 @@
 from hexagonal import db
-from hexagonal.model.helpers import model_crud_compound
 
 
-@model_crud_compound()
 class Journal(db.Model):
     __tablename__ = 'journals'
 
@@ -11,3 +9,9 @@ class Journal(db.Model):
     publisher_id = db.Column(db.Integer, db.ForeignKey('publishers.id'))
     publisher = db.relationship('Publisher', back_populates='journals')
     issues = db.relationship('JournalIssue', back_populates='journal')
+
+    def __json__(self):
+        return {
+            'title': self.title,
+            'publisher': self.publisher.name
+        }

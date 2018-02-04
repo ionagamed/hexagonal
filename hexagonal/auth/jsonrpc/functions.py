@@ -13,10 +13,10 @@ def auth_login(login, password):
 
 @jsonrpc.bind('auth.register')
 @minimum_access_level('librarian')
-def auth_register(login, password, role='student-patron'):
-    acc = auth.register_account(login, password, role)
-    return {
-        'login': acc.login,
-        'password': acc.password,
-        'role': acc.role
-    }
+def auth_register(**kwargs):
+    auth.register_account(**kwargs)
+
+
+@jsonrpc.bind('auth.get_my_role')
+def auth_get_my_role(_token_data):
+    return _token_data['role']

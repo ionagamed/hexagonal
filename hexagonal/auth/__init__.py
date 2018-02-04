@@ -35,6 +35,7 @@ def register_account(**kwargs):
     :return: instance of the created :py:class:`Account`
     """
 
+    kwargs['password'] = encrypt_password(kwargs['password'])
     account = User(**kwargs)
     db.session.add(account)
     db.session.commit()

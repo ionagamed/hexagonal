@@ -1,5 +1,4 @@
 from hexagonal import db
-from hexagonal.model.helpers import model_crud_compound
 
 document_author = db.Table(
     'document_author',
@@ -9,7 +8,6 @@ document_author = db.Table(
 )
 
 
-@model_crud_compound()
 class Author(db.Model):
     __tablename__ = 'authors'
 

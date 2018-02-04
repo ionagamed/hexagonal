@@ -1,11 +1,23 @@
 from hexagonal.model.document import Document
-from hexagonal.model.helpers import model_crud_compound
+from hexagonal import db
+from hexagonal.model.helpers import ids
 
 
-@model_crud_compound()
 class AVMaterial(Document):
     __tablename__ = 'av_materials'
+
+    id = db.Column(db.Integer, db.ForeignKey('documents.id'), primary_key=True)
 
     __mapper_args__ = {
         'polymorphic_identity': 'av_material'
     }
+
+    def __json__(self):
+        return {
+            'id': self.id,
+            'title': self.title,
+            'price': self.price,
+            'copy_ids': ids(self.copies),
+            'keywords': map(lambda x: x.name, self.keywords),
+            'authors': map(lambda x: x.name, self.authors)
+        }
