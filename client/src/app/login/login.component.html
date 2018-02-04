@@ -1,0 +1,27 @@
+<div id="login-form" class="ui grid">
+    <div class="four wide column"></div>
+    <div id="login-left" class="four wide column">
+        <h2>hexagonal</h2>
+        <p>
+            hexagonal is an LMS (library management system), which is built as a first year bachelors project at Innopolis University. <br>
+            Its name originates from <a href="https://libraryofbabel.info/libraryofbabel.html">"The Library of Babel"</a>,
+            a book by Jorge Luis Borges.
+            <br><br>
+            To login, you must first be registered by a librarian
+        </p>
+    </div>
+    <div id="login-right" class="four wide column">
+        <div *ngIf="auth.role">
+          Your role is: <b>{{auth.role}}</b>
+        </div>
+        <div class="ui form">
+            <div class="field">
+                <input placeholder="login" [(ngModel)]="login"/>
+            </div>
+            <div class="field">
+                <input type="password" placeholder="password" [(ngModel)]="password"/>
+            </div>
+            <button class="ui primary button" (click)="authenticate()">Login</button>
+        </div>
+    </div>
+</div>
