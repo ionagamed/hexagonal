@@ -1,4 +1,7 @@
 from hexagonal.model.patron import Patron
 
-class Faculty_Patron(Patron):
-    pass
+
+class FacultyPatron(Patron):
+    __mapper_args__ = {
+        'polymorphic_identity': 'faculty-patron'
+    }

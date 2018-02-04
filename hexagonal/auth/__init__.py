@@ -3,14 +3,7 @@ from hashlib import sha256
 from itsdangerous import TimedJSONWebSignatureSerializer
 from hexagonal.auth.jsonrpc import extensions
 from hexagonal.jsonrpc_crud import bind_crud
-
-
-@bind_crud()
-class Account(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    login = db.Column(db.String(80), unique=True, index=True)
-    password = db.Column(db.String(128))
-    role = db.Column(db.String(40), index=True)
+from hexagonal.model.user import User
 
 
 ROLE_ACCESS_LEVEL = {
@@ -35,20 +28,15 @@ def encrypt_password(password):
     return sha256(password.encode('utf-8')).hexdigest()  # yeah, i know
 
 
-def register_account(login, password, role):
+def register_account(**kwargs):
     """
     Register a new account
 
-    :param login: login of the new account
-    :param password: password of the new account
-    :param role: role of the new account
+    :param kwargs: field of the new account
     :return: instance of the created :py:class:`Account`
     """
-    account = Account(
-        login=login,
-        password=encrypt_password(password),
-        role=role
-    )
+
+    account = User(**kwargs)
     db.session.add(account)
     db.session.commit()
     return account
@@ -64,7 +52,7 @@ def login_and_generate_token(login, password):
     :return: new generated token (see :py:func:`decode_token`)
     """
     password = encrypt_password(password)
-    account = Account.query.filter_by(login=login, password=password).first()
+    account = User.query.filter_by(login=login, password=password).first()
     if account is None:
         raise ValueError('No such account')
     else:
@@ -89,18 +77,22 @@ def decode_token(token):
 
 if env != 'docs':
     try:
-        Account.query.all()
+        User.query.all()
     except:
         db.session.commit()
         db.create_all()
 
-
-    root = Account.query.filter_by(login=app.config['ROOT_LOGIN']).first()
+    root = User.query.filter_by(login=app.config['ROOT_LOGIN']).first()
     if root is None:
         root = register_account(
             login=app.config['ROOT_LOGIN'],
             password=app.config['ROOT_PASSWORD'],
-            role=app.config['ROOT_ROLE']
+            role=app.config['ROOT_ROLE'],
+
+            name='Root Root',
+            address='Centaurus Constellation, Alpha Star System, Third Planet',
+            phone='+1 (800) I-AM-ROOT',
+            card_number='-10000'
         )
 
     db.session.commit()
