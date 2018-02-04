@@ -92,6 +92,7 @@ def bind_crud(class_name=None, methods=None, crud_namespace='crud', generate_by_
             def get(**filters):
                 """
                 Get all instances of {0} that match the passed filter.
+                Automatically generated method.
 
                 :param filters: search criteria
                 :return: list of all instances of {0} that match (may be empty)
@@ -107,6 +108,7 @@ def bind_crud(class_name=None, methods=None, crud_namespace='crud', generate_by_
                 def get_by_id(**kwargs):
                     """
                     Get an instance of {0} that has specified id.
+                    Automatically generated method.
 
                     :param {1}: required id
                     :return: instance that has id = {1} or None
@@ -122,6 +124,7 @@ def bind_crud(class_name=None, methods=None, crud_namespace='crud', generate_by_
             def update(filters, **fields):
                 """
                 Update instances of {0} filtered by `filters`.
+                Automatically generated method.
 
                 :param filters: search criteria
                 :param fields: actual update
@@ -142,6 +145,7 @@ def bind_crud(class_name=None, methods=None, crud_namespace='crud', generate_by_
                 def update_by_id(**kwargs):
                     """
                     Update one instance of {0} by id.
+                    Automatically generated method.
 
                     :param {1}: required id
                     :return: the updated instance of {0}
@@ -163,6 +167,7 @@ def bind_crud(class_name=None, methods=None, crud_namespace='crud', generate_by_
             def delete(filters):
                 """
                 Delete instances of {0} that match the specified filters.
+                Automatically generated method.
 
                 :param filters: search criteria
                 :return: None
@@ -176,6 +181,7 @@ def bind_crud(class_name=None, methods=None, crud_namespace='crud', generate_by_
                 def delete_by_id(**kwargs):
                     """
                     Delete one instance of {0} by id.
+                    Automatically generated method.
 
                     :param {1}: required id
                     :return: None
