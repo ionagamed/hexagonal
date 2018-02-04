@@ -2,8 +2,10 @@ from hexagonal import app, db, env
 from hashlib import sha256
 from itsdangerous import TimedJSONWebSignatureSerializer
 from hexagonal.auth.jsonrpc import extensions
+from hexagonal.jsonrpc_crud import bind_crud
 
 
+@bind_crud()
 class Account(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     login = db.Column(db.String(80), unique=True, index=True)
