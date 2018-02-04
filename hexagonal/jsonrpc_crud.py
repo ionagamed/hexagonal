@@ -62,24 +62,55 @@ def bind_crud(class_name=None, methods=None, crud_namespace='crud', generate_by_
 
         id_name = class_name_ + '_id'
 
+        def docstring_param(*param):
+            def format_wrapper(fn):
+                fn.__doc__ = fn.__doc__.format(*param)
+                return fn
+            return format_wrapper
+
         if 'create' in methods:
             @bind(prefix + 'create')
+            @docstring_param(class_name_)
             def create(**fields):
+                """
+                Create an instance of {0}.
+                Automatically generated method.
+
+                :param fields: fields of the target class
+                :return: newly created instance of {0}
+                """
+
                 del fields['_token_data']
                 instance = cls(**fields)
                 db.session.add(instance)
                 db.session.commit()
+                return instance
 
         if 'get' in methods:
             @bind(prefix + 'get')
+            @docstring_param(class_name_)
             def get(**filters):
+                """
+                Get all instances of {0} that match the passed filter.
+
+                :param filters: search criteria
+                :return: list of all instances of {0} that match (may be empty)
+                """
+
                 del filters['_token_data']
                 instances = cls.query.filter_by(**filters).all()
                 return instances
 
             if generate_by_id_methods:
                 @bind(prefix + 'get_by_id')
+                @docstring_param(class_name_, id_name)
                 def get_by_id(**kwargs):
+                    """
+                    Get an instance of {0} that has specified id.
+
+                    :param {1}: required id
+                    :return: instance that has id = {1} or None
+                    """
                     if id_name not in kwargs:
                         raise ValueError('kwargs doesn\'t contain {}'.format(id_name))
                     instance = cls.query.filter_by(id=kwargs[id_name]).first()
@@ -87,7 +118,16 @@ def bind_crud(class_name=None, methods=None, crud_namespace='crud', generate_by_
 
         if 'update' in methods:
             @bind(prefix + 'update')
+            @docstring_param(class_name_)
             def update(filters, **fields):
+                """
+                Update instances of {0} filtered by `filters`.
+
+                :param filters: search criteria
+                :param fields: actual update
+                :return: None
+                """
+
                 del fields['_token_data']
                 instances = cls.query.filter_by(filters)
                 for i in instances:
@@ -98,7 +138,15 @@ def bind_crud(class_name=None, methods=None, crud_namespace='crud', generate_by_
 
             if generate_by_id_methods:
                 @bind(prefix + 'update_by_id')
+                @docstring_param(class_name_, id_name)
                 def update_by_id(**kwargs):
+                    """
+                    Update one instance of {0} by id.
+
+                    :param {1}: required id
+                    :return: the updated instance of {0}
+                    """
+
                     if id_name not in kwargs:
                         raise ValueError('kwargs doesn\'t contain {}'.format(id_name))
                     instance = cls.query.filter_by(id=kwargs[id_name]).first()
@@ -111,12 +159,27 @@ def bind_crud(class_name=None, methods=None, crud_namespace='crud', generate_by_
 
         if 'delete' in methods:
             @bind(prefix + 'delete')
+            @docstring_param(class_name_)
             def delete(filters):
+                """
+                Delete instances of {0} that match the specified filters.
+
+                :param filters: search criteria
+                :return: None
+                """
+
                 cls.query.filter_by(filters).delete()
 
             if generate_by_id_methods:
                 @bind(prefix + 'delete_by_id')
+                @docstring_param(class_name_, id_name)
                 def delete_by_id(**kwargs):
+                    """
+                    Delete one instance of {0} by id.
+
+                    :param {1}: required id
+                    :return: None
+                    """
                     if id_name not in kwargs:
                         raise ValueError('kwargs doesn\'t contain {}'.format(id_name))
                     cls.query.filter_by(id=kwargs[id_name]).delete()
