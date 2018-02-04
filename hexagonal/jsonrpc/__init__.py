@@ -61,3 +61,17 @@ def call(name, args=None, optional=None):
         return func(**args)
 
     raise TypeError('args is not None, list or dict')
+
+
+@bind('jsonrpc.get_available_methods')
+def get_available_methods():
+    """
+    Get all available methods registered in jsonrpc.
+
+    :return: dict of 'function_name': 'docstring' or null
+    """
+
+    result = {}
+    for k, v in RPC_BINDINGS.items():
+        result[k] = v.__doc__
+    return result
