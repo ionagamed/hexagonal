@@ -16,6 +16,14 @@ class StudentPatron(Patron):
     }
 
     def get_checkout_period_for(self, document):
+        """
+        Get checkout period for a specific document.
+        Abstract in User.
+
+        :param document: to be checked out
+        :return: timedelta
+        """
+
         if not isinstance(document, Document):
             raise TypeError('document should be of type Document')
 

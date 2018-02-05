@@ -17,6 +17,10 @@ class Author(db.Model):
     __tablename__ = 'authors'
 
     id = db.Column(db.Integer, primary_key=True)
+    """ Integer primary id for the author """
+
     name = db.Column(db.String(80), nullable=False)  # not unique because of namesakes
+    """ Name of the author """
 
     documents = db.relationship('Document', secondary=document_author, back_populates='authors')
+    """ All documents written by this author """

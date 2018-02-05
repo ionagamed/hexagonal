@@ -11,12 +11,17 @@ class AVMaterial(Document):
     __tablename__ = 'av_materials'
 
     id = db.Column(db.Integer, db.ForeignKey('documents.id'), primary_key=True)
+    """ Primary foreign key to documents. """
 
     __mapper_args__ = {
         'polymorphic_identity': 'av_material'
     }
 
     def __json__(self):
+        """
+        JSON representation for a given instance.
+        :return: JSON-serializable representation of self.
+        """
         return {
             'id': self.id,
             'title': self.title,

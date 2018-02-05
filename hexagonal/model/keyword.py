@@ -13,6 +13,10 @@ class Keyword(db.Model):
     __tablename__ = 'keywords'
 
     id = db.Column(db.Integer, primary_key=True)
+    """ Foreign primary key. """
+
     name = db.Column(db.String(80), nullable=False)
+    """ Name of the keyword. """
 
     documents = db.relationship('Document', secondary=document_keyword, back_populates='keywords')
+    """ Documents, which have this keyword. """

@@ -13,14 +13,28 @@ class User(db.Model):
 
     __tablename__ = 'users'
     id = db.Column(db.Integer, primary_key=True)
+    """ Integer primary key. """
+
     login = db.Column(db.String(80), unique=True, index=True, nullable=False)
+    """ Login of the user. Must be unique. """
+
     password = db.Column(db.String(128), nullable=False)
+    """ Password hash of the user. """
+
     role = db.Column(db.String(20), index=True, nullable=False)
+    """ Polymorphic identity of the user. Used to implement inheritance. """
 
     name = db.Column(db.String(80), index=True, nullable=False)
+    """ User's full name. """
+
     address = db.Column(db.String(80), nullable=False)
+    """ User's full address. """
+
     phone = db.Column(db.String(80), nullable=False)
+    """ User's phone number. """
+
     card_number = db.Column(db.String(80), nullable=False)
+    """ User's library card number. """
 
     __mapper_args__ = {
         'polymorphic_on': role,
@@ -28,15 +42,43 @@ class User(db.Model):
     }
 
     def get_checkout_period_for(self, document):
+        """
+        Get checkout period for a specific document.
+        Abstract in User.
+
+        :param document: to be checked out
+        :return: timedelta
+        """
         raise NotImplementedError()
 
     def get_overdue_loans(self):
+        """
+        Get current overdue associated loans.
+        Abstract in User.
+
+        :return: list of loans
+        """
         raise NotImplementedError()
 
     def get_total_overdue_fine(self):
+        """
+        Get total current overdue fine across all loans.
+        Abstract in User.
+
+        :return: total overdue fine, in rubles
+        """
         raise NotImplementedError()
 
     def checkout(self, document_copy):
+        """
+        Try to checkout the required document_copy.
+        Raises TypeError if document_copy is not a DocumentCopy.
+        Raises ValueError if document_copy is not available for loan.
+
+        :param document_copy: to be checked out.
+        :return: None
+        """
+
         if not isinstance(document_copy, DocumentCopy):
             raise TypeError('document_copy should be of type DocumentCopy')
 

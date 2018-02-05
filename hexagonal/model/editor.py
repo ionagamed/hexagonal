@@ -12,6 +12,10 @@ class Editor(db.Model):
     __tablename__ = 'editors'
 
     id = db.Column(db.Integer, primary_key=True)
+    """ Integer primary key for the editor. """
+
     name = db.Column(db.String(120), nullable=False)
+    """ Editor name. """
 
     journal_issues = db.relationship('JournalIssue', secondary=journal_issue_editor, back_populates='editors')
+    """ Issues edited by this editor. """
