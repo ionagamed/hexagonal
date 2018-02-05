@@ -35,7 +35,8 @@ def register_account(**kwargs):
     :return: instance of the created :py:class:`Account`
     """
 
-    del kwargs['_token_data']
+    if '_token_data' in kwargs:
+        del kwargs['_token_data']
     kwargs['password'] = encrypt_password(kwargs['password'])
     account = User(**kwargs)
     db.session.add(account)

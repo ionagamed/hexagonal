@@ -13,6 +13,8 @@ def get_login_pair():
         'testLogin_{}'.format(get_login_pair.cnt),
         'testPassword_{}'.format(get_login_pair.cnt)
     )
+
+
 get_login_pair.cnt = 0
 
 
@@ -40,7 +42,7 @@ def test__registering_from_root__should_not_fail():
 def test__just_registered_user__should_be_able_to_login():
     token = root_login()
     login, password = get_login_pair()
-    call('auth.register',  {
+    call('auth.register', {
         'login': login,
         'password': password,
         'role': 'student-patron',
@@ -53,3 +55,16 @@ def test__just_registered_user__should_be_able_to_login():
         'login': login,
         'password': password
     }))
+
+#ToDo
+#def test__creating_new_document_book_is_correct():
+
+#def test__creating_new_document_journal_is_correct():
+
+#def test_creating_new_document_av_file_is_correct():
+
+#def access_of_librariant_to_adding_new_book_to_system_is_correct():
+
+#def access_of_student_to_booking_system_is_correct():
+
+#def access_of_TA_to_booking_system_is_correct():
