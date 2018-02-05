@@ -6,6 +6,10 @@ from hexagonal.model.patron import Patron
 
 
 class FacultyPatron(Patron):
+    """
+    Faculty patron user type.
+    """
+
     __mapper_args__ = {
         'polymorphic_identity': 'faculty-patron'
     }

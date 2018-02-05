@@ -5,6 +5,10 @@ from hexagonal.model.helpers import ids
 
 
 class Book(Document):
+    """
+    Book document type.
+    """
+
     __tablename__ = 'books'
 
     id = db.Column(db.Integer, db.ForeignKey('documents.id'), primary_key=True)

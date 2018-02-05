@@ -9,6 +9,11 @@ journal_issue_editor = db.Table(
 
 
 class JournalIssue(db.Model):
+    """
+    Journal issue model.
+    Internal model, gets squashed in the api.
+    """
+
     __tablename__ = 'journal_issues'
 
     id = db.Column(db.Integer, primary_key=True)

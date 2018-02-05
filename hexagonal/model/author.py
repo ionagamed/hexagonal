@@ -9,6 +9,11 @@ document_author = db.Table(
 
 
 class Author(db.Model):
+    """
+    Author of a book.
+    Internal class, gets squashed into book in the api.
+    """
+
     __tablename__ = 'authors'
 
     id = db.Column(db.Integer, primary_key=True)

@@ -5,6 +5,10 @@ from hexagonal.model.helpers import ids
 
 
 class JournalArticle(Document):
+    """
+    Journal article type of document.
+    """
+
     __tablename__ = 'journal_articles'
 
     id = db.Column(db.Integer, db.ForeignKey('documents.id'), primary_key=True)

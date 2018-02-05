@@ -6,6 +6,11 @@ from hexagonal.model.loan import Loan
 
 
 class User(db.Model):
+    """
+    Base class for all users in the system.
+    Should not be directly instantiated. (`hexagonal.auth` currently does that, but i'm working on it)
+    """
+
     __tablename__ = 'users'
     id = db.Column(db.Integer, primary_key=True)
     login = db.Column(db.String(80), unique=True, index=True, nullable=False)
@@ -36,7 +41,7 @@ class User(db.Model):
             raise TypeError('document_copy should be of type DocumentCopy')
 
         if document_copy.loan is not None:
-            raise ValueError('document {} (id {}) is already loaned by user {} (id {})'.format(
+            raise ValueError('document {} (id {}) is already borrowed by user {} (id {})'.format(
                 document_copy.document.title,
                 document_copy.id,
                 document_copy.loan.user.name,

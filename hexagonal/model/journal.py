@@ -2,6 +2,11 @@ from hexagonal import db
 
 
 class Journal(db.Model):
+    """
+    Journal model.
+    Internal model, gets squashed in the api.
+    """
+
     __tablename__ = 'journals'
 
     id = db.Column(db.Integer, primary_key=True)

@@ -4,6 +4,12 @@ from hexagonal.model.document import document_keyword
 
 
 class Keyword(db.Model):
+    """
+    Keyword model for documents.
+    Used for quick search for keywords and related documents.
+    Internal model, gets squashed in the api.
+    """
+
     __tablename__ = 'keywords'
 
     id = db.Column(db.Integer, primary_key=True)

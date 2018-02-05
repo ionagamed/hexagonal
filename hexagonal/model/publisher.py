@@ -2,6 +2,11 @@ from hexagonal import db
 
 
 class Publisher(db.Model):
+    """
+    Publisher model.
+    Internal model, gets squashed in the api.
+    """
+
     __tablename__ = 'publishers'
 
     id = db.Column(db.Integer, primary_key=True)

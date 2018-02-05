@@ -14,6 +14,11 @@ from hexagonal.model.keyword import Keyword
 
 
 class Document(db.Model):
+    """
+    Base class for all documents.
+    Should not be instantiated directly.
+    """
+
     __tablename__ = 'documents'
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(80), unique=True, index=True, nullable=False)

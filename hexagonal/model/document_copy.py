@@ -2,6 +2,11 @@ from hexagonal import db
 
 
 class DocumentCopy(db.Model):
+    """
+    Copy of a document.
+    References a specific document and document type by foreign key.
+    """
+
     __tablename__ = 'document_copies'
 
     id = db.Column(db.Integer, primary_key=True)

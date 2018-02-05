@@ -4,6 +4,11 @@ from hexagonal.model.journal_issue import journal_issue_editor
 
 
 class Editor(db.Model):
+    """
+    Editor for a journal.
+    Internal class, gets squashed in the api.
+    """
+
     __tablename__ = 'editors'
 
     id = db.Column(db.Integer, primary_key=True)

@@ -4,6 +4,10 @@ from hexagonal.model.helpers import ids
 
 
 class AVMaterial(Document):
+    """
+    AVMaterial document type.
+    """
+
     __tablename__ = 'av_materials'
 
     id = db.Column(db.Integer, db.ForeignKey('documents.id'), primary_key=True)

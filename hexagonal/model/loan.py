@@ -4,6 +4,11 @@ from hexagonal import db, app
 
 
 class Loan(db.Model):
+    """
+    Model for one loan of a specific document by a specific user.
+    Internal model, gets squashed in the api.
+    """
+
     __tablename__ = 'loans'
 
     id = db.Column(db.Integer, primary_key=True)

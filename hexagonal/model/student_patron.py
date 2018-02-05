@@ -6,6 +6,11 @@ from hexagonal.model.patron import Patron
 
 
 class StudentPatron(Patron):
+    """
+    Student patron user type.
+    Internal model, gets squashed in the api.
+    """
+
     __mapper_args__ = {
         'polymorphic_identity': 'student-patron'
     }
