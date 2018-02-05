@@ -29,7 +29,11 @@ def test__registering_from_root__should_not_fail():
     call('auth.register', {
         'login': login,
         'password': password,
-        'role': 'student-patron'
+        'role': 'student-patron',
+        'address': '123',
+        'name': 'One Two',
+        'card_number': 123,
+        'phone': 123
     }, token)
 
 
@@ -39,7 +43,11 @@ def test__just_registered_user__should_be_able_to_login():
     call('auth.register',  {
         'login': login,
         'password': password,
-        'role': 'student-patron'
+        'role': 'student-patron',
+        'address': '123',
+        'name': 'One Two',
+        'card_number': 123,
+        'phone': 123
     }, token)
     decode_token(call('auth.login', {
         'login': login,
