@@ -1,6 +1,8 @@
 # hexagonal
 Bachelors project at Innopolis university (Spring semester 2018).
 
+Documentation can be found [here](https://ionagamed.github.io/hexagonal/html)
+
 ### How to run
 
     $ ./run.sh    # not too hard, is it?
