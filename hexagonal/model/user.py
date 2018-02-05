@@ -76,7 +76,7 @@ class User(db.Model):
         Raises ValueError if document_copy is not available for loan.
 
         :param document_copy: to be checked out.
-        :return: None
+        :return: loan object
         """
 
         if not isinstance(document_copy, DocumentCopy):
@@ -95,3 +95,17 @@ class User(db.Model):
         db.session.add(document_copy)
         db.session.add(document_copy.loan)
         db.session.commit()
+
+        return document_copy.loan
+
+    def get_borrowed_document_copies(self):
+        """
+        Get document copies that are currently borrowed by this user.
+
+        :return: list of document_copies
+        """
+
+        return list(map(
+            lambda x: x.document_copy,
+            Loan.query.filter(Loan.user_id == self.id)
+        ))

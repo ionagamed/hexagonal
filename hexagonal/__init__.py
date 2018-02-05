@@ -48,4 +48,7 @@ from hexagonal.model.patron import Patron
 from hexagonal.model.publisher import Publisher
 from hexagonal.model.student_patron import StudentPatron
 
+import hexagonal.functions
+from hexagonal.functions import user
+
 from hexagonal.auth.jsonrpc import functions as auth_functions

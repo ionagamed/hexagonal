@@ -1,21 +1,6 @@
 import pytest
-from tests.jsonrpc import call
+from tests.common import call, root_login, get_login_pair
 from hexagonal.auth import decode_token
-
-
-def root_login():
-    return call('auth.login', ['root', 'toor'])
-
-
-def get_login_pair():
-    get_login_pair.cnt += 1
-    return (
-        'testLogin_{}'.format(get_login_pair.cnt),
-        'testPassword_{}'.format(get_login_pair.cnt)
-    )
-
-
-get_login_pair.cnt = 0
 
 
 # decode_token raises an exception when unable to parse

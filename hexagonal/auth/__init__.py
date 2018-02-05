@@ -38,10 +38,15 @@ def register_account(**kwargs):
     if '_token_data' in kwargs:
         del kwargs['_token_data']
     kwargs['password'] = encrypt_password(kwargs['password'])
-    account = User(**kwargs)
+    if isinstance(kwargs['role'], str):
+        account = User(**kwargs)
+    else:
+        cls = kwargs['role']
+        del kwargs['role']
+        account = cls(**kwargs)
     db.session.add(account)
     db.session.commit()
-    return account
+    return User.query.filter(User.id == account.id).first()
 
 
 def login_and_generate_token(login, password):
