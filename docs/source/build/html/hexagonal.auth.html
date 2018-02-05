@@ -1,0 +1,334 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>hexagonal.auth package &mdash; hexagonal  documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+        <link rel="index" title="Index"
+              href="genindex.html"/>
+        <link rel="search" title="Search" href="search.html"/>
+    <link rel="top" title="hexagonal  documentation" href="index.html"/>
+        <link rel="next" title="hexagonal.model package" href="hexagonal.model.html"/>
+        <link rel="prev" title="Welcome to hexagonal’s documentation!" href="index.html"/> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="index.html" class="icon icon-home"> hexagonal
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">hexagonal.auth package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-hexagonal.auth.helpers">hexagonal.auth.helpers module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-hexagonal.auth">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="hexagonal.model.html">hexagonal.model package</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">hexagonal</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li>hexagonal.auth package</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/hexagonal.auth.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="hexagonal-auth-package">
+<h1>hexagonal.auth package<a class="headerlink" href="#hexagonal-auth-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-hexagonal.auth.helpers">
+<span id="hexagonal-auth-helpers-module"></span><h2>hexagonal.auth.helpers module<a class="headerlink" href="#module-hexagonal.auth.helpers" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="hexagonal.auth.helpers.minimum_access_level">
+<code class="descclassname">hexagonal.auth.helpers.</code><code class="descname">minimum_access_level</code><span class="sig-paren">(</span><em>level</em><span class="sig-paren">)</span><a class="headerlink" href="#hexagonal.auth.helpers.minimum_access_level" title="Permalink to this definition">¶</a></dt>
+<dd><p>Decorator for bound functions which restricts the allowed users to at least <cite>level</cite> access level.
+Throws <a class="reference internal" href="hexagonal.auth.jsonrpc.html#hexagonal.auth.jsonrpc.exceptions.JSONRPCAccessDeniedException" title="hexagonal.auth.jsonrpc.exceptions.JSONRPCAccessDeniedException"><code class="xref py py-class docutils literal"><span class="pre">hexagonal.auth.jsonrpc.exceptions.JSONRPCAccessDeniedException</span></code></a> when user isn’t allowed.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>level</strong> – minimal access level</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">wrapped function</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="module-hexagonal.auth">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-hexagonal.auth" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="hexagonal.auth.decode_token">
+<code class="descclassname">hexagonal.auth.</code><code class="descname">decode_token</code><span class="sig-paren">(</span><em>token</em><span class="sig-paren">)</span><a class="headerlink" href="#hexagonal.auth.decode_token" title="Permalink to this definition">¶</a></dt>
+<dd><p>Try to decode token, which was (or wasn’t) received from the user.
+Throws an exception upon failure (invalid token for any reason).</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>token</strong> – to be decoded</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">token data, which was embedded there</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="hexagonal.auth.encrypt_password">
+<code class="descclassname">hexagonal.auth.</code><code class="descname">encrypt_password</code><span class="sig-paren">(</span><em>password</em><span class="sig-paren">)</span><a class="headerlink" href="#hexagonal.auth.encrypt_password" title="Permalink to this definition">¶</a></dt>
+<dd><p>Encrypt the password for storage in database</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>password</strong> – to be encrypted</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">the encrypted password</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="hexagonal.auth.login_and_generate_token">
+<code class="descclassname">hexagonal.auth.</code><code class="descname">login_and_generate_token</code><span class="sig-paren">(</span><em>login</em>, <em>password</em><span class="sig-paren">)</span><a class="headerlink" href="#hexagonal.auth.login_and_generate_token" title="Permalink to this definition">¶</a></dt>
+<dd><p>Try to login the user with specified credentials.
+If no such user exists (either not valid login, or not valid password) raises ValueError.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>login</strong> – login of trying user</li>
+<li><strong>password</strong> – password of trying user</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">new generated token (see <a class="reference internal" href="#hexagonal.auth.decode_token" title="hexagonal.auth.decode_token"><code class="xref py py-func docutils literal"><span class="pre">decode_token()</span></code></a>)</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="hexagonal.auth.register_account">
+<code class="descclassname">hexagonal.auth.</code><code class="descname">register_account</code><span class="sig-paren">(</span><em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#hexagonal.auth.register_account" title="Permalink to this definition">¶</a></dt>
+<dd><p>Register a new account</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>kwargs</strong> – field of the new account</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">instance of the created <code class="xref py py-class docutils literal"><span class="pre">Account</span></code></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+</div>
+
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="hexagonal.model.html" class="btn btn-neutral float-right" title="hexagonal.model package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="index.html" class="btn btn-neutral" title="Welcome to hexagonal’s documentation!" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, ionagamed.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

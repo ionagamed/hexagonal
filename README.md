@@ -1,5 +1,5 @@
 # hexagonal
-Bachelors project at Innopolis university (Spring semester 2018)
+Bachelors project at Innopolis university (Spring semester 2018).
 
 ### How to run
 

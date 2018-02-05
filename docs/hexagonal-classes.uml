@@ -1,0 +1,244 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>Python</ID>
+  <OriginalElement>#/Users/ionagamed/projects/hexagonal/hexagonal</OriginalElement>
+  <nodes>
+    <node x="3423.0" y="1277.5">hexagonal.jsonrpc.route.JSONRPCExtensibleMethodEncoder</node>
+    <node x="1503.0" y="1189.5">hexagonal.model.document.Document</node>
+    <node x="893.9999999999999" y="1211.0">hexagonal.model.journal.Journal</node>
+    <node x="2748.0" y="1599.5">hexagonal.model.librarian.Librarian</node>
+    <node x="2070.0" y="1244.5">hexagonal.model.author.Author</node>
+    <node x="2284.25" y="1778.0">hexagonal.model.faculty_patron.FacultyPatron</node>
+    <node x="2588.0" y="1134.0">hexagonal.model.user.User</node>
+    <node x="1676.125" y="0.0">_collections_abc.Hashable</node>
+    <node x="152.0" y="783.0">BaseException</node>
+    <node x="2318.0" y="1244.5">hexagonal.model.keyword.Keyword</node>
+    <node x="1042.8356303418796" y="1544.0">hexagonal.model.journal_article.JournalArticle</node>
+    <node x="335.0" y="1200.0">hexagonal.model.journal_issue.JournalIssue</node>
+    <node x="0.0" y="1577.0">hexagonal.jsonrpc.exceptions.JSONRPCBaseException</node>
+    <node x="3078.5" y="684.0">json.encoder.JSONEncoder</node>
+    <node x="657.0" y="1244.5">hexagonal.model.editor.Editor</node>
+    <node x="1792.0" y="1233.5">hexagonal.model.publisher.Publisher</node>
+    <node x="1498.5" y="1566.0">hexagonal.model.av_material.AVMaterial</node>
+    <node x="1746.125" y="849.5">Model</node>
+    <node x="222.0" y="1288.5">Exception</node>
+    <node x="1635.125" y="146.0">object</node>
+    <node x="39.0" y="1789.5">hexagonal.auth.jsonrpc.exceptions.JSONRPCAccessDeniedException</node>
+    <node x="2622.25" y="1778.0">hexagonal.model.student_patron.StudentPatron</node>
+    <node x="1930.9213141025639" y="1522.0">hexagonal.model.book.Book</node>
+    <node x="2502.0" y="1599.5">hexagonal.model.patron.Patron</node>
+    <node x="1146.0" y="1211.0">hexagonal.model.document_copy.DocumentCopy</node>
+    <node x="2918.0" y="1178.0">hexagonal.model.loan.Loan</node>
+  </nodes>
+  <notes />
+  <edges>
+    <edge source="hexagonal.jsonrpc.exceptions.JSONRPCBaseException" target="Exception">
+      <point x="0.0" y="-48.0" />
+      <point x="0.0" y="14.5" />
+    </edge>
+    <edge source="json.encoder.JSONEncoder" target="object">
+      <point x="0.0" y="-180.0" />
+      <point x="3626.5" y="614.0" />
+      <point x="1914.932692307692" y="614.0" />
+      <point x="134.30769230769215" y="224.0" />
+    </edge>
+    <edge source="hexagonal.model.av_material.AVMaterial" target="hexagonal.model.document.Document">
+      <point x="0.0" y="-59.0" />
+      <point x="0.0" y="113.5" />
+    </edge>
+    <edge source="Exception" target="BaseException">
+      <point x="0.0" y="-14.5" />
+      <point x="0.0" y="81.0" />
+    </edge>
+    <edge source="hexagonal.model.journal_issue.JournalIssue" target="object">
+      <point x="-75.5" y="-103.0" />
+      <point x="410.5" y="624.0" />
+      <point x="1668.7019230769229" y="624.0" />
+      <point x="-111.9230769230769" y="224.0" />
+    </edge>
+    <edge source="hexagonal.model.user.User" target="Model">
+      <point x="-77.5" y="-169.0" />
+      <point x="2665.5" y="1084.0" />
+      <point x="1804.775" y="1084.0" />
+      <point x="24.15000000000009" y="14.5" />
+    </edge>
+    <edge source="hexagonal.model.patron.Patron" target="hexagonal.model.user.User">
+      <point x="0.0" y="-25.5" />
+      <point x="2615.0" y="1497.0" />
+      <point x="2665.5" y="1497.0" />
+      <point x="-77.5" y="169.0" />
+    </edge>
+    <edge source="hexagonal.model.student_patron.StudentPatron" target="hexagonal.model.patron.Patron">
+      <point x="0.0" y="-37.0" />
+      <point x="2786.75" y="1753.0" />
+      <point x="2671.5" y="1753.0" />
+      <point x="56.5" y="25.5" />
+    </edge>
+    <edge source="hexagonal.model.journal_article.JournalArticle" target="hexagonal.model.document.Document">
+      <point x="0.0" y="-81.0" />
+      <point x="1199.8356303418796" y="1497.0" />
+      <point x="1547.833333333333" y="1497.0" />
+      <point x="-89.66666666666674" y="113.5" />
+    </edge>
+    <edge source="hexagonal.model.loan.Loan" target="object">
+      <point x="50.0" y="-125.0" />
+      <point x="3068.0" y="624.0" />
+      <point x="1892.5480769230767" y="624.0" />
+      <point x="111.9230769230769" y="224.0" />
+    </edge>
+    <edge source="hexagonal.model.author.Author" target="Model">
+      <point x="-57.0" y="-58.5" />
+      <point x="2127.0" y="1104.0" />
+      <point x="1790.975" y="1104.0" />
+      <point x="10.349999999999909" y="14.5" />
+    </edge>
+    <edge source="hexagonal.model.document_copy.DocumentCopy" target="object">
+      <point x="-84.25" y="-92.0" />
+      <point x="1230.25" y="654.0" />
+      <point x="1735.855769230769" y="654.0" />
+      <point x="-44.76923076923072" y="224.0" />
+    </edge>
+    <edge source="hexagonal.model.author.Author" target="object">
+      <point x="57.0" y="-58.5" />
+      <point x="2241.0" y="654.0" />
+      <point x="1825.3942307692305" y="654.0" />
+      <point x="44.76923076923072" y="224.0" />
+    </edge>
+    <edge source="object" target="_collections_abc.Hashable">
+      <point x="0.0" y="-224.0" />
+      <point x="0.0" y="48.0" />
+    </edge>
+    <edge source="hexagonal.model.document_copy.DocumentCopy" target="Model">
+      <point x="84.25" y="-92.0" />
+      <point x="1398.75" y="1104.0" />
+      <point x="1770.275" y="1104.0" />
+      <point x="-10.349999999999909" y="14.5" />
+    </edge>
+    <edge source="hexagonal.model.loan.Loan" target="Model">
+      <point x="-50.0" y="-125.0" />
+      <point x="2968.0" y="1074.0" />
+      <point x="1811.6749999999997" y="1074.0" />
+      <point x="31.049999999999955" y="14.5" />
+    </edge>
+    <edge source="hexagonal.model.book.Book" target="hexagonal.model.document.Document">
+      <point x="0.0" y="-103.0" />
+      <point x="2034.4213141025639" y="1497.0" />
+      <point x="1727.1666666666665" y="1497.0" />
+      <point x="89.66666666666674" y="113.5" />
+    </edge>
+    <edge source="hexagonal.model.faculty_patron.FacultyPatron" target="hexagonal.model.patron.Patron">
+      <point x="0.0" y="-37.0" />
+      <point x="2443.25" y="1753.0" />
+      <point x="2558.5" y="1753.0" />
+      <point x="-56.5" y="25.5" />
+    </edge>
+    <edge source="Model" target="object">
+      <point x="0.0" y="-14.5" />
+      <point x="0.0" y="224.0" />
+    </edge>
+    <edge source="hexagonal.model.keyword.Keyword" target="Model">
+      <point x="-62.5" y="-58.5" />
+      <point x="2380.5" y="1094.0" />
+      <point x="1797.875" y="1094.0" />
+      <point x="17.25" y="14.5" />
+    </edge>
+    <edge source="hexagonal.jsonrpc.route.JSONRPCExtensibleMethodEncoder" target="json.encoder.JSONEncoder">
+      <point x="0.0" y="-25.5" />
+      <point x="0.0" y="180.0" />
+    </edge>
+    <edge source="hexagonal.model.journal_issue.JournalIssue" target="Model">
+      <point x="75.5" y="-103.0" />
+      <point x="561.5" y="1074.0" />
+      <point x="1749.5749999999998" y="1074.0" />
+      <point x="-31.049999999999955" y="14.5" />
+    </edge>
+    <edge source="hexagonal.model.user.User" target="object">
+      <point x="77.50000000000011" y="-169.0" />
+      <point x="2820.5" y="634.0" />
+      <point x="1870.1634615384614" y="634.0" />
+      <point x="89.53846153846143" y="224.0" />
+    </edge>
+    <edge source="hexagonal.model.editor.Editor" target="Model">
+      <point x="54.25" y="-58.5" />
+      <point x="819.75" y="1084.0" />
+      <point x="1756.475" y="1084.0" />
+      <point x="-24.15000000000009" y="14.5" />
+    </edge>
+    <edge source="hexagonal.model.publisher.Publisher" target="Model">
+      <point x="-64.5" y="-69.5" />
+      <point x="1856.5" y="1114.0" />
+      <point x="1784.0749999999998" y="1114.0" />
+      <point x="3.4500000000000455" y="14.5" />
+    </edge>
+    <edge source="hexagonal.model.document.Document" target="object">
+      <point x="-67.25" y="-113.5" />
+      <point x="1570.25" y="1064.0" />
+      <point x="1602.7319444444438" y="1064.0" />
+      <point x="1602.7319444444438" y="664.0" />
+      <point x="1758.2403846153843" y="664.0" />
+      <point x="-22.384615384615472" y="224.0" />
+    </edge>
+    <edge source="BaseException" target="object">
+      <point x="0.0" y="-81.0" />
+      <point x="268.5" y="614.0" />
+      <point x="1646.3173076923076" y="614.0" />
+      <point x="-134.30769230769238" y="224.0" />
+    </edge>
+    <edge source="hexagonal.model.keyword.Keyword" target="object">
+      <point x="62.5" y="-58.5" />
+      <point x="2505.5" y="644.0" />
+      <point x="1847.7788461538462" y="644.0" />
+      <point x="67.15384615384619" y="224.0" />
+    </edge>
+    <edge source="hexagonal.model.librarian.Librarian" target="hexagonal.model.user.User">
+      <point x="0.0" y="-25.5" />
+      <point x="2871.0" y="1497.0" />
+      <point x="2820.5" y="1497.0" />
+      <point x="77.5" y="169.0" />
+    </edge>
+    <edge source="hexagonal.model.document.Document" target="Model">
+      <point x="67.25" y="-113.5" />
+      <point x="1704.75" y="1114.0" />
+      <point x="1777.1749999999997" y="1114.0" />
+      <point x="-3.4500000000000455" y="14.5" />
+    </edge>
+    <edge source="hexagonal.model.journal.Journal" target="object">
+      <point x="-57.999999999999886" y="-92.0" />
+      <point x="952.0" y="644.0" />
+      <point x="1713.4711538461538" y="644.0" />
+      <point x="-67.15384615384619" y="224.0" />
+    </edge>
+    <edge source="hexagonal.model.editor.Editor" target="object">
+      <point x="-54.25" y="-58.5" />
+      <point x="711.25" y="634.0" />
+      <point x="1691.0865384615386" y="634.0" />
+      <point x="-89.53846153846143" y="224.0" />
+    </edge>
+    <edge source="hexagonal.model.publisher.Publisher" target="object">
+      <point x="64.5" y="-69.5" />
+      <point x="1985.5" y="1114.0" />
+      <point x="1927.7819444444435" y="1114.0" />
+      <point x="1927.7819444444435" y="664.0" />
+      <point x="1803.0096153846152" y="664.0" />
+      <point x="22.384615384615245" y="224.0" />
+    </edge>
+    <edge source="hexagonal.model.journal.Journal" target="Model">
+      <point x="58.000000000000114" y="-92.0" />
+      <point x="1068.0" y="1094.0" />
+      <point x="1763.375" y="1094.0" />
+      <point x="-17.25" y="14.5" />
+    </edge>
+    <edge source="hexagonal.auth.jsonrpc.exceptions.JSONRPCAccessDeniedException" target="hexagonal.jsonrpc.exceptions.JSONRPCBaseException">
+      <point x="0.0" y="-25.5" />
+      <point x="0.0" y="48.0" />
+    </edge>
+  </edges>
+  <settings layout="Hierarchic Group" zoom="0.25744934445768775" x="2088.0" y="926.0" />
+  <SelectedNodes />
+  <Categories>
+    <Category>Fields</Category>
+    <Category>Inner Classes</Category>
+    <Category>Methods</Category>
+  </Categories>
+</Diagram>
+
