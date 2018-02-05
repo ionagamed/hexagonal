@@ -3,20 +3,22 @@ from hexagonal.model.user import User
 from hexagonal.model.book import Book
 from hexagonal.model.document_copy import DocumentCopy
 from hexagonal.model.loan import Loan
+from hexagonal.model.librarian import Librarian
 from hexagonal import db
 
 ionagamed = User.query.filter(User.login == 'ionagamed').first()
 if ionagamed is None:
-    ionagamed = register_account(
-        login='ionagamed',
-        password='123',
-        role='student-patron',
-
-        address='123',
-        phone='123',
-        card_number=123,
-        name='Leonid Lygin'
-    )
+    Librarian.create_account(ionagamed,'123','Leonid Lyigin','Innopolis','123')
+    # ionagamed = register_account(
+    #     login='ionagamed',
+    #     password='123',
+    #     role='student-patron',
+    #
+    #     address='123',
+    #     phone='123',
+    #     card_number=123,
+    #     name='Leonid Lygin'
+    # )
 db.session.add(ionagamed)
 
 books = []

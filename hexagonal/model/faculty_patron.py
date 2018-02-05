@@ -3,6 +3,7 @@ import datetime
 from hexagonal.model.book import Book
 from hexagonal.model.document import Document
 from hexagonal.model.patron import Patron
+from hexagonal.model.user import User
 
 
 class FacultyPatron(Patron):
@@ -27,5 +28,9 @@ class FacultyPatron(Patron):
             raise TypeError('document should be of type Document')
 
         if isinstance(document, Book):
-            return datetime.timedelta(weeks=4)
-        return datetime.timedelta(weeks=2)
+            if document.bestseller:
+                return datetime.timedelta(weeks=2)
+            else : return datetime.timedelta(weeks=4)
+
+
+

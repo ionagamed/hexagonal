@@ -61,7 +61,7 @@ def test_tc3__faculty_patron_checks_out_for_4_weeks():
     assert (loan.due_date - datetime.date.today()).days == 28
 
 
-def test_tc4__faculty_patron_checks_out_bestseller_for_4_weeks():
+def test_tc4__faculty_patron_checks_out_bestseller_for_2_weeks():
     reload_db()
 
     patron = register_test_account(FacultyPatron)
@@ -70,7 +70,9 @@ def test_tc4__faculty_patron_checks_out_bestseller_for_4_weeks():
 
     loan = patron.checkout(book_copy)
 
-    assert (loan.due_date - datetime.date.today()).days == 28
+    assert (loan.due_date - datetime.date.today()).days == 14
+
+    #В тесте сказано что f checked out the bestselle for a 2 weeks
 
 
 def test_tc5__3_patrons_check_out_2_books_should_fail():
