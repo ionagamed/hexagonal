@@ -28,9 +28,8 @@ class FacultyPatron(Patron):
             raise TypeError('document should be of type Document')
 
         if isinstance(document, Book):
-            if document.bestseller:
-                return datetime.timedelta(weeks=2)
-            else : return datetime.timedelta(weeks=4)
+            return datetime.timedelta(weeks=4)
+        else: return datetime.timedelta(weeks=2)
 
 
 

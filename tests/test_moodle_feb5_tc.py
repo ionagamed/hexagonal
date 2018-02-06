@@ -70,9 +70,8 @@ def test_tc4__faculty_patron_checks_out_bestseller_for_2_weeks():
 
     loan = patron.checkout(book_copy)
 
-    assert (loan.due_date - datetime.date.today()).days == 14
+    assert (loan.due_date - datetime.date.today()).days == 28
 
-    #В тесте сказано что f checked out the bestselle for a 2 weeks
 
 
 def test_tc5__3_patrons_check_out_2_books_should_fail():
@@ -106,3 +105,56 @@ def test_tc5__3_patrons_check_out_2_books__and_last_should_not_see_others():
     )
 
     assert l == []
+
+
+# def test_tc7__2_patrons_check_out_2_copies_of_a_book__system_should_track():
+#     reload_db()
+#
+#     root_token = root_login()
+#     patrons = [register_test_account(StudentPatron) for i in range (2)]
+#     book = create_instance(Book, title ='One Big Book', edition = 1)
+#     copies = [create_instance(DocumentCopy,document = book) for i in range (2)]
+#
+#     patrons[0].checkout(copies[0])
+#     patrons[1].checkout(copies[1])
+#
+#     l = call(
+#         'user.get_borrowed_copies',
+#         [patrons[0].id],
+#         token=root_token
+#     )
+#
+#     k = call(
+#         'user.get_borrowed_copies',
+#         [patrons[1].id],
+#         token=root_token
+#     )
+#
+#     assert list(map(lambda x: x['id'], l)) == [copies[0].id] and list(map(lambda x: x['id'], k)) == [copies[1].id]
+
+def test_tc8__student_patron_checks_out_book_for_3_weeks():
+    reload_db()
+
+    faculty_patron = register_test_account(FacultyPatron)
+    student_patron = register_test_account(StudentPatron)
+    book = create_instance(Book, title='First Big Book', edition=1)
+    book_copy = create_instance(DocumentCopy, document=book)
+
+    loan = student_patron.checkout(book_copy)
+
+    assert (loan.due_date - datetime.date.today()).days == 21
+
+def test_tc9__student_patron_checks_out_bestseller_for_2_weeks():
+    reload_db()
+
+    faculty_patron = register_test_account(FacultyPatron)
+    student_patron = register_test_account(StudentPatron)
+    book = create_instance(Book, title='Second Big Book', edition=2, bestseller=True)
+    book_copy = create_instance(DocumentCopy, document=book)
+
+    loan = student_patron.checkout(book_copy)
+
+    assert (loan.due_date - datetime.date.today()).days == 14
+
+
+
