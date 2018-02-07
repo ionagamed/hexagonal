@@ -15,3 +15,4 @@ def get_available_document_copies():
                 result.append(copy)
 
     return result
+

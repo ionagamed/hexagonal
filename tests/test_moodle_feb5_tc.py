@@ -3,11 +3,13 @@ import datetime
 import pytest
 
 from hexagonal import db, FacultyPatron
+from hexagonal.functions.book import create_book
 from tests.common import call, root_login, register_test_account, create_instance, reload_db
 from hexagonal.model.book import Book
 from hexagonal.model.document_copy import DocumentCopy
 from hexagonal.model.student_patron import StudentPatron
 from hexagonal.model.author import Author
+# from hexagonal.functions import Book
 
 
 def test_tc1__librarian_can_see_checked_out_items():
@@ -15,9 +17,20 @@ def test_tc1__librarian_can_see_checked_out_items():
 
     root_token = root_login()
     patron = register_test_account(StudentPatron)
-    book = create_instance(Book, title='One Big Book', edition=1)
-    book_copy_1 = create_instance(DocumentCopy, document=book)
-    create_instance(DocumentCopy, document=book)
+
+    book_id = call(
+        'book.create',
+        {
+            'title': 'One Big Book',
+            'edition': '1',
+            'author_names': ['123'],
+            'publisher_name': '345'
+        },
+        root_token
+    )
+
+    book_copy_1 = create_instance(DocumentCopy, document_id=book_id[id])
+    create_instance(DocumentCopy, document=book_id['id'])
 
     patron.checkout(book_copy_1)
 

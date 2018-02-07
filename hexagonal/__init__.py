@@ -50,5 +50,6 @@ from hexagonal.model.student_patron import StudentPatron
 
 import hexagonal.functions
 from hexagonal.functions import user
+from hexagonal.functions import book
 
 from hexagonal.auth.jsonrpc import functions as auth_functions
