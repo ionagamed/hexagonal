@@ -24,6 +24,9 @@ class Journal(db.Model):
     issues = db.relationship('JournalIssue', back_populates='journal')
     """ Issues of the journal. """
 
+    magazine = db.Column(db.Boolean, default=False)
+    """ Whether this journal is a magazine"""
+
     def __json__(self):
         """
         JSON representation for a given instance.
