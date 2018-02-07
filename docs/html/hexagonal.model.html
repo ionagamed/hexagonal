@@ -312,6 +312,12 @@ Internal class, gets squashed into book in the api.</p>
 </dd></dl>
 
 <dl class="attribute">
+<dt id="hexagonal.model.book.Book.reference">
+<code class="descname">reference</code><a class="headerlink" href="#hexagonal.model.book.Book.reference" title="Permalink to this definition">¶</a></dt>
+<dd><p>Whether this book is a reference book</p>
+</dd></dl>
+
+<dl class="attribute">
 <dt id="hexagonal.model.book.Book.title">
 <code class="descname">title</code><a class="headerlink" href="#hexagonal.model.book.Book.title" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
@@ -570,6 +576,12 @@ Internal model, gets squashed in the api.</p>
 <dt id="hexagonal.model.journal.Journal.issues">
 <code class="descname">issues</code><a class="headerlink" href="#hexagonal.model.journal.Journal.issues" title="Permalink to this definition">¶</a></dt>
 <dd><p>Issues of the journal.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="hexagonal.model.journal.Journal.magazine">
+<code class="descname">magazine</code><a class="headerlink" href="#hexagonal.model.journal.Journal.magazine" title="Permalink to this definition">¶</a></dt>
+<dd><p>Whether this journal is a magazine</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -1031,7 +1043,21 @@ Raises ValueError if document_copy is not available for loan.</p>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>document_copy</strong> – to be checked out.</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">None</td>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">loan object</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="hexagonal.model.user.User.get_borrowed_document_copies">
+<code class="descname">get_borrowed_document_copies</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#hexagonal.model.user.User.get_borrowed_document_copies" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get document copies that are currently borrowed by this user.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">list of document_copies</td>
 </tr>
 </tbody>
 </table>
