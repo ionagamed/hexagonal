@@ -26,6 +26,9 @@ class Book(Document):
     publisher = db.relationship('Publisher', back_populates='books')
     """ Relation with publisher. """
 
+    is_reference = db.Column(db.Boolean, default=False)
+    """ Whether this book is a reference book"""
+
     __mapper_args__ = {
         'polymorphic_identity': 'book'
     }
@@ -44,5 +47,6 @@ class Book(Document):
             'authors': map(lambda x: x.name, self.authors),
             'edition': self.edition,
             'bestseller': self.bestseller,
-            'publisher': self.publisher.name
+            'publisher': self.publisher.name,
+            'is_reference': self.is_reference
         }
