@@ -7,6 +7,7 @@ from tests.common import call, root_login, register_test_account, create_instanc
 from hexagonal.model.book import Book
 from hexagonal.model.document_copy import DocumentCopy
 from hexagonal.model.student_patron import StudentPatron
+from hexagonal.model.author import Author
 
 
 def test_tc1__librarian_can_see_checked_out_items():
@@ -47,6 +48,18 @@ def test_tc1__librarian_can_see_available_items():
     )
 
     assert list(map(lambda x: x['id'], l)) == [book_copy_2.id]
+
+
+def test_tc2_patron_cant_check_out_book_by_author_a():
+    reload_db()
+
+    root_token = root_login()
+    patron = register_test_account(StudentPatron)
+    book_author = create_instance(Author, name='Bertrand Mayer')
+    book = create_instance(Book, title='Touch of class', authors=[book_author])
+
+    with pytest.raises(IndexError):
+        patron.checkout(book.copies[0])
 
 
 def test_tc3__faculty_patron_checks_out_for_4_weeks():
