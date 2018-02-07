@@ -28,6 +28,8 @@ class FacultyPatron(Patron):
             raise TypeError('document should be of type Document')
 
         if isinstance(document, Book):
+            if document.reference:
+                raise ValueError('type is not available to check out')
             return datetime.timedelta(weeks=4)
         else: return datetime.timedelta(weeks=2)
 

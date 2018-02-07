@@ -29,7 +29,7 @@ class StudentPatron(Patron):
             raise TypeError('document should be of type Document')
 
         if isinstance(document, Book):
-            if document.is_reference:
+            if document.reference:
                 raise ValueError('type is not available to check out')
             if document.bestseller:
                 return datetime.timedelta(weeks=2)

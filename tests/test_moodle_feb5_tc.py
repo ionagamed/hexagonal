@@ -73,7 +73,6 @@ def test_tc4__faculty_patron_checks_out_bestseller_for_2_weeks():
     assert (loan.due_date - datetime.date.today()).days == 28
 
 
-
 def test_tc5__3_patrons_check_out_2_books_should_fail():
     reload_db()
 
@@ -132,14 +131,15 @@ def test_tc9__student_patron_checks_out_bestseller_for_2_weeks():
 
     assert (loan.due_date - datetime.date.today()).days == 14
 
+
 def test_tc10_patron_can_check_out_a_book_and_not_available_to_check_out_reference_book():
     reload_db()
 
     root_token = root_login()
     patron = register_test_account(StudentPatron)
-    book = create_instance(Book, title = 'First Big Book')
+    book = create_instance(Book, title='First Big Book')
     book_copy = create_instance(DocumentCopy, document=book)
-    reference_book = create_instance(Book, title='Second Big Reference Book', is_reference=True)
+    reference_book = create_instance(Book, title='Second Big Reference Book', reference=True)
     reference_book_copy = create_instance(DocumentCopy, document=reference_book)
 
     patron.checkout(book_copy)
@@ -152,15 +152,13 @@ def test_tc10_patron_can_check_out_a_book_and_not_available_to_check_out_referen
 
     assert list(map(lambda x: x['id'], l)) == [book_copy.id]
 
+
 def test_tc10_patron_are_not_available_to_check_out_reference_book():
     reload_db()
 
     patron = register_test_account(StudentPatron)
-    reference_book = create_instance(Book, title='One Big Reference Book', is_reference=True)
+    reference_book = create_instance(Book, title='One Big Reference Book', reference=True)
     reference_book_copy = create_instance(DocumentCopy, document=reference_book)
 
     with pytest.raises(ValueError):
-         patron.checkout(reference_book_copy)
-
-
-
+        patron.checkout(reference_book_copy)
