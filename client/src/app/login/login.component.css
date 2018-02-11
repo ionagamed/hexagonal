@@ -1,0 +1,18 @@
+#login-left > h2, p {
+  font-family: 'Roboto', sans-serif !important;
+}
+
+#login-left > h2 {
+  font-size: 24pt;
+}
+#login-left > p {
+  font-size: 14pt;
+}
+
+#login-form {
+  min-height: 100%;
+  min-height: 100vh;
+
+  display: flex;
+  align-items: center;
+}
