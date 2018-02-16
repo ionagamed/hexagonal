@@ -48,8 +48,11 @@ from hexagonal.model.patron import Patron
 from hexagonal.model.publisher import Publisher
 from hexagonal.model.student_patron import StudentPatron
 
+db.create_all()
+
 import hexagonal.functions
-from hexagonal.functions import user
-from hexagonal.functions import book
+from hexagonal.functions import user, book, document
 
 from hexagonal.auth.jsonrpc import functions as auth_functions
+
+from hexagonal import test_data

@@ -1,4 +1,5 @@
 from hexagonal import db
+from hexagonal.model.helpers import ids
 
 journal_issue_editor = db.Table(
     'journal_issue_editor',
@@ -40,7 +41,13 @@ class JournalIssue(db.Model):
         :return: JSON-serializable representation of self.
         """
         return {
+            'title': self.title,
+            'price': self.price,
+            'copy_ids': ids(self.copies),
+            'keywords': map(lambda x: x.name, self.keywords),
+            'authors': map(lambda x: x.name, self.authors),
             'publication_date': self.publication_date,
             'editors': map(lambda x: x.name, self.editors),
-            'journal': self.journal
+            'journal': self.journal,
+            'type': 'issue'
         }

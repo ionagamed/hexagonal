@@ -10,6 +10,8 @@ class JSONRPCExtensibleMethodEncoder(json.JSONEncoder):
     Just calls `__json__` if available on any object received
     """
     def default(self, o):
+        if isinstance(o, map):
+            return list(o)
         m = getattr(o, '__json__')
         if not m:
             return json.JSONEncoder.default(self, o)

@@ -1,21 +1,29 @@
 import { Injectable } from '@angular/core';
-import {JsonrpcService} from "./jsonrpc.service";
+import { JsonrpcService } from "./jsonrpc.service";
+import { map } from "rxjs/operators";
+import "rxjs/add/operator/mergeMap";
 
 @Injectable()
 export class AuthService {
 
-  private login: string;
-  private role: string;
+  public login: string;
+  public role: string;
 
-  constructor(private rpc: JsonrpcService) { }
+  constructor(private rpc: JsonrpcService) {
+  }
 
   authenticate(login: string, password: string) {
-    this.rpc.call('auth.login', [login, password]).subscribe(x => {
+    return this.rpc.call('auth.login', [login, password]).flatMap(x => {
       this.rpc.token = x;
       this.login = login;
-      this.rpc.call('auth.get_my_role', []).subscribe(x => this.role = x)
+      return this.rpc.call('auth.get_my_role', []).pipe(
+        map(x => {
+          this.role = x;
+          console.log(x);
+          return x;
+        })
+      );
     });
-
   }
 
 }

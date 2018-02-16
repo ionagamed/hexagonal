@@ -48,5 +48,6 @@ class Book(Document):
             'edition': self.edition,
             'bestseller': self.bestseller,
             'publisher': self.publisher.name,
-            'is_reference': self.reference
+            'is_reference': self.reference,
+            'type': 'book'
         }

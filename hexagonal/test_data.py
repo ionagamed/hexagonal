@@ -5,30 +5,36 @@ from hexagonal.model.document_copy import DocumentCopy
 from hexagonal.model.loan import Loan
 from hexagonal.model.librarian import Librarian
 from hexagonal import db
+from hexagonal.functions.book import create_book
 
 ionagamed = User.query.filter(User.login == 'ionagamed').first()
 if ionagamed is None:
-    Librarian.create_account(ionagamed,'123','Leonid Lyigin','Innopolis','123')
-    # ionagamed = register_account(
-    #     login='ionagamed',
-    #     password='123',
-    #     role='student-patron',
-    #
-    #     address='123',
-    #     phone='123',
-    #     card_number=123,
-    #     name='Leonid Lygin'
-    # )
+    # ionagamed = Librarian('ionagamed','123','Leonid Lyigin','Innopolis','123')
+    ionagamed = register_account(
+        login='ionagamed',
+        password='123',
+        role='student-patron',
+
+        address='123',
+        phone='123',
+        card_number=123,
+        name='Leonid Lygin'
+    )
 db.session.add(ionagamed)
 
 books = []
 for i in range(1, 4):
     b = Book.query.filter(Book.title == 'Avatar, Chapter {}'.format(i)).first()
     if b is None:
-        b = Book(
-            title='Avatar, Chapter {}'.format(i),
-            edition=1
-        )
+        b = Book.query.get(create_book(
+            'Avatar, Chapter {}'.format(i),
+            1,
+            ['Japanese folklore'],
+            'asdf',
+            _token_data={
+                'role': 'librarian'
+            }
+        ))
     db.session.add(b)
 
     if DocumentCopy.query.filter(DocumentCopy.document_id == b.id).count() < 2:

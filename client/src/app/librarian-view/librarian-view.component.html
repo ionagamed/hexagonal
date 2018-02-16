@@ -1,0 +1,36 @@
+<br><br>
+<div class="ui container">
+  <div class="ui stackable grid">
+    <div class="four wide column">
+      <div class="ui fluid vertical pointing secondary menu">
+        <div class="item">
+          <div class="header">
+            Documents
+          </div>
+          <div class="menu">
+            <a href="#" class="active item">
+              List
+            </a>
+          </div>
+        </div>
+        <div class="item">
+          <div class="header">
+            Users
+          </div>
+          <div class="menu">
+            <a href="#" class="item">
+              List
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="twelve wide column">
+      <div class="ui link items">
+        <div class="item" *ngFor="let doc of docs">
+          <strong>{{ doc.id }}</strong>: {{ doc.title }}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

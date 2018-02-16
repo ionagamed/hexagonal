@@ -83,12 +83,6 @@ def decode_token(token):
 
 
 if env != 'docs':
-    try:
-        User.query.all()
-    except:
-        db.session.commit()
-        db.create_all()
-
     root = User.query.filter_by(login=app.config['ROOT_LOGIN']).first()
     if root is None:
         root = register_account(
