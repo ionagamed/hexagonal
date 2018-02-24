@@ -1,0 +1,57 @@
+{% extends "admin/layout.html" %}
+
+{% block admin_body %}
+
+  <h4>New user</h4>
+  <form class="ui form" action="#" method="POST">
+    <div class="three fields">
+      <div class="field">
+        <label>Login</label>
+        <input type="text" name="login" placeholder="root">
+      </div>
+      <div class="field">
+        <label>Password</label>
+        <input type="password" name="password" placeholder="secretpassword123">
+      </div>
+      <div class="field">
+        <label>Role</label>
+        <div class="ui fluid selection dropdown">
+          <input type="hidden" name="role">
+          <i class="dropdown icon"></i>
+          <div class="default text">Select role</div>
+          <div class="menu">
+            <div class="item" data-value="student-patron">Student Patron</div>
+            <div class="item" data-value="faculty-patron">Faculty Patron</div>
+            <div class="item" data-value="librarian">Librarian</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="three fields">
+      <div class="field">
+        <label>Name</label>
+        <input type="text" name="name" placeholder="Root Rootovich">
+      </div>
+      <div class="field">
+        <label>Phone number</label>
+        <input type="text" name="phone" placeholder="+1-800-I-AM-ROOT">
+      </div>
+      <div class="field">
+        <label>Card number</label>
+        <input type="number" name="card_number" placeholder="12345">
+      </div>
+    </div>
+    <div class="field">
+      <label>Address</label>
+      <input type="text" name="address" placeholder="Pushkina Street, 84-49">
+    </div>
+    <button type="submit" class="ui blue button">
+      Submit
+    </button>
+  </form>
+
+  <script>
+  $('.ui.dropdown').dropdown();
+  </script>
+
+{% endblock %}

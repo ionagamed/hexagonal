@@ -1,61 +1,58 @@
 {% extends "admin/layout.html" %}
 
 {% block admin_body %}
-  <h4>New document</h4>
+  <h4>Edit document</h4>
   <div id="new-form">
-    <div class="ui secondary menu">
-      <a class="active item" data-tab="book">Book</a>
-      <a class="item" data-tab="av">A/V</a>
-      <a class="item" data-tab="article">Journal Article</a>
-    </div>
-    <div class="transition fade in ui active tab segment" data-tab="book">
+    {% if document.type == 'book' %}
       <form class="ui form" action="#" method="POST">
         <input type="hidden" name="type" value="book"/>
         <div class="field">
           <label>Title</label>
-          <input type="text" name="title" placeholder="Introduction to Algorithms"/>
+          <input type="text" name="title" placeholder="Introduction to Algorithms" value="{{ document.title }}"/>
         </div>
         <div class="fields">
-          <div class="four wide field">
+          <div class="three wide field">
             <label>Price</label>
             <div class="ui right labeled input">
-              <input type="number" name="price" placeholder="100"/>
+              <input type="number" name="price" placeholder="100" value="{{ document.price }}"/>
               <div class="ui basic label">
                 ₽
               </div>
             </div>
           </div>
-          <div class="four wide field">
-            <label>Initial copies</label>
-            <input type="number" name="copies" placeholder="1" value="1">
+          <div class="five wide field">
+            <label>Copy delta ({{ document.get_available_copies() | length }} available now)</label>
+            <input type="number" name="copy_delta" placeholder="Use +N to add or -N to remove">
           </div>
           <div class="eight wide field">
             <label>Keywords (comma separated)</label>
-            <input type="text" name="keywords" placeholder="action, fantasy"/>
+            <input type="text" name="keywords" placeholder="action, fantasy"
+                   value="{{ ', '.join(document.keywords) }}"/>
           </div>
         </div>
         <div class="field">
           <label>Authors (comma separated)</label>
           <input type="text" name="authors"
-                 placeholder="Thomas H. Cormen, Charles E. Leiserson, Ronald L. Rivest, Clifford Stein"/>
+                 placeholder="Thomas H. Cormen, Charles E. Leiserson, Ronald L. Rivest, Clifford Stein"
+                 value="{{ ', '.join(document.authors) }}"/>
         </div>
         <div class="fields">
           <div class="four wide field">
             <label>Edition</label>
-            <input type="number" name="edition" placeholder="3"/>
+            <input type="number" name="edition" placeholder="3" value="{{ document.edition }}"/>
           </div>
           <div class="five wide field">
             <label>Publisher</label>
-            <input type="text" name="publisher" placeholder="MIT Press"/>
+            <input type="text" name="publisher" placeholder="MIT Press" value="{{ document.publisher }}"/>
           </div>
           <div class="three wide field">
             <label>Year</label>
-            <input type="number" name="publishment_year" placeholder="2009">
+            <input type="number" name="publishment_year" placeholder="2009" value="{{ document.publishment_year }}">
           </div>
           <div class="four wide field">
             <div class="ui toggle checkbox">
               <br>
-              <input type="checkbox" name="bestseller"/>
+              <input type="checkbox" name="bestseller" {% if document.bestseller %} checked {% endif %}/>
               <label>Bestseller</label>
             </div>
           </div>
@@ -64,8 +61,8 @@
           Submit
         </button>
       </form>
-    </div>
-    <div class="transition fade in ui tab segment" data-tab="av">
+    {% endif %}
+    {% if document.type == 'av' %}
       <form class="ui form" action="#" method="POST">
         <input type="hidden" name="type" value="book"/>
         <div class="field">
@@ -101,8 +98,8 @@
           Submit
         </button>
       </form>
-    </div>
-    <div class="transition fade in ui tab segment" data-tab="article">
+    {% endif %}
+    {% if document.type == 'article' %}
       <form class="ui form" action="#" method="POST">
         <input type="hidden" name="type" value="book"/>
         <div class="field">
@@ -157,7 +154,7 @@
           Submit
         </button>
       </form>
-    </div>
+    {% endif %}
   </div>
 
 

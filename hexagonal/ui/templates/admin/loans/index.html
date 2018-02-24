@@ -1,0 +1,101 @@
+{% extends "admin/layout.html" %}
+
+{% block admin_body %}
+  <div class="ui cards">
+    {% for loan in loans %}
+      {% if loan.status == Loan.Status.requested %}
+        <div class="card">
+          <div class="content">
+            <div class="right floated meta">
+              request
+            </div>
+            <a class="header" href="/admin/loans/{{ loan.id }}">
+              {{ loan.document.title }}
+            </a>
+            <div class="meta">
+              Requested by <a href="/admin/users/{{ loan.user.id }}">{{ loan.user.name }}</a>
+            </div>
+            <div class="description">
+              <strong>Available free copies left (if
+                taken): </strong>{{ loan.document.get_available_copies() | length }}
+            </div>
+          </div>
+          <div class="ui two bottom attached buttons">
+            <a class="ui basic green button" href="/admin/loans/{{ loan.id }}/confirm">
+              <i class="check icon"></i>
+              Confirm
+            </a>
+            <a class="ui basic red button" href="/admin/loans/{{ loan.id }}/refuse">
+              <i class="times icon"></i>
+              Refuse
+            </a>
+          </div>
+        </div>
+      {% elif loan.status == Loan.Status.approved %}
+        <div class="card">
+          <div class="content">
+            <a class="header" href="/admin/loans/{{ loan.id }}">
+              {{ loan.document.title }}
+            </a>
+            <div class="meta">
+              Borrowed by <a href="/admin/users/{{ loan.user.id }}">{{ loan.user.name }}</a>
+            </div>
+            <div class="description">
+              <strong>Due date: </strong> {{ loan.due_date.strftime("%B %d, %Y") }}
+            </div>
+          </div>
+          {% if loan.overdue() %}
+            <div class="red center aligned extra content">
+              <i class="exclamation circle icon"></i>
+              overdue (fine {{ loan.get_overdue_fine() }}₽)
+            </div>
+          {% endif %}
+        </div>
+      {% elif loan.status == Loan.Status.returned %}
+        <div class="card">
+          <div class="content">
+            <div class="right floated meta">
+              return request
+            </div>
+            <a class="header" href="/admin/loans/{{ loan.id }}">
+              {{ loan.document.title }}
+            </a>
+            <div class="meta">
+              Borrowed by <a href="/admin/users/{{ loan.user.id }}">{{ loan.user.name }}</a>
+            </div>
+            <div class="description">
+              <strong>Due date: </strong> {{ loan.due_date.strftime("%B %d, %Y") }}
+            </div>
+          </div>
+          {% if loan.overdue() %}
+            <div class="red center aligned extra content">
+              <i class="exclamation circle icon"></i>
+              overdue (fine {{ loan.get_overdue_fine() }}₽)
+            </div>
+          {% endif %}
+          <a class="ui basic green bottom attached button" href="/admin/loans/{{ loan.id }}/return">
+            <i class="undo icon"></i>
+            Confirm return
+          </a>
+        </div>
+      {% endif %}
+    {% endfor %}
+  </div>
+  {% if loans | length == 0 %}
+    <div class="ui centered center aligned grid">
+      <div class="eight wide center aligned column">
+        <br><br>
+        <i class="massive exclamation triangle icon"></i>
+        <h3>No more loans left</h3>
+        <p>Apparently your library is having a bad time</p>
+      </div>
+    </div>
+  {% endif %}
+
+  <style>
+    .red.extra.content {
+      background-color: #db2828 !important;
+      color: white !important;
+    }
+  </style>
+{% endblock %}

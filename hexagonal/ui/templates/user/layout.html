@@ -1,0 +1,72 @@
+{% extends "layout.html" %}
+
+{% block body %}
+
+  <br><br>
+  <div class="ui fluid container">
+    <div class="ui stackable grid">
+      <div class="column"></div>
+      <div class="three wide column">
+        <div class="ui fluid vertical pointing menu">
+          <a href="/user/borrowed" class="item {% if path == '/user/borrowed' %}active{% endif %}">
+            <i class="file outline icon"></i>
+            Borrowed documents
+            <span class="ui label">
+              {{ user.get_borrowed_document_copy_count() }}
+            </span>
+          </a>
+          <a href="/user/borrowed/requests" class="item {% if path == '/user/borrowed/requests' %}active{% endif %}">
+            <i class="question icon"></i>
+            Requests
+            {% if user.get_requested_loan_count() > 0 %}
+              <span class="ui teal label">
+                {{ user.get_requested_loan_count() }}
+              </span>
+            {% endif %}
+          </a>
+          <a href="/user/borrowed/overdue" class="item {% if path == '/user/borrowed/overdue' %}active{% endif %} {% if user.get_overdue_loan_count() > 0 %} red {% endif %}">
+            <i class="exclamation icon"></i>
+            Overdue
+            {% if user.get_overdue_loan_count() > 0 %}
+              <span class="ui red label">
+                {{ user.get_overdue_loan_count() }}
+              </span>
+            {% endif %}
+          </a>
+          <a href="/user/borrowed/returned" class="item {% if path == '/user/borrowed/returned' %}active{% endif %}">
+            <i class="undo icon"></i>
+            Requested for return
+            {% if user.get_returned_loan_count() > 0 %}
+              <span class="ui label">
+                {{ user.get_returned_loan_count() }}
+              </span>
+            {% endif %}
+          </a>
+          <a href="/user/browse" class="item {% if path == '/user/browse' %}active{% endif %}">
+            <i class="bars icon"></i>
+            Browse documents
+          </a>
+          <div class="item">
+            <div class="header">
+              <i class="user icon"></i>
+              {{ session.login }}
+            </div>
+            <div class="menu">
+              <div class="item">
+                {{ session.role }}
+              </div>
+              <a href="/logout" class="item">
+                <i class="sign out alternate icon"></i>
+                Logout
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="eleven wide column">
+        {% block user_body %} {% endblock %}
+      </div>
+    </div>
+  </div>
+
+{% endblock %}

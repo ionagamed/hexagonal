@@ -1,9 +1,8 @@
-{% extends "admin/layout.html" %}
+{% extends "user/layout.html" %}
 
-{% block admin_body %}
-
+{% block user_body %}
   <div class="ui cards">
-    {% for document in documents %}
+    {% for document, claimed in documents %}
 
       <span class="display-none">{{ document.id }}</span>
       <span class="display-none">{{ document.copies | ids }}</span>
@@ -40,23 +39,25 @@
         </div>
         <div class="extra content">
           <div class="right floated">
-            <a href="/admin/documents/{{ document.id }}#copies">
-              {{ document.get_available_copies() | length }} copies left
-            </a>
+            {{ document.get_available_copies() | length }} copies left
           </div>
           {{ document.price }}₽
         </div>
-        <div class="ui two bottom attached buttons">
-          <a href="/admin/documents/{{ document.id }}/edit" class="ui basic blue button">
-            Edit
-          </a>
-          <a href="/admin/documents/{{ document.id }}/delete" class="ui basic red button">
-            Delete
-          </a>
-        </div>
+        {% if document.get_available_copies() | length > 0 %}
+          {% if claimed %}
+            <div class="ui blue bottom attached disabled button">
+              <i class="times icon"></i>
+              Already claimed
+            </div>
+          {% else %}
+            <a class="ui blue bottom attached button" href="/user/claim/{{ document.id }}">
+              <i class="hand rock icon"></i>
+              Claim
+            </a>
+          {% endif %}
+        {% endif %}
       </div>
 
     {% endfor %}
   </div>
-
 {% endblock %}
