@@ -26,6 +26,24 @@ def encrypt_password(password):
     return sha256(password.encode('utf-8')).hexdigest()  # yeah, i know
 
 
+def change_password(login_or_id, new_password):
+    """
+    Change the password of the existing user
+
+    :param login_or_id: login or id of an existing user
+    :param new_password: new password for the user
+    :return: None
+    """
+    password = encrypt_password(new_password)
+    if isinstance(login_or_id, str):
+        user = User.query.filter(User.login == login_or_id).first()
+    else:
+        user = User.query.filter(User.id == login_or_id).first()
+    user.password = password
+    db.session.add(user)
+    db.session.commit()
+
+
 def register_account(**kwargs):
     """
     Register a new account
