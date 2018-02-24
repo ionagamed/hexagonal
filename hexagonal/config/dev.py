@@ -7,7 +7,10 @@ config = {
 
     'ROOT_LOGIN': 'root',
     'ROOT_PASSWORD': 'toor',
-    'ROOT_ROLE': 'librarian'
+    'ROOT_ROLE': 'librarian',
+
+    'UI_ROOT': '/',
+    'TEMPLATES_AUTO_RELOAD': True
 }
 
 postgres_password = os.environ.get('PGPASSWORD', 'test')

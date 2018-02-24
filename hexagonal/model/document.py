@@ -1,16 +1,5 @@
 from hexagonal import db
-
-from hexagonal.model.author import document_author
-
-document_keyword = db.Table(
-    'document_keyword',
-    db.Model.metadata,
-    db.Column('document_id', db.Integer, db.ForeignKey('documents.id')),
-    db.Column('keyword_id', db.Integer, db.ForeignKey('keywords.id'))
-)
-
-
-from hexagonal.model.keyword import Keyword
+from hexagonal.model.document_copy import DocumentCopy
 
 
 class Document(db.Model):
@@ -30,13 +19,13 @@ class Document(db.Model):
     price = db.Column(db.Integer, nullable=False, default=0)
     """ Document price (used in calculating overdue fine) """
 
-    copies = db.relationship('DocumentCopy', back_populates='document')
+    copies = db.relationship('DocumentCopy', back_populates='document', cascade='all, delete-orphan')
     """ Relation with copies of this document. """
 
-    keywords = db.relationship('Keyword', secondary=document_keyword, back_populates='documents')
+    keywords = db.Column(db.ARRAY(db.String(80)))
     """ Relation with keywords. """
 
-    authors = db.relationship('Author', secondary=document_author, back_populates='documents')
+    authors = db.Column(db.ARRAY(db.String(80)))
     """ Authors of this document. """
 
     type = db.Column(db.String(20), nullable=False)
@@ -46,3 +35,9 @@ class Document(db.Model):
         'polymorphic_on': type,
         'polymorphic_identity': 'document'
     }
+
+    def get_available_copies(self):
+        print(DocumentCopy.query.filter(DocumentCopy.loan == None).all())
+        return DocumentCopy.query.filter(
+            DocumentCopy.loan == None, DocumentCopy.document == self
+        ).all()

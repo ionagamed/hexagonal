@@ -3,7 +3,6 @@ import datetime
 from hexagonal.model.book import Book
 from hexagonal.model.document import Document
 from hexagonal.model.patron import Patron
-from hexagonal.model.user import User
 
 
 class FacultyPatron(Patron):

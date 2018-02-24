@@ -1,0 +1,55 @@
+{% extends "admin/layout.html" %}
+
+{% block admin_body %}
+
+  <div class="ui cards">
+    {% for document in documents %}
+
+      <div class="card">
+        <div class="content">
+          <div class="right floated meta">
+            {{ document.type }}
+          </div>
+          <div class="header">
+            {{ document.title }}
+          </div>
+          <div class="meta">
+            By {{ ', '.join(document.authors) }}
+            {% if document.type == 'book' %}
+              , {{ document.edition | ordinal }} edition
+            {% endif %}
+          </div>
+          <div class="description">
+            {% if document.type == 'book' %}
+              <strong>Published by:</strong> {{ document.publisher }}<br>
+            {% endif %}
+            <strong>Keywords:</strong> {{ ', '.join(document.keywords) }}<br>
+            {% if document.type == 'book' %}
+              {% if document.bestseller %}
+                <strong>Bestseller</strong>
+              {% endif %}
+            {% endif %}
+          </div>
+        </div>
+        <div class="extra content">
+          <div class="right floated">
+            {{ document.get_available_copies() | length }} copies left
+          </div>
+          {{ document.price }}₽
+        </div>
+        <div class="extra content">
+          <div class="ui two buttons">
+            <a href="/admin/documents/{{ document.id }}/edit" class="ui basic blue button">
+              Edit
+            </a>
+            <a href="/admin/documents/{{ document.id }}/delete" class="ui basic red button">
+              Remove
+            </a>
+          </div>
+        </div>
+      </div>
+
+    {% endfor %}
+  </div>
+
+{% endblock %}

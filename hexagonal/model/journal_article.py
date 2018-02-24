@@ -1,7 +1,6 @@
 from hexagonal import db
 
 from hexagonal.model.document import Document
-from hexagonal.model.helpers import ids
 
 
 class JournalArticle(Document):
@@ -14,27 +13,15 @@ class JournalArticle(Document):
     id = db.Column(db.Integer, db.ForeignKey('documents.id'), primary_key=True)
     """ Integer primary key. """
 
-    issue_id = db.Column(db.Integer, db.ForeignKey('journal_issues.id'))
-    """ Foreign key to issue. """
+    issue_editor = db.Column(db.String(80))
+    """ Editor of the issue. """
 
-    issue = db.relationship('JournalIssue', back_populates='articles')
-    """ Issue of the journal. """
+    issue_publication_date = db.Column(db.Date)
+    """ Publication date of the issue. """
+
+    journal = db.Column(db.String(80))
+    """ Journal. """
 
     __mapper_args__ = {
         'polymorphic_identity': 'journal_article'
     }
-
-    def __json__(self):
-        """
-        JSON representation for a given instance.
-        :return: JSON-serializable representation of self.
-        """
-        return {
-            'id': self.id,
-            'title': self.title,
-            'price': self.price,
-            'copy_ids': ids(self.copies),
-            'keywords': map(lambda x: x.name, self.keywords),
-            'authors': map(lambda x: x.name, self.authors),
-            'issue': self.issue
-        }

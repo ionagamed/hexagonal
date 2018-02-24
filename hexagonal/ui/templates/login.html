@@ -1,0 +1,48 @@
+{% extends "layout.html" %}
+
+{% block body %}
+
+  <div id="login-form-container">
+    <div id="login-form" class="ui padded centered grid container">
+      <div class="four wide column">&nbsp;</div>
+      <div class="ten wide column">
+        <div id="login-form-card">
+          <div class="ui middle aligned centered grid">
+            <div id="login-left" class="eight wide column">
+              <h2>hexagonal</h2>
+              <p>
+                hexagonal is an LMS (library management system), which is built as a first year
+                bachelors project at Innopolis
+                University. <br>
+                Its name originates from <a href="https://libraryofbabel.info/libraryofbabel.html">"The
+                Library of Babel"</a>,
+                a book by Jorge Luis Borges.
+                <br><br>
+                To login, you must first be registered by a librarian
+              </p>
+            </div>
+            <div id="login-right" class="eight wide column">
+              <form class="ui form" action="#" method="POST">
+                {% if error %}
+                  <div class="ui red message">
+                    {{ error }}
+                  </div>
+                {% endif %}
+                <div class="field">
+                  <input placeholder="login" name="login"/>
+                </div>
+                <div class="field">
+                  <input type="password" placeholder="password" name="password"/>
+                </div>
+                <button class="ui primary button" type="submit">Login</button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <link href="static/login.css" rel="stylesheet" type="text/css"/>
+
+{% endblock %}

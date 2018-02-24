@@ -1,3 +1,3 @@
-from hexagonal import app
+import hexagonal
 
-app.run(host='0.0.0.0', debug=True)
+hexagonal.app.run(host='0.0.0.0', debug=True)

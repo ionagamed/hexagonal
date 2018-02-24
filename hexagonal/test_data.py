@@ -5,7 +5,6 @@ from hexagonal.model.document_copy import DocumentCopy
 from hexagonal.model.loan import Loan
 from hexagonal.model.librarian import Librarian
 from hexagonal import db
-from hexagonal.functions.book import create_book
 
 ionagamed = User.query.filter(User.login == 'ionagamed').first()
 if ionagamed is None:
@@ -26,15 +25,17 @@ books = []
 for i in range(1, 4):
     b = Book.query.filter(Book.title == 'Avatar, Chapter {}'.format(i)).first()
     if b is None:
-        b = Book.query.get(create_book(
-            'Avatar, Chapter {}'.format(i),
-            1,
-            ['Japanese folklore'],
-            'asdf',
-            _token_data={
-                'role': 'librarian'
-            }
-        ))
+        b = Book(
+            title='Avatar, Chapter {}'.format(i),
+            price=100,
+            keywords=['manga', 'action'],
+            authors=['Japanese folklore'],
+            edition=1,
+            bestseller=False,
+            publisher='Japanese Publisher',
+            reference=False,
+            publishment_year=1980
+        )
     db.session.add(b)
 
     if DocumentCopy.query.filter(DocumentCopy.document_id == b.id).count() < 2:

@@ -22,18 +22,3 @@ class DocumentCopy(db.Model):
 
     loan = db.relationship('Loan', back_populates='document_copy', uselist=False)
     """ Relation to current loan. May be None when document is available. """
-
-    def __json__(self):
-        """
-        JSON representation for a given instance.
-        :return: JSON-serializable representation of self.
-        """
-        loan_id = None
-        if self.loan is not None:
-            loan_id = self.loan.id
-        return {
-            'id': self.id,
-            'document_id': self.document_id,
-            'location': self.location,
-            'loan_id': loan_id
-        }
