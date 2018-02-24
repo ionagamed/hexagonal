@@ -1,5 +1,7 @@
 from hexagonal import db
 from hexagonal.model.document_copy import DocumentCopy
+from hexagonal.model.loan import Loan
+from sqlalchemy import or_
 
 
 class Document(db.Model):
@@ -37,7 +39,6 @@ class Document(db.Model):
     }
 
     def get_available_copies(self):
-        print(DocumentCopy.query.filter(DocumentCopy.loan == None).all())
         return DocumentCopy.query.filter(
             DocumentCopy.loan == None, DocumentCopy.document == self
         ).all()
