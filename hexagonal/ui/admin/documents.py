@@ -111,3 +111,10 @@ def document_edit(document_id):
     db.session.commit()
 
     return redirect(request.referrer)
+
+
+@app.route('/admin/documents/<int:document_id>')
+@required_permission(Permission.manage)
+def document_view(document_id):
+    doc = Document.query.filter(Document.id == document_id).first_or_404()
+    return render_template('admin/documents/view.html', document=doc)

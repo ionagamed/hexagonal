@@ -1,0 +1,11 @@
+{% extends "admin/layout.html" %}
+
+{% block admin_body %}
+
+  <h3>{{ document.title }}</h3>
+  <p>
+  <strong>By: </strong> {{ ', '.join(document.authors) }}<br>
+  <strong>Keywords: </strong> {{ ', '.join(document.keywords) }}
+  </p>
+
+{% endblock %}
