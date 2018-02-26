@@ -102,11 +102,11 @@ class Loan(db.Model):
 
     @staticmethod
     def get_returned_loans():
-        return Loan.requested_loan_query().all()
+        return Loan.returned_loan_query().all()
 
     @staticmethod
     def get_returned_loan_count():
-        return Loan.requested_loan_query().count()
+        return Loan.returned_loan_query().count()
 
     def overdue(self):
         """ Check whether this loan is overdue. """

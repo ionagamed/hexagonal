@@ -66,3 +66,10 @@ def users_edit(user_id):
     db.session.commit()
 
     return redirect(request.referrer)
+
+
+@app.route('/admin/users/<int:user_id>')
+@required_permission(Permission.manage)
+def users_view(user_id):
+    user = User.query.filter(User.id == user_id).first_or_404()
+    return render_template('admin/users/view.html', user=user)
