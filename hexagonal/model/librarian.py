@@ -9,3 +9,6 @@ class Librarian(User):
     __mapper_args__ = {
         'polymorphic_identity': 'librarian'
     }
+
+    def has_permission(self, permission):
+        return True

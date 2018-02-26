@@ -44,3 +44,7 @@ class User(db.Model):
         'polymorphic_identity': 'user'
     }
 
+    permissions = []
+
+    def has_permission(self, permission):
+        return permission in self.permissions

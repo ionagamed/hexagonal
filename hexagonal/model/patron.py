@@ -1,6 +1,7 @@
 from hexagonal.model.user import User
 from hexagonal.model.document_copy import DocumentCopy
 from hexagonal.model.loan import Loan
+from hexagonal.auth.permissions import Permission
 import datetime
 from hexagonal import db
 
@@ -14,6 +15,8 @@ class Patron(User):
     __mapper_args__ = {
         'polymorphic_identity': 'patron'
     }
+
+    permissions = [Permission.checkout]
 
     def get_checkout_period_for(self, document):
         """

@@ -1,3 +1,5 @@
+import enum
+
 from hexagonal import app, db, env
 from hashlib import sha256
 from itsdangerous import TimedJSONWebSignatureSerializer

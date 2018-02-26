@@ -1,32 +1,38 @@
 from hexagonal import app, User, Loan, db, Document, DocumentCopy
 from flask import request, redirect, render_template, session
+from hexagonal.auth.permissions import *
 
 
 @app.route('/user/borrowed')
+@required_permission(Permission.checkout)
 def user_borrowed_index():
     user = User.query.filter(User.login == session['login']).first()
     return render_template('user/borrowed.html', loans=user.loan_query().all(), path='/user/borrowed', user=user)
 
 
 @app.route('/user/borrowed/requests')
+@required_permission(Permission.checkout)
 def user_requested_index():
     user = User.query.filter(User.login == session['login']).first()
     return render_template('user/borrowed.html', loans=user.get_requested_loans(), path='/user/borrowed/requests', user=user)
 
 
 @app.route('/user/borrowed/overdue')
+@required_permission(Permission.checkout)
 def user_overdue_index():
     user = User.query.filter(User.login == session['login']).first()
     return render_template('user/borrowed.html', loans=user.get_overdue_loans(), path='/user/borrowed/overdue', user=user)
 
 
 @app.route('/user/borrowed/returned')
+@required_permission(Permission.checkout)
 def user_returned_index():
     user = User.query.filter(User.login == session['login']).first()
     return render_template('user/borrowed.html', loans=user.get_returned_loans(), path='/user/borrowed/returned', user=user)
 
 
 @app.route('/user/borrowed/<int:loan_id>/return')
+@required_permission(Permission.checkout)
 def user_return(loan_id):
     loan = Loan.query.filter(Loan.id == loan_id).first_or_404()
     loan.status = Loan.Status.returned
@@ -36,6 +42,7 @@ def user_return(loan_id):
 
 
 @app.route('/user/browse')
+@required_permission(Permission.checkout)
 def user_browse_index():
     user = User.query.filter(User.login == session['login']).first()
     documents = map(
@@ -46,6 +53,7 @@ def user_browse_index():
 
 
 @app.route('/user/claim/<int:document_id>')
+@required_permission(Permission.checkout)
 def user_claim(document_id):
     copy = DocumentCopy.query.filter(DocumentCopy.document_id == document_id, DocumentCopy.loan == None).first_or_404()
     user = User.query.filter(User.login == session['login']).first()
