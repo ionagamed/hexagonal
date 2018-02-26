@@ -1,0 +1,33 @@
+<div class="item">
+  <div class="header">
+    <i class="user icon"></i>
+    {{ session.login }}
+  </div>
+  <div class="menu">
+    <div class="item">
+      {{ session.role }}
+    </div>
+    <a href="/logout" class="item">
+      <i class="sign out alternate icon"></i>
+      Logout
+    </a>
+  </div>
+</div>
+<div class="item">
+  <div class="header">
+    <i class="code icon"></i>
+    Hexagonal v{{ product_version }}
+  </div>
+  <div class="menu">
+    <div class="item">
+      &copy; Innopolis University 2018
+    </div>
+    <a class="item" href="https://github.com/ionagamed/hexagonal">
+      <i class="github icon"></i>
+      Source code
+    </a>
+    <a class="item">
+      About
+    </a>
+  </div>
+</div>

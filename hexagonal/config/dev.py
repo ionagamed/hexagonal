@@ -16,7 +16,8 @@ config = {
         'loan_color': {
             'Status.overdue': 'red',
             'Status.requested': 'teal',
-        }
+        },
+        'product_version': '0.0.2'
     }
 }
 

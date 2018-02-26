@@ -26,7 +26,8 @@
               </span>
             {% endif %}
           </a>
-          <a href="/user/borrowed/overdue" class="item {% if path == '/user/borrowed/overdue' %}active{% endif %} {% if user.get_overdue_loan_count() > 0 %} red {% endif %}">
+          <a href="/user/borrowed/overdue"
+             class="item {% if path == '/user/borrowed/overdue' %}active{% endif %} {% if user.get_overdue_loan_count() > 0 %} red {% endif %}">
             <i class="exclamation icon"></i>
             Overdue
             {% if user.get_overdue_loan_count() > 0 %}
@@ -48,21 +49,7 @@
             <i class="bars icon"></i>
             Browse documents
           </a>
-          <div class="item">
-            <div class="header">
-              <i class="user icon"></i>
-              {{ session.login }}
-            </div>
-            <div class="menu">
-              <div class="item">
-                {{ session.role }}
-              </div>
-              <a href="/logout" class="item">
-                <i class="sign out alternate icon"></i>
-                Logout
-              </a>
-            </div>
-          </div>
+          {% include "menu-footer.html" %}
         </div>
       </div>
       <div class="eleven wide column">
