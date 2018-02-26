@@ -22,6 +22,15 @@
               </p>
             </div>
             <div id="login-right" class="eight wide column">
+              <div class="ui two basic buttons">
+                <button class="ui button" id="root-login">
+                  root
+                </button>
+                <button class="ui button" id="ionagamed-login">
+                  ionagamed
+                </button>
+              </div>
+              <br><br>
               <form class="ui form" action="#" method="POST">
                 {% if request.args.error %}
                   <div class="ui red message">
@@ -42,6 +51,38 @@
       </div>
     </div>
   </div>
+
+  <script>
+      var util = {};
+      util.post = function (url, fields) {
+          var $form = $('<form>', {
+              action: url,
+              method: 'post'
+          });
+          $.each(fields, function (key, val) {
+              $('<input>').attr({
+                  type: "hidden",
+                  name: key,
+                  value: val
+              }).appendTo($form);
+          });
+          $form.appendTo('body').submit();
+      };
+
+      $('#root-login').click(function () {
+          util.post('#', {
+              'login': 'root',
+              'password': 'toor'
+          });
+      });
+      $('#ionagamed-login').click(function () {
+          util.post('#', {
+              'login': 'ionagamed',
+              'password': '123'
+          });
+      });
+
+  </script>
 
   <link href="static/login.css" rel="stylesheet" type="text/css"/>
 
