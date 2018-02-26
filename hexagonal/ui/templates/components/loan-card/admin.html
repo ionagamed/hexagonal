@@ -1,4 +1,4 @@
-<div class="card">
+<div class="card" data-overdue="{{ loan.overdue() }}">
   {% if loan.status == Loan.Status.requested %}
     <div class="content">
       <div class="right floated meta">
@@ -77,3 +77,15 @@
     color: white !important;
   }
 </style>
+
+<script>
+  window.overdueShown = false;
+  $(function () {
+      if (!window.overdueShown) {
+          window.overdueShown = true;
+          $('.card').filter(function () {
+              return $(this).data('overdue') === 'True';
+          }).transition('pulse');
+      }
+  });
+</script>

@@ -50,11 +50,8 @@
             <input type="number" name="publishment_year" placeholder="2009" value="{{ document.publishment_year }}">
           </div>
           <div class="four wide field">
-            <div class="ui toggle checkbox">
-              <br>
-              <input type="checkbox" name="bestseller" {% if document.bestseller %} checked {% endif %}/>
-              <label>Bestseller</label>
-            </div>
+            <label>Bestseller</label>
+            {% include "admin/documents/bestseller-toggle.html" %}
           </div>
         </div>
         <button type="submit" class="ui fluid blue button">

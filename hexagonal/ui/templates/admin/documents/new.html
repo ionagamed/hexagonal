@@ -11,34 +11,7 @@
     <div class="transition fade in ui active tab segment" data-tab="book">
       <form class="ui form" action="#" method="POST">
         <input type="hidden" name="type" value="book"/>
-        <div class="field">
-          <label>Title</label>
-          <input type="text" name="title" placeholder="Introduction to Algorithms"/>
-        </div>
-        <div class="fields">
-          <div class="four wide field">
-            <label>Price</label>
-            <div class="ui right labeled input">
-              <input type="number" name="price" placeholder="100"/>
-              <div class="ui basic label">
-                ₽
-              </div>
-            </div>
-          </div>
-          <div class="four wide field">
-            <label>Initial copies</label>
-            <input type="number" name="copies" placeholder="1" value="1">
-          </div>
-          <div class="eight wide field">
-            <label>Keywords (comma separated)</label>
-            <input type="text" name="keywords" placeholder="action, fantasy"/>
-          </div>
-        </div>
-        <div class="field">
-          <label>Authors (comma separated)</label>
-          <input type="text" name="authors"
-                 placeholder="Thomas H. Cormen, Charles E. Leiserson, Ronald L. Rivest, Clifford Stein"/>
-        </div>
+        {% include "admin/documents/new-common.html" %}
         <div class="fields">
           <div class="four wide field">
             <label>Edition</label>
@@ -53,11 +26,8 @@
             <input type="number" name="publishment_year" placeholder="2009">
           </div>
           <div class="four wide field">
-            <div class="ui toggle checkbox">
-              <br>
-              <input type="checkbox" name="bestseller"/>
-              <label>Bestseller</label>
-            </div>
+            <label>Bestseller</label>
+            {% include "admin/documents/bestseller-toggle.html" %}
           </div>
         </div>
         <button type="submit" class="ui fluid blue button">
@@ -68,35 +38,7 @@
     <div class="transition fade in ui tab segment" data-tab="av">
       <form class="ui form" action="#" method="POST">
         <input type="hidden" name="type" value="book"/>
-        <div class="field">
-          <label>Title</label>
-          <input type="text" name="title" placeholder="The Big Book"/>
-        </div>
-        <div class="fields">
-          <div class="eight wide field">
-            <label>Price</label>
-            <div class="ui right labeled input">
-              <input type="number" name="price" placeholder="100"/>
-              <div class="ui basic label">
-                ₽
-              </div>
-            </div>
-          </div>
-          <div class="eight wide field">
-            <label>Keywords (comma separated)</label>
-            <input type="text" name="keywords" placeholder="action, fantasy"/>
-          </div>
-        </div>
-        <div class="fields">
-          <div class="thirteen wide field">
-            <label>Authors (comma separated)</label>
-            <input type="text" name="authors" placeholder="J.K Rowling, Paul Erdos"/>
-          </div>
-          <div class="three wide field">
-            <label>Copies</label>
-            <input type="number" name="copies" placeholder="1">
-          </div>
-        </div>
+        {% include "admin/documents/new-common.html" %}
         <button type="submit" class="ui fluid blue button">
           Submit
         </button>
@@ -105,35 +47,7 @@
     <div class="transition fade in ui tab segment" data-tab="article">
       <form class="ui form" action="#" method="POST">
         <input type="hidden" name="type" value="book"/>
-        <div class="field">
-          <label>Title</label>
-          <input type="text" name="title" placeholder="Go to Statement Considered Harmful"/>
-        </div>
-        <div class="fields">
-          <div class="eight wide field">
-            <label>Price</label>
-            <div class="ui right labeled input">
-              <input type="number" name="price" placeholder="100"/>
-              <div class="ui basic label">
-                ₽
-              </div>
-            </div>
-          </div>
-          <div class="eight wide field">
-            <label>Keywords (comma separated)</label>
-            <input type="text" name="keywords" placeholder="action, fantasy"/>
-          </div>
-        </div>
-        <div class="fields">
-          <div class="thirteen wide field">
-            <label>Authors (comma separated)</label>
-            <input type="text" name="authors" placeholder="Edsger W. Dijkstra, Some O.T.H.E.R. Guy"/>
-          </div>
-          <div class="three wide field">
-            <label>Copies</label>
-            <input type="number" name="copies" placeholder="1">
-          </div>
-        </div>
+        {% include "admin/documents/new-common.html" %}
         <div class="three column fields">
           <div class="field">
             <label>Issue publication date</label>
