@@ -26,12 +26,12 @@
               <a class="ui red attached button" href="/admin/users/{{ user.id }}#overdue">
                 {{ user.get_overdue_loan_count() }} overdue
               </a>
-              <a class="ui attached button" href="/admin/users/{{ user.id }}#borrowed">
+              <a class="ui attached button" href="/admin/users/{{ user.id }}#all">
                 {{ user.get_borrowed_document_copy_count() }} borrowed
               </a>
             </div>
           {% else %}
-            <a class="ui attached button" href="/admin/users/{{ user.id }}#borrowed">
+            <a class="ui attached button" href="/admin/users/{{ user.id }}#all">
               {{ user.get_borrowed_document_copy_count() }} borrowed
             </a>
           {% endif %}

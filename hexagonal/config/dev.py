@@ -10,7 +10,14 @@ config = {
     'ROOT_ROLE': 'librarian',
 
     'UI_ROOT': '/',
-    'TEMPLATES_AUTO_RELOAD': True
+    'TEMPLATES_AUTO_RELOAD': True,
+
+    'JINJA_GLOBALS': {
+        'loan_color': {
+            'Status.overdue': 'red',
+            'Status.requested': 'teal',
+        }
+    }
 }
 
 postgres_password = os.environ.get('PGPASSWORD', 'test')

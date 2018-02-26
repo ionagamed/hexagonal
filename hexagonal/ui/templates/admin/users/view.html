@@ -2,385 +2,89 @@
 
 {% block admin_body %}
 
-  <h3 style="display: inline-block">{{ user.name }}</h3>&nbsp;&nbsp;&nbsp;
-  <a href="/admin/users/{{ user.id }}/edit"><i class="pencil link icon"></i></a>
-  <p>
-    <strong>Login: </strong> {{ user.login }}<br>
-    <strong>Role: </strong> {{ user.role }}<br>
-    <strong>Address: </strong> {{ user.address }}<br>
-    <strong>Phone: </strong> {{ user.phone }}<br>
-    <strong>Library card number: </strong> {{ user.card_number }}<br><br>
-  </p>
+  <br>
 
-  <hr>
+  <div class="ui stackable fluid divided grid">
+    <div class="four wide column">
+      <h3 style="display: inline-block">{{ user.name }}</h3>&nbsp;&nbsp;&nbsp;
+      <a href="/admin/users/{{ user.id }}/edit"><i class="pencil link icon"></i></a>
+      <p>
+        <strong>Login: </strong> {{ user.login }}<br>
+        <strong>Role: </strong> {{ user.role }}<br>
+        <strong>Address: </strong> {{ user.address }}<br>
+        <strong>Phone: </strong> {{ user.phone }}<br>
+        <strong>Library card number: </strong> {{ user.card_number }}<br><br>
+      </p>
+    </div>
 
-  {% if 'patron' in user.role %}
-    <strong>Loans:</strong>
-    <div class="ui secondary menu">
-      <a class="active item" data-tab="all">
-        <i class="bars icon"></i>
-        All
-      </a>
-      <a class="teal item" data-tab="requested">
-        <i class="question icon"></i>
-        Requests
-        {% if user.get_requested_loan_count() > 0 %}
-          <div class="ui teal label">
-            {{ user.get_requested_loan_count() }}
-          </div>
-        {% endif %}
-      </a>
-      <a class="red item" data-tab="overdue">
-        <i class="exclamation icon"></i>
-        Overdue
-        {% if user.get_overdue_loan_count() > 0 %}
-          <div class="ui red label">
-            {{ user.get_overdue_loan_count() }}
-          </div>
-        {% endif %}
-      </a>
-      <a class="item" data-tab="returned">
-        <i class="undo icon"></i>
-        Return requests
-        {% if user.get_returned_loan_count() > 0 %}
-          <div class="ui teal label">
-            {{ user.get_returned_loan_count() }}
-          </div>
-        {% endif %}
-      </a>
-    </div>
-    <div class="transition fade in ui active tab segment" data-tab="all">
-      <div class="ui cards">
-    {% for loan in user.get_loans() %}
-      {% if loan.status == Loan.Status.requested %}
-        <div class="card">
-          <div class="content">
-            <div class="right floated meta">
-              request
-            </div>
-            <a class="header" href="/admin/loans/{{ loan.id }}">
-              {{ loan.document.title }}
-            </a>
-            <div class="meta">
-              Requested by <a href="/admin/users/{{ loan.user.id }}">{{ loan.user.name }}</a>
-            </div>
-            <div class="description">
-              <strong>Available free copies left (if
-                taken): </strong>{{ loan.document.get_available_copies() | length }}
-            </div>
-          </div>
-          <div class="ui two bottom attached buttons">
-            <a class="ui basic green button" href="/admin/loans/{{ loan.id }}/confirm">
-              <i class="check icon"></i>
-              Confirm
-            </a>
-            <a class="ui basic red button" href="/admin/loans/{{ loan.id }}/refuse">
-              <i class="times icon"></i>
-              Refuse
-            </a>
-          </div>
-        </div>
-      {% elif loan.status == Loan.Status.approved %}
-        <div class="card">
-          <div class="content">
-            <a class="header" href="/admin/loans/{{ loan.id }}">
-              {{ loan.document.title }}
-            </a>
-            <div class="meta">
-              Borrowed by <a href="/admin/users/{{ loan.user.id }}">{{ loan.user.name }}</a>
-            </div>
-            <div class="description">
-              <strong>Due date: </strong> {{ loan.due_date.strftime("%B %d, %Y") }}
-            </div>
-          </div>
-          {% if loan.overdue() %}
-            <div class="red center aligned extra content">
-              <i class="exclamation circle icon"></i>
-              overdue (fine {{ loan.get_overdue_fine() }}₽)
-            </div>
-          {% endif %}
-        </div>
-      {% elif loan.status == Loan.Status.returned %}
-        <div class="card">
-          <div class="content">
-            <div class="right floated meta">
-              return request
-            </div>
-            <a class="header" href="/admin/loans/{{ loan.id }}">
-              {{ loan.document.title }}
-            </a>
-            <div class="meta">
-              Borrowed by <a href="/admin/users/{{ loan.user.id }}">{{ loan.user.name }}</a>
-            </div>
-            <div class="description">
-              <strong>Due date: </strong> {{ loan.due_date.strftime("%B %d, %Y") }}
-            </div>
-          </div>
-          {% if loan.overdue() %}
-            <div class="red center aligned extra content">
-              <i class="exclamation circle icon"></i>
-              overdue (fine {{ loan.get_overdue_fine() }}₽)
-            </div>
-          {% endif %}
-          <a class="ui basic green bottom attached button" href="/admin/loans/{{ loan.id }}/return">
+    <div class="twelve wide column">
+      {% if 'patron' in user.role %}
+        <strong>Loans:</strong>
+        <div class="ui secondary menu">
+          <a class="active item" data-tab="all">
+            <i class="bars icon"></i>
+            All
+          </a>
+          <a class="teal item" data-tab="requested">
+            <i class="question icon"></i>
+            Requests
+            {% if user.get_requested_loan_count() > 0 %}
+              <div class="ui teal label">
+                {{ user.get_requested_loan_count() }}
+              </div>
+            {% endif %}
+          </a>
+          <a class="red item" data-tab="overdue">
+            <i class="exclamation icon"></i>
+            Overdue
+            {% if user.get_overdue_loan_count() > 0 %}
+              <div class="ui red label">
+                {{ user.get_overdue_loan_count() }}
+              </div>
+            {% endif %}
+          </a>
+          <a class="item" data-tab="returned">
             <i class="undo icon"></i>
-            Confirm return
+            Return requests
+            {% if user.get_returned_loan_count() > 0 %}
+              <div class="ui teal label">
+                {{ user.get_returned_loan_count() }}
+              </div>
+            {% endif %}
           </a>
         </div>
-      {% endif %}
-    {% endfor %}
-  </div>
-    </div>
-    <div class="transition fade in ui tab segment" data-tab="requested">
-      <div class="ui cards">
-    {% for loan in user.get_requested_loans() %}
-      {% if loan.status == Loan.Status.requested %}
-        <div class="card">
-          <div class="content">
-            <div class="right floated meta">
-              request
-            </div>
-            <a class="header" href="/admin/loans/{{ loan.id }}">
-              {{ loan.document.title }}
-            </a>
-            <div class="meta">
-              Requested by <a href="/admin/users/{{ loan.user.id }}">{{ loan.user.name }}</a>
-            </div>
-            <div class="description">
-              <strong>Available free copies left (if
-                taken): </strong>{{ loan.document.get_available_copies() | length }}
-            </div>
-          </div>
-          <div class="ui two bottom attached buttons">
-            <a class="ui basic green button" href="/admin/loans/{{ loan.id }}/confirm">
-              <i class="check icon"></i>
-              Confirm
-            </a>
-            <a class="ui basic red button" href="/admin/loans/{{ loan.id }}/refuse">
-              <i class="times icon"></i>
-              Refuse
-            </a>
-          </div>
+        <div class="transition fade in ui active tab" data-tab="all">
+          {% with loans = user.get_loans() %}
+            {% include "components/loan-list.html" %}
+          {% endwith %}
         </div>
-      {% elif loan.status == Loan.Status.approved %}
-        <div class="card">
-          <div class="content">
-            <a class="header" href="/admin/loans/{{ loan.id }}">
-              {{ loan.document.title }}
-            </a>
-            <div class="meta">
-              Borrowed by <a href="/admin/users/{{ loan.user.id }}">{{ loan.user.name }}</a>
-            </div>
-            <div class="description">
-              <strong>Due date: </strong> {{ loan.due_date.strftime("%B %d, %Y") }}
-            </div>
-          </div>
-          {% if loan.overdue() %}
-            <div class="red center aligned extra content">
-              <i class="exclamation circle icon"></i>
-              overdue (fine {{ loan.get_overdue_fine() }}₽)
-            </div>
-          {% endif %}
+        <div class="transition fade in ui tab" data-tab="requested">
+          {% with loans = user.get_requested_loans() %}
+            {% include "components/loan-list.html" %}
+          {% endwith %}
         </div>
-      {% elif loan.status == Loan.Status.returned %}
-        <div class="card">
-          <div class="content">
-            <div class="right floated meta">
-              return request
-            </div>
-            <a class="header" href="/admin/loans/{{ loan.id }}">
-              {{ loan.document.title }}
-            </a>
-            <div class="meta">
-              Borrowed by <a href="/admin/users/{{ loan.user.id }}">{{ loan.user.name }}</a>
-            </div>
-            <div class="description">
-              <strong>Due date: </strong> {{ loan.due_date.strftime("%B %d, %Y") }}
-            </div>
-          </div>
-          {% if loan.overdue() %}
-            <div class="red center aligned extra content">
-              <i class="exclamation circle icon"></i>
-              overdue (fine {{ loan.get_overdue_fine() }}₽)
-            </div>
-          {% endif %}
-          <a class="ui basic green bottom attached button" href="/admin/loans/{{ loan.id }}/return">
-            <i class="undo icon"></i>
-            Confirm return
-          </a>
+        <div class="transition fade in ui tab" data-tab="overdue">
+          {% with loans = user.get_overdue_loans() %}
+            {% include "components/loan-list.html" %}
+          {% endwith %}
+        </div>
+        <div class="transition fade in ui tab" data-tab="returned">
+          {% with loans = user.get_returned_loans() %}
+            {% include "components/loan-list.html" %}
+          {% endwith %}
         </div>
       {% endif %}
-    {% endfor %}
-  </div>
     </div>
-    <div class="transition fade in ui tab segment" data-tab="overdue">
-      <div class="ui cards">
-    {% for loan in user.get_overdue_loans() %}
-      {% if loan.status == Loan.Status.requested %}
-        <div class="card">
-          <div class="content">
-            <div class="right floated meta">
-              request
-            </div>
-            <a class="header" href="/admin/loans/{{ loan.id }}">
-              {{ loan.document.title }}
-            </a>
-            <div class="meta">
-              Requested by <a href="/admin/users/{{ loan.user.id }}">{{ loan.user.name }}</a>
-            </div>
-            <div class="description">
-              <strong>Available free copies left (if
-                taken): </strong>{{ loan.document.get_available_copies() | length }}
-            </div>
-          </div>
-          <div class="ui two bottom attached buttons">
-            <a class="ui basic green button" href="/admin/loans/{{ loan.id }}/confirm">
-              <i class="check icon"></i>
-              Confirm
-            </a>
-            <a class="ui basic red button" href="/admin/loans/{{ loan.id }}/refuse">
-              <i class="times icon"></i>
-              Refuse
-            </a>
-          </div>
-        </div>
-      {% elif loan.status == Loan.Status.approved %}
-        <div class="card">
-          <div class="content">
-            <a class="header" href="/admin/loans/{{ loan.id }}">
-              {{ loan.document.title }}
-            </a>
-            <div class="meta">
-              Borrowed by <a href="/admin/users/{{ loan.user.id }}">{{ loan.user.name }}</a>
-            </div>
-            <div class="description">
-              <strong>Due date: </strong> {{ loan.due_date.strftime("%B %d, %Y") }}
-            </div>
-          </div>
-          {% if loan.overdue() %}
-            <div class="red center aligned extra content">
-              <i class="exclamation circle icon"></i>
-              overdue (fine {{ loan.get_overdue_fine() }}₽)
-            </div>
-          {% endif %}
-        </div>
-      {% elif loan.status == Loan.Status.returned %}
-        <div class="card">
-          <div class="content">
-            <div class="right floated meta">
-              return request
-            </div>
-            <a class="header" href="/admin/loans/{{ loan.id }}">
-              {{ loan.document.title }}
-            </a>
-            <div class="meta">
-              Borrowed by <a href="/admin/users/{{ loan.user.id }}">{{ loan.user.name }}</a>
-            </div>
-            <div class="description">
-              <strong>Due date: </strong> {{ loan.due_date.strftime("%B %d, %Y") }}
-            </div>
-          </div>
-          {% if loan.overdue() %}
-            <div class="red center aligned extra content">
-              <i class="exclamation circle icon"></i>
-              overdue (fine {{ loan.get_overdue_fine() }}₽)
-            </div>
-          {% endif %}
-          <a class="ui basic green bottom attached button" href="/admin/loans/{{ loan.id }}/return">
-            <i class="undo icon"></i>
-            Confirm return
-          </a>
-        </div>
-      {% endif %}
-    {% endfor %}
   </div>
-    </div>
-    <div class="transition fade in ui tab segment" data-tab="returned">
-      <div class="ui cards">
-    {% for loan in user.get_returned_loans() %}
-      {% if loan.status == Loan.Status.requested %}
-        <div class="card">
-          <div class="content">
-            <div class="right floated meta">
-              request
-            </div>
-            <a class="header" href="/admin/loans/{{ loan.id }}">
-              {{ loan.document.title }}
-            </a>
-            <div class="meta">
-              Requested by <a href="/admin/users/{{ loan.user.id }}">{{ loan.user.name }}</a>
-            </div>
-            <div class="description">
-              <strong>Available free copies left (if
-                taken): </strong>{{ loan.document.get_available_copies() | length }}
-            </div>
-          </div>
-          <div class="ui two bottom attached buttons">
-            <a class="ui basic green button" href="/admin/loans/{{ loan.id }}/confirm">
-              <i class="check icon"></i>
-              Confirm
-            </a>
-            <a class="ui basic red button" href="/admin/loans/{{ loan.id }}/refuse">
-              <i class="times icon"></i>
-              Refuse
-            </a>
-          </div>
-        </div>
-      {% elif loan.status == Loan.Status.approved %}
-        <div class="card">
-          <div class="content">
-            <a class="header" href="/admin/loans/{{ loan.id }}">
-              {{ loan.document.title }}
-            </a>
-            <div class="meta">
-              Borrowed by <a href="/admin/users/{{ loan.user.id }}">{{ loan.user.name }}</a>
-            </div>
-            <div class="description">
-              <strong>Due date: </strong> {{ loan.due_date.strftime("%B %d, %Y") }}
-            </div>
-          </div>
-          {% if loan.overdue() %}
-            <div class="red center aligned extra content">
-              <i class="exclamation circle icon"></i>
-              overdue (fine {{ loan.get_overdue_fine() }}₽)
-            </div>
-          {% endif %}
-        </div>
-      {% elif loan.status == Loan.Status.returned %}
-        <div class="card">
-          <div class="content">
-            <div class="right floated meta">
-              return request
-            </div>
-            <a class="header" href="/admin/loans/{{ loan.id }}">
-              {{ loan.document.title }}
-            </a>
-            <div class="meta">
-              Borrowed by <a href="/admin/users/{{ loan.user.id }}">{{ loan.user.name }}</a>
-            </div>
-            <div class="description">
-              <strong>Due date: </strong> {{ loan.due_date.strftime("%B %d, %Y") }}
-            </div>
-          </div>
-          {% if loan.overdue() %}
-            <div class="red center aligned extra content">
-              <i class="exclamation circle icon"></i>
-              overdue (fine {{ loan.get_overdue_fine() }}₽)
-            </div>
-          {% endif %}
-          <a class="ui basic green bottom attached button" href="/admin/loans/{{ loan.id }}/return">
-            <i class="undo icon"></i>
-            Confirm return
-          </a>
-        </div>
-      {% endif %}
-    {% endfor %}
-  </div>
-    </div>
-  {% endif %}
 
   <script>
-    $('.menu .item').tab()
+      $('.menu .item').tab();
+      var loc = window.location.hash.substr(1);
+      if (loc !== undefined) {
+          $('.menu .item').filter(function (x) {
+              return $(this).data('tab') === loc;
+          }).click();
+      }
   </script>
 
 {% endblock %}

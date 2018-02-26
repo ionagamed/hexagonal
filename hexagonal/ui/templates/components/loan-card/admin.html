@@ -1,0 +1,79 @@
+<div class="card">
+  {% if loan.status == Loan.Status.requested %}
+    <div class="content">
+      <div class="right floated meta">
+        request
+      </div>
+      <a class="header" href="/admin/loans/{{ loan.id }}">
+        {{ loan.document.title }}
+      </a>
+      <div class="meta">
+        Requested by <a href="/admin/users/{{ loan.user.id }}">{{ loan.user.name }}</a>
+      </div>
+      <div class="description">
+        <strong>Available free copies left (if
+          taken): </strong>{{ loan.document.get_available_copies() | length }}
+      </div>
+    </div>
+    <div class="ui two bottom attached buttons">
+      <a class="ui basic green button" href="/admin/loans/{{ loan.id }}/confirm">
+        <i class="check icon"></i>
+        Confirm
+      </a>
+      <a class="ui basic red button" href="/admin/loans/{{ loan.id }}/refuse">
+        <i class="times icon"></i>
+        Refuse
+      </a>
+    </div>
+  {% elif loan.status == Loan.Status.approved %}
+    <div class="content">
+      <a class="header" href="/admin/loans/{{ loan.id }}">
+        {{ loan.document.title }}
+      </a>
+      <div class="meta">
+        Borrowed by <a href="/admin/users/{{ loan.user.id }}">{{ loan.user.name }}</a>
+      </div>
+      <div class="description">
+        <strong>Due date: </strong> {{ loan.due_date.strftime("%B %d, %Y") }}
+      </div>
+    </div>
+    {% if loan.overdue() %}
+      <div class="red center aligned extra content">
+        <i class="exclamation circle icon"></i>
+        overdue (fine {{ loan.get_overdue_fine() }}₽)
+      </div>
+    {% endif %}
+  {% elif loan.status == Loan.Status.returned %}
+    <div class="content">
+      <div class="right floated meta">
+        return request
+      </div>
+      <a class="header" href="/admin/loans/{{ loan.id }}">
+        {{ loan.document.title }}
+      </a>
+      <div class="meta">
+        Borrowed by <a href="/admin/users/{{ loan.user.id }}">{{ loan.user.name }}</a>
+      </div>
+      <div class="description">
+        <strong>Due date: </strong> {{ loan.due_date.strftime("%B %d, %Y") }}
+      </div>
+    </div>
+    {% if loan.overdue() %}
+      <div class="red center aligned extra content">
+        <i class="exclamation circle icon"></i>
+        overdue (fine {{ loan.get_overdue_fine() }}₽)
+      </div>
+    {% endif %}
+    <a class="ui basic green bottom attached button" href="/admin/loans/{{ loan.id }}/return">
+      <i class="undo icon"></i>
+      Confirm return
+    </a>
+  {% endif %}
+</div>
+
+<style>
+  .red.extra.content {
+    background-color: #db2828 !important;
+    color: white !important;
+  }
+</style>

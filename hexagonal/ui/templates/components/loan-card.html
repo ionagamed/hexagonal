@@ -1,0 +1,5 @@
+{% if 'patron' in session['role'] %}
+  {% include "components/loan-card/user.html" %}
+{% else %}
+  {% include "components/loan-card/admin.html" %}
+{% endif %}
