@@ -11,9 +11,11 @@
           <a href="/user/borrowed" class="item {% if path == '/user/borrowed' %}active{% endif %}">
             <i class="file outline icon"></i>
             Borrowed documents
-            <span class="ui label">
-              {{ user.get_borrowed_document_copy_count() }}
-            </span>
+            {% if user.get_borrowed_document_copy_count() > 0 %}
+              <span class="ui label">
+                {{ user.get_borrowed_document_copy_count() }}
+              </span>
+            {% endif %}
           </a>
           <a href="/user/borrowed/requests" class="item {% if path == '/user/borrowed/requests' %}active{% endif %}">
             <i class="question icon"></i>
