@@ -1,18 +1,8 @@
 import datetime
 import enum
 
-from sqlalchemy.orm import aliased
+from sqlalchemy.ext.associationproxy import association_proxy
 from hexagonal import db, app
-from sqlalchemy.ext.hybrid import hybrid_property, Comparator
-from hexagonal.model.document_copy import DocumentCopy
-
-
-class DocumentTransformer(Comparator):
-    def operate(self, op, other, **kwargs):
-        def transform(q):
-            document_copy_alias = aliased(DocumentCopy)
-            return q.join(document_copy_alias, Loan.document_copy).filter(op(document_copy_alias.document, other))
-        return transform
 
 
 class Loan(db.Model):
@@ -34,7 +24,7 @@ class Loan(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
     """ Foreign key to user. """
 
-    user = db.relationship('User')
+    user = db.relationship('User', back_populates='loans')
     """ Borrowing user id. """
 
     document_copy_id = db.Column(db.Integer, db.ForeignKey('document_copies.id'))
@@ -52,17 +42,7 @@ class Loan(db.Model):
     status = db.Column(db.Enum(Status), default=Status.requested)
     """ Current loan status. """
 
-    @hybrid_property
-    def document(self):
-        """
-        Get the associated document.
-        :return: associated document.
-        """
-        return self.document_copy.document
-
-    @document.comparator
-    def document(cls):
-        return DocumentTransformer(cls)
+    document = association_proxy('document_copy', 'document')
 
     def get_overdue_fine(self):
         """
