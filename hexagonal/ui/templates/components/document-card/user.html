@@ -1,0 +1,53 @@
+<span class="display-none">{{ document.id }}</span>
+<span class="display-none">{{ document.copies | ids }}</span>
+<div class="card">
+  <div class="content">
+    <div class="right floated meta">
+      {{ document.type }}
+    </div>
+    <a class="header" href="/admin/documents/{{ document.id }}">
+      {{ document.title }}
+    </a>
+    <div class="meta">
+      By {{ ', '.join(document.authors) }}
+      {% if document.type == 'book' %}
+        , {{ document.edition | ordinal }} edition
+      {% endif %}
+    </div>
+    <div class="description">
+      {% if document.type == 'book' %}
+        <strong>Published by:</strong> {{ document.publisher }}<br>
+      {% endif %}
+      {% if document.type == 'journal_article' %}
+        <strong>Published in:</strong> {{ document.issue_publication_date.strftime('%B %Y') }}.<br>
+        <strong>Journal: </strong>.{{ document.journal }}.<br>
+        <strong>Issue editor:</strong>{{ document.issue_editor }}.<br><br>
+      {% endif %}
+      <strong>Keywords:</strong> {{ ', '.join(document.keywords) }}<br>
+      {% if document.type == 'book' %}
+        {% if document.bestseller %}
+          <strong>Bestseller</strong>
+        {% endif %}
+      {% endif %}
+    </div>
+  </div>
+  <div class="extra content">
+    <div class="right floated">
+      {{ document.get_available_copies() | length }} copies left
+    </div>
+    {{ document.price }}₽
+  </div>
+  {% if document.get_available_copies() | length > 0 %}
+    {% if claimed %}
+      <div class="ui blue bottom attached disabled button">
+        <i class="times icon"></i>
+        Already claimed
+      </div>
+    {% else %}
+      <a class="ui blue bottom attached button" href="/user/claim/{{ document.id }}">
+        <i class="hand rock icon"></i>
+        Claim
+      </a>
+    {% endif %}
+  {% endif %}
+</div>

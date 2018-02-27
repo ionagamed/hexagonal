@@ -1,0 +1,11 @@
+<div class="ui cards">
+  {% if 'patron' in session['role'] %}
+    {% for document, claimed in documents %}
+      {% include "components/document-card.html" %}
+    {% endfor %}
+  {% else %}
+    {% for document in documents %}
+      {% include "components/document-card.html" %}
+    {% endfor %}
+  {% endif %}
+</div>

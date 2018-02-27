@@ -2,61 +2,6 @@
 
 {% block admin_body %}
 
-  <div class="ui cards">
-    {% for document in documents %}
-
-      <span class="display-none">{{ document.id }}</span>
-      <span class="display-none">{{ document.copies | ids }}</span>
-      <div class="card">
-        <div class="content">
-          <div class="right floated meta">
-            {{ document.type }}
-          </div>
-          <a class="header" href="/admin/documents/{{ document.id }}">
-            {{ document.title }}
-          </a>
-          <div class="meta">
-            By {{ ', '.join(document.authors) }}
-            {% if document.type == 'book' %}
-              , {{ document.edition | ordinal }} edition
-            {% endif %}
-          </div>
-          <div class="description">
-            {% if document.type == 'book' %}
-              <strong>Published by:</strong> {{ document.publisher }}<br>
-            {% endif %}
-            {% if document.type == 'journal_article' %}
-              <strong>Published in:</strong> {{ document.issue_publication_date.strftime('%B %Y') }}.<br>
-              <strong>Journal: </strong>.{{ document.journal }}.<br>
-              <strong>Issue editor:</strong>{{ document.issue_editor }}.<br><br>
-            {% endif %}
-            <strong>Keywords:</strong> {{ ', '.join(document.keywords) }}<br>
-            {% if document.type == 'book' %}
-              {% if document.bestseller %}
-                <strong>Bestseller</strong>
-              {% endif %}
-            {% endif %}
-          </div>
-        </div>
-        <div class="extra content">
-          <div class="right floated">
-            <a href="/admin/documents/{{ document.id }}#copies">
-              {{ document.get_available_copies() | length }} copies left
-            </a>
-          </div>
-          {{ document.price }}₽
-        </div>
-        <div class="ui two bottom attached buttons">
-          <a href="/admin/documents/{{ document.id }}/edit" class="ui basic blue button">
-            Edit
-          </a>
-          <a href="/admin/documents/{{ document.id }}/delete" class="ui basic red button">
-            Delete
-          </a>
-        </div>
-      </div>
-
-    {% endfor %}
-  </div>
+  {% include "components/document-list.html" %}
 
 {% endblock %}
