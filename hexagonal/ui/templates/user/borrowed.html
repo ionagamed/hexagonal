@@ -1,7 +1,5 @@
 {% extends "user/layout.html" %}
 
 {% block user_body %}
-  {% with loans = user.get_loans() %}
-    {% include "components/loan-list.html" %}
-  {% endwith %}
+  {% include "components/loan-list.html" %}
 {% endblock %}
