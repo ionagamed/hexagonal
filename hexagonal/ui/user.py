@@ -45,10 +45,10 @@ def user_return(loan_id):
 @required_permission(Permission.checkout)
 def user_browse_index():
     user = User.query.filter(User.login == session['login']).first()
-    documents = map(
+    documents = list(map(
         lambda x: (x, Loan.query.with_transformation(Loan.document == x).count() > 0),
         Document.query.all()
-    )
+    ))
     return render_template('user/browse.html', documents=documents, path='/user/browse', user=user)
 
 
