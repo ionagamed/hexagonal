@@ -9,3 +9,13 @@
     {% endfor %}
   {% endif %}
 </div>
+{% if loans | length == 0 %}
+  <div class="ui centered center aligned grid">
+    <div class="eight wide center aligned column">
+      <br><br>
+      <i class="massive exclamation triangle icon"></i>
+      <h3>No more documents left</h3>
+      <p>Apparently your library is having a bad time</p>
+    </div>
+  </div>
+{% endif %}
