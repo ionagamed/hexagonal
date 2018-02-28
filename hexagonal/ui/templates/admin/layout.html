@@ -8,7 +8,7 @@
       <div class="column"></div>
       <div class="three wide column">
         <div class="ui fluid vertical pointing menu">
-          <div class="item {% if path == '/admin/search' %} active {% endif %}">
+          <div class="item {% if path == '/admin/search' %} active {% endif %}" id="menu-search-field">
             <form action="/admin/search" method="GET">
               <div class="ui fluid transparent icon input">
                 <input name="search" placeholder="Search..." {% if 'search' in request.args %}
@@ -102,6 +102,10 @@
   <style>
     body {
       background: #f8f8f8;
+    }
+
+    #menu-search-field,.active#menu-search-field:after {
+      background: white;
     }
   </style>
 
