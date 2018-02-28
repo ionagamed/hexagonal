@@ -2,7 +2,7 @@ import os
 from importlib import import_module
 
 from flask import Flask, request
-from flask_sqlalchemy import SQLAlchemy
+from flask_sqlalchemy import SQLAlchemy, get_debug_queries
 
 
 env = os.environ.get('ENV', 'docs')
@@ -11,6 +11,7 @@ config = import_module('hexagonal.config.' + env)
 app = Flask('hexagonal',
             template_folder=os.path.abspath('hexagonal/ui/templates'),
             static_folder=os.path.abspath('hexagonal/ui/static'))
+app.debug = True
 app.config.update(config.config)
 app.secret_key = app.config['AUTH_SECRET']
 app.name = app.config.get('APP_NAME', 'hexagonal')
@@ -18,6 +19,17 @@ app.name = app.config.get('APP_NAME', 'hexagonal')
 if env == 'docs':
     SQLAlchemy.create_scoped_session = lambda x, y: None
 db = SQLAlchemy(app)
+
+
+@app.after_request
+def print_sql(r):
+    for q in get_debug_queries():
+        print('-' * 140)
+        print(q.statement)
+        print('@')
+        print(q.context)
+    return r
+
 
 from hexagonal.model.user import User
 from hexagonal.model.librarian import Librarian
@@ -33,6 +45,8 @@ from hexagonal.model.patron import Patron
 from hexagonal.model.student_patron import StudentPatron
 
 db.create_all()
+from hexagonal.auth import create_root
+create_root()
 
 from hexagonal import test_data
 

@@ -24,7 +24,7 @@ class Loan(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
     """ Foreign key to user. """
 
-    user = db.relationship('User', back_populates='loans')
+    user = db.relationship('User')
     """ Borrowing user id. """
 
     document_copy_id = db.Column(db.Integer, db.ForeignKey('document_copies.id'))

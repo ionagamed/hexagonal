@@ -101,7 +101,7 @@ def decode_token(token):
     return s.loads(token)
 
 
-if env != 'docs':
+def create_root():
     root = User.query.filter_by(login=app.config['ROOT_LOGIN']).first()
     if root is None:
         root = register_account(
