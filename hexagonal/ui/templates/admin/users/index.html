@@ -1,53 +1,7 @@
 {% extends "admin/layout.html" %}
 
 {% block admin_body %}
-
-  <div class="ui cards">
-    {% for user in users %}
-      <div class="card">
-        <div class="content">
-          <div class="right floated meta">
-            {{ user.role }}
-          </div>
-          <a class="header" href="/admin/users/{{ user.id }}">
-            {{ user.name }}
-          </a>
-          <div class="meta">
-            {{ user.login }}
-          </div>
-          <br>
-          <strong>Address:</strong> {{ user.address }}<br>
-          <strong>Phone:</strong> {{ user.phone }}<br>
-          <strong>Card number:</strong> {{ user.card_number }}<br>
-        </div>
-        {% if 'patron' in user.role %}
-          {% if user.get_overdue_loan_count() > 0 %}
-            <div class="ui two attached buttons">
-              <a class="ui red attached button" href="/admin/users/{{ user.id }}#overdue">
-                {{ user.get_overdue_loan_count() }} overdue
-              </a>
-              <a class="ui attached button" href="/admin/users/{{ user.id }}#all">
-                {{ user.get_borrowed_document_copy_count() }} borrowed
-              </a>
-            </div>
-          {% else %}
-            <a class="ui attached button" href="/admin/users/{{ user.id }}#all">
-              {{ user.get_borrowed_document_copy_count() }} borrowed
-            </a>
-          {% endif %}
-        {% endif %}
-        <div class="ui two bottom attached buttons">
-          <a href="/admin/users/{{ user.id }}/edit" class="ui basic blue button">
-            <i class="edit icon"></i>
-            Edit
-          </a>
-          <a href="/admin/users/{{ user.id }}/delete" class="ui basic red button">
-            <i class="trash icon"></i>
-            Delete
-          </a>
-        </div>
-      </div>
-    {% endfor %}
-  </div>
-
+  {% with items = users, type = 'user' %}
+    {% include "components/item-list.html" %}
+  {% endwith %}
 {% endblock %}

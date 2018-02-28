@@ -1,19 +1,7 @@
 {% extends "admin/layout.html" %}
 
 {% block admin_body %}
-  <div class="ui cards">
-    {% for loan in loans %}
-      {% include "components/loan-card.html" %}
-    {% endfor %}
-  </div>
-  {% if loans | length == 0 %}
-    <div class="ui centered center aligned grid">
-      <div class="eight wide center aligned column">
-        <br><br>
-        <i class="massive exclamation triangle icon"></i>
-        <h3>No more loans left</h3>
-        <p>Apparently your library is having a bad time</p>
-      </div>
-    </div>
-  {% endif %}
+  {% with items = loans, type = 'loan' %}
+    {% include "components/item-list.html" %}
+  {% endwith %}
 {% endblock %}

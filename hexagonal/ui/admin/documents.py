@@ -8,11 +8,14 @@ from hexagonal.auth.permissions import required_permission, Permission
 @app.route('/admin/documents')
 @required_permission(Permission.manage)
 def document_index():
-    documents = Document.query.all()
+    if 'search' in request.args:
+        documents = Document.fuzzy_search(request.args['search'])
+    else:
+        documents = Document.query.all()
 
     return render_template('admin/documents/index.html',
                            documents=documents,
-                           path='/admin/documents')
+                           path='/admin/documents' + ('/search' if 'search' in request.args else ''))
 
 
 @app.route('/admin/documents/<int:document_id>/delete')

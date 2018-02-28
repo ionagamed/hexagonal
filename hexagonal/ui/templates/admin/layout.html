@@ -8,6 +8,15 @@
       <div class="column"></div>
       <div class="three wide column">
         <div class="ui fluid vertical pointing menu">
+          <div class="item {% if path == '/admin/search' %} active {% endif %}">
+            <form action="/admin/search" method="GET">
+              <div class="ui fluid transparent icon input">
+                <input name="search" placeholder="Search..." {% if 'search' in request.args %}
+                       value="{{ request.args['search'] }}" {% endif %}>
+                <i class="search link icon"></i>
+              </div>
+            </form>
+          </div>
           <div class="item">
             <div class="header">
               <i class="file alternate outline icon"></i>

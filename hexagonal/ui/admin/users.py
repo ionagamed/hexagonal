@@ -6,7 +6,10 @@ from hexagonal.auth.permissions import *
 @app.route('/admin/users')
 @required_permission(Permission.manage)
 def users_index():
-    users = User.query.all()
+    if 'search' in request.args:
+        users = User.fuzzy_search(request.args['search'])
+    else:
+        users = User.query.all()
     return render_template('admin/users/index.html', users=users, path='/admin/users')
 
 

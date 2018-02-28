@@ -2,9 +2,10 @@ from hexagonal import db
 from hexagonal.model.document_copy import DocumentCopy
 from hexagonal.model.loan import Loan
 from sqlalchemy import or_
+from hexagonal.model.searchable import Searchable
 
 
-class Document(db.Model):
+class Document(db.Model, Searchable):
     """
     Base class for all documents.
     Should not be instantiated directly.
@@ -37,6 +38,9 @@ class Document(db.Model):
         'polymorphic_on': type,
         'polymorphic_identity': 'document'
     }
+
+    fuzzy_search_fields = ['title', 'type']
+    fuzzy_array_search_fields = ['keywords', 'authors']
 
     def get_available_copies(self):
         return DocumentCopy.query.filter(

@@ -3,9 +3,10 @@ import datetime
 from hexagonal import db
 from hexagonal.model.document_copy import DocumentCopy
 from hexagonal.model.loan import Loan
+from hexagonal.model.searchable import Searchable
 
 
-class User(db.Model):
+class User(db.Model, Searchable):
     """
     Base class for all users in the system.
     Should not be directly instantiated. (`hexagonal.auth` currently does that, but i'm working on it)
@@ -45,6 +46,8 @@ class User(db.Model):
     }
 
     permissions = []
+
+    fuzzy_search_fields = ['name', 'address', 'phone']
 
     def has_permission(self, permission):
         return permission in self.permissions

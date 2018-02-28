@@ -1,0 +1,43 @@
+<div class="ui cards">
+  {% if type == 'document' %}
+    {% if 'patron' in session['role'] %}
+      {% for document, claimed in documents %}
+        {% include "components/document-card.html" %}
+      {% endfor %}
+    {% else %}
+      {% for document in documents %}
+        {% include "components/document-card.html" %}
+      {% endfor %}
+    {% endif %}
+  {% elif type == 'user' %}
+    {% for user in items %}
+      {% include "components/user-card.html" %}
+    {% endfor %}
+  {% elif type == 'loan' %}
+    {% for loan in items %}
+      {% include "components/loan-card.html" %}
+    {% endfor %}
+  {% else %}
+    {% for item, type in items %}
+      {% if type == 'document' %}
+        {% if 'patron' in session['role'] %}
+          {% with document = item[0], claimed = item[1] %}
+            {% include "components/document-card.html" %}
+          {% endwith %}
+        {% else %}
+          {% with document = item %}
+            {% include "components/document-card.html" %}
+          {% endwith %}
+        {% endif %}
+      {% elif type == 'user' %}
+        {% with user = item %}
+          {% include "components/user-card.html" %}
+        {% endwith %}
+      {% elif type == 'loan' %}
+        {% with loan = item %}
+          {% include "components/loan-card.html" %}
+        {% endwith %}
+      {% endif %}
+    {% endfor %}
+  {% endif %}
+</div>

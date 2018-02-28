@@ -65,5 +65,5 @@ def logout():
     return redirect('/login')
 
 
-from hexagonal.ui.admin import documents, users, loans
+from hexagonal.ui.admin import documents, users, loans, search
 from hexagonal.ui import filters, user

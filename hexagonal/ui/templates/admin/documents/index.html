@@ -1,7 +1,7 @@
 {% extends "admin/layout.html" %}
 
 {% block admin_body %}
-
-  {% include "components/document-list.html" %}
-
+  {% with items = documents, type = 'document' %}
+    {% include "components/item-list.html" %}
+  {% endwith %}
 {% endblock %}

@@ -10,12 +10,23 @@
   {% endif %}
 </div>
 {% if documents | length == 0 %}
-  <div class="ui centered center aligned grid">
-    <div class="eight wide center aligned column">
-      <br><br>
-      <i class="massive exclamation triangle icon"></i>
-      <h3>No more documents left</h3>
-      <p>Apparently your library is having a bad time</p>
+  {% if 'search' in request.args %}
+    <div class="ui centered center aligned grid">
+      <div class="eight wide center aligned column">
+        <br><br>
+        <i class="massive exclamation triangle icon"></i>
+        <h3>No documents match the search</h3>
+        <p>Try jiggling a little bit</p>
+      </div>
     </div>
-  </div>
+  {% else %}
+    <div class="ui centered center aligned grid">
+      <div class="eight wide center aligned column">
+        <br><br>
+        <i class="massive exclamation triangle icon"></i>
+        <h3>No more documents left</h3>
+        <p>Apparently your library is having a bad time</p>
+      </div>
+    </div>
+  {% endif %}
 {% endif %}
