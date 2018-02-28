@@ -10,10 +10,14 @@
         <div class="ui fluid vertical pointing menu">
           <div class="item {% if path == '/admin/search' %} active {% endif %}" id="menu-search-field-item">
             <form action="/admin/search" method="GET">
-              <div class="ui fluid transparent icon input">
-                <input name="search" placeholder="Search..." {% if 'search' in request.args %}
-                       value="{{ request.args['search'] }}" {% endif %} id="search-field">
-                <i class="search link icon"></i>
+              <div class="ui search">
+                <div class="ui fluid transparent icon input">
+                  <input name="search" placeholder="Search..." {% if 'search' in request.args %}
+                         value="{{ request.args['search'] }}" {% endif %} id="search-field" class="prompt">
+                  <i class="search link icon"></i>
+                </div>
+                <div class="results">
+                </div>
               </div>
             </form>
           </div>
@@ -104,11 +108,13 @@
       background: #f8f8f8;
     }
 
-    #menu-search-field-item,.active#menu-search-field-item:after {
+    #menu-search-field-item, .active#menu-search-field-item:after {
       background: white;
     }
   </style>
 
-  <script src="/static/search.js?{{ rnd() }}"></script>
+  {% if path != '/admin/search' %}
+    <script src="/static/search_inplace.js?{{ rnd() }}"></script>
+  {% endif %}
 
 {% endblock %}

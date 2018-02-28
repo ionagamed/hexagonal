@@ -1,6 +1,6 @@
 from hexagonal import app, Document, User
 from hexagonal.auth.permissions import *
-from flask import request, redirect, render_template
+from flask import request, redirect, render_template, jsonify
 
 
 def search():
@@ -35,3 +35,38 @@ def search_view():
 @required_permission(Permission.manage)
 def search_inplace():
     return render_template('components/item-list.html', items=search())
+
+
+@app.route('/admin/json_search')
+@required_permission(Permission.manage)
+def json_search():
+    items = search()
+    max_results = 5
+    if 'max_results' in request.args:
+        max_results = request.args['max_results']
+    documents = [x[0] for x in items if isinstance(x[0], Document)][:max_results]
+    users = [x[0] for x in items if isinstance(x[0], User)][:max_results]
+    return jsonify({
+        'results': {
+            'documents': {
+                'name': 'Documents',
+                'results': [
+                    {
+                        'title': item.title,
+                        'description': 'By {}<br>Keywords: {}'.format(', '.join(item.authors), ', '.join(item.keywords)),
+                        'url': '/admin/documents/{}'.format(item.id)
+                    } for item in documents
+                ]
+            },
+            'users': {
+                'name': 'Users',
+                'results': [
+                    {
+                        'title': item.name,
+                        'description': item.login,
+                        'url': '/admin/users/{}'.format(item.id)
+                    } for item in users
+                ]
+            }
+        }
+    })
