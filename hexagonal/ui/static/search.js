@@ -4,13 +4,27 @@ const setMenuToSearch = function () {
     $('#menu-search-field-item').addClass('active');
 };
 
+const searchIntro = function (term) {
+    if (!window.searchStateChanged) {
+        window.searchStateChanged = true;
+        if (window.history.pushState) {
+            window.history.pushState("", "Hexagonal", '/admin/search?search=' + term);
+        }
+        setMenuToSearch();
+    } else {
+        if (window.history.replaceState) {
+            window.history.replaceState("", "Hexagonal", '/admin/search?search=' + term);
+        }
+    }
+};
+
 const search = function (e) {
-    console.log('a');
-    setMenuToSearch();
+    const term = $('#search-field').val();
+    const url = '/admin/search_inplace?search=' + term;
+    searchIntro(term);
     $.ajax({
-        url: '/admin/search_inplace?search=' + $('#search-field').val()
+        url: url
     }).then(function (r) {
-        console.log(r);
         $('#page-container').html(r);
     });
 };
