@@ -3,8 +3,6 @@ from hexagonal.auth.permissions import *
 from flask import request, redirect, render_template
 
 
-@app.route('/admin/search')
-@required_permission(Permission.manage)
 def search():
     fuzzy_term = None
     if 'search' in request.args:
@@ -24,4 +22,16 @@ def search():
     print('Found these items for term "{}":'.format(fuzzy_term))
     print(items)
 
-    return render_template("admin/search.html", items=items, path='/admin/search')
+    return items
+
+
+@app.route('/admin/search')
+@required_permission(Permission.manage)
+def search_view():
+    return render_template('admin/search.html', items=search(), path='/admin/search')
+
+
+@app.route('/admin/search_inplace')
+@required_permission(Permission.manage)
+def search_inplace():
+    return render_template('components/item-list.html', items=search())

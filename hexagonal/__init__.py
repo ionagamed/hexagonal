@@ -65,10 +65,16 @@ def requested_loan_count_wrapper():
 def returned_loan_count_wrapper():
     return Loan.get_returned_loan_count()
 
+
+def random_wrapper():
+    import random
+    return random.randint(0, 100500)
+
 app.jinja_env.globals['get_all_overdue_loan_count'] = overdue_loan_count_wrapper
 app.jinja_env.globals['get_all_requested_loan_count'] = requested_loan_count_wrapper
 app.jinja_env.globals['get_all_returned_loan_count'] = returned_loan_count_wrapper
 app.jinja_env.globals['Loan'] = Loan
+app.jinja_env.globals['rnd'] = random_wrapper
 
 if 'JINJA_GLOBALS' in app.config:
     app.jinja_env.globals.update(app.config['JINJA_GLOBALS'])

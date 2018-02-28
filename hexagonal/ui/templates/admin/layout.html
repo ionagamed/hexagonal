@@ -8,11 +8,11 @@
       <div class="column"></div>
       <div class="three wide column">
         <div class="ui fluid vertical pointing menu">
-          <div class="item {% if path == '/admin/search' %} active {% endif %}" id="menu-search-field">
+          <div class="item {% if path == '/admin/search' %} active {% endif %}" id="menu-search-field-item">
             <form action="/admin/search" method="GET">
               <div class="ui fluid transparent icon input">
                 <input name="search" placeholder="Search..." {% if 'search' in request.args %}
-                       value="{{ request.args['search'] }}" {% endif %}>
+                       value="{{ request.args['search'] }}" {% endif %} id="search-field">
                 <i class="search link icon"></i>
               </div>
             </form>
@@ -93,7 +93,7 @@
           {% include "menu-footer.html" %}
         </div>
       </div>
-      <div class="eleven wide column transition fade in">
+      <div class="eleven wide column transition fade in" id="page-container">
         {% block admin_body %} {% endblock %}
       </div>
     </div>
@@ -104,9 +104,11 @@
       background: #f8f8f8;
     }
 
-    #menu-search-field,.active#menu-search-field:after {
+    #menu-search-field-item,.active#menu-search-field-item:after {
       background: white;
     }
   </style>
+
+  <script src="/static/search.js?{{ rnd() }}"></script>
 
 {% endblock %}
