@@ -1,13 +1,11 @@
 <div class="card">
   <div class="content">
-    <div class="right floated meta">
-      {{ document.type }}
-    </div>
     <a class="header" href="/admin/documents/{{ document.id }}">
       {{ document.title }}
     </a>
     <div class="meta">
-      By {{ ', '.join(document.authors) }}
+      {{ document.type | humanize(True) | capitalize }}
+      by {{ ', '.join(document.authors) }}
       {% if document.type == 'book' %}
         , {{ document.edition | ordinal }} edition
       {% endif %}

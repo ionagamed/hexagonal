@@ -9,3 +9,29 @@ def ordinal(n):
 @app.template_filter('ids')
 def ids(l):
     return list(map(lambda x: x.id, l))
+
+
+HUMANIZE_MAP = {
+    'book': 'book',
+    'journal_article': 'journal article',
+    'av_material': 'A/V material'
+}
+
+
+HUMANIZE_ARTICLE_MAP = {
+    'book': 'a',
+    'journal_article': 'a',
+    'av_material': 'an'
+}
+
+
+@app.template_filter('humanize')
+def humanize(v, with_article=False):
+    if with_article:
+        article = HUMANIZE_ARTICLE_MAP.get(v, '')
+        if article:
+            return article + ' ' + HUMANIZE_MAP.get(v, v)
+        else:
+            return HUMANIZE_MAP.get(v, v)
+    else:
+        return HUMANIZE_MAP.get(v, v)
