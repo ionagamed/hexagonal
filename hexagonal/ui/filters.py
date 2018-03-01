@@ -14,14 +14,22 @@ def ids(l):
 HUMANIZE_MAP = {
     'book': 'book',
     'journal_article': 'journal article',
-    'av_material': 'A/V material'
+    'av_material': 'A/V material',
+
+    'librarian': 'librarian',
+    'student-patron': 'student patron',
+    'faculty-patron': 'faculty patron'
 }
 
 
 HUMANIZE_ARTICLE_MAP = {
     'book': 'a',
     'journal_article': 'a',
-    'av_material': 'an'
+    'av_material': 'an',
+
+    'librarian': 'a',
+    'student-patron': 'a',
+    'faculty-patron': 'a'
 }
 
 

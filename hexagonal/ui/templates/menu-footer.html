@@ -5,7 +5,7 @@
   </div>
   <div class="menu">
     <div class="item">
-      {{ session.role }}
+      {{ session.role | humanize | title }}
     </div>
     <a href="/logout" class="item">
       <i class="sign out alternate icon"></i>
