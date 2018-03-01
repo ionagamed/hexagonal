@@ -12,8 +12,13 @@
             <form action="/admin/search" method="GET">
               <div class="ui search">
                 <div class="ui fluid transparent icon input">
-                  <input name="search" placeholder="Search..." {% if 'search' in request.args %}
-                         value="{{ request.args['search'] }}" {% endif %} id="search-field" class="prompt">
+                  <input name="search" placeholder="Search..."
+                          {% if 'search' in request.args %}
+                            value="{{ request.args['search'] }}"
+                          {% elif 'search' in session %}
+                            value="{{ session['search'] }}"
+                          {% endif %}
+                         id="search-field" class="prompt">
                   <i class="search link icon"></i>
                 </div>
                 <div class="results">

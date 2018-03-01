@@ -1,12 +1,13 @@
 from hexagonal import app, Document, User
 from hexagonal.auth.permissions import *
-from flask import request, redirect, render_template, jsonify
+from flask import request, redirect, render_template, jsonify, session
 
 
 def search():
     fuzzy_term = None
     if 'search' in request.args:
         fuzzy_term = request.args['search']
+        session['search'] = fuzzy_term
 
     items = []
 
