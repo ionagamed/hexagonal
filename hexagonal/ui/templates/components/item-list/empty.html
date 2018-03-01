@@ -1,0 +1,22 @@
+<div class="ui centered center aligned grid">
+  <div class="eight wide center aligned column">
+    <br><br>
+    <i class="massive exclamation triangle icon"></i>
+
+    {% if 'search' in request.args %}
+      {% if type %}
+        <h3>No {{ type }}s match the query</h3>
+      {% else %}
+        <h3>No items match the query</h3>
+      {% endif %}
+      <p>Try jiggling the search a little bit (search suggestions TBD)</p>
+    {% else %}
+      {% if type %}
+        <h3>No {{ type }}s left</h3>
+      {% else %}
+        <h3>No items left</h3>
+      {% endif %}
+      <p>Apparently your library is having a bad time</p>
+    {% endif %}
+  </div>
+</div>

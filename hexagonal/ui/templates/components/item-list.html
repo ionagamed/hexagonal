@@ -41,3 +41,6 @@
     {% endfor %}
   {% endif %}
 </div>
+{% if items | length == 0 %}
+  {% include "components/item-list/empty.html" %}
+{% endif %}
