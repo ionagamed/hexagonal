@@ -8,30 +8,32 @@
 </div>
 
 <script>
-    var yes = function () {
-        $('.bestseller.button').removeClass('basic');
-        $('.bestseller.red.button').addClass('basic');
-        $('.bestseller.buttons').append($.parseHTML('<input type="hidden" name="bestseller" value="true">'));
-    };
-    var no = function () {
-        $('.bestseller.button').removeClass('basic');
-        $('.bestseller.green.button').addClass('basic');
-        $('.bestseller.buttons input').remove();
-    };
-    $('.bestseller.button').click(function () {
-        var choice = $(this).data('choice');
-        if (choice === 'yes') {
-            yes();
-        } else {
-            no();
-        }
-    });
+    (function () {
+        var yes = function () {
+            $('.bestseller.button').removeClass('basic');
+            $('.bestseller.red.button').addClass('basic');
+            $('.bestseller.buttons').append($.parseHTML('<input type="hidden" name="bestseller" value="true">'));
+        };
+        var no = function () {
+            $('.bestseller.button').removeClass('basic');
+            $('.bestseller.green.button').addClass('basic');
+            $('.bestseller.buttons input').remove();
+        };
+        $('.bestseller.button').click(function () {
+            var choice = $(this).data('choice');
+            if (choice === 'yes') {
+                yes();
+            } else {
+                no();
+            }
+        });
 
-    {% if document and document.bestseller %}
-        window.onload = yes;
-    {% else %}
-        window.onload = no;
-    {% endif %}
+        {% if document and document.bestseller %}
+            window.onload = yes;
+        {% else %}
+            window.onload = no;
+        {% endif %}
+    })();
 </script>
 
 <style>
