@@ -6,7 +6,7 @@
       {{ document.title }}
     </a>
     <div class="meta">
-      {{ document.type | humanize | capitalize }}
+      {{ document.type | humanize | capitalize_first }}
       by {{ ', '.join(document.authors) }}
       {% if document.type == 'book' %}
         , {{ document.edition | ordinal }} edition

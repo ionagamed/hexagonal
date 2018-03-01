@@ -43,3 +43,13 @@ def humanize(v, with_article=False):
             return HUMANIZE_MAP.get(v, v)
     else:
         return HUMANIZE_MAP.get(v, v)
+
+
+@app.template_filter('capitalize_first')
+def capitalize_first(v):
+    """
+    Capitalizes only the first characters, leaving others as-is.
+    Needed because built-in capitalize filter lowers all other characters.
+    """
+
+    return v[:1].upper() + v[1:]
