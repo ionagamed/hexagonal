@@ -1,0 +1,30 @@
+<div class="field">
+  <label>Title</label>
+  <input type="text" name="title" placeholder="Introduction to Algorithms" value="{{ document.title }}"/>
+</div>
+<div class="fields">
+  <div class="three wide field">
+    <label>Price</label>
+    <div class="ui right labeled input">
+      <input type="number" name="price" placeholder="100" value="{{ document.price }}"/>
+      <div class="ui basic label">
+        ₽
+      </div>
+    </div>
+  </div>
+  <div class="five wide field">
+    <label>Copy delta ({{ document.get_available_copies() | length }} available now)</label>
+    <input type="number" name="copy_delta" placeholder="Use +N to add or -N to remove">
+  </div>
+  <div class="eight wide field">
+    <label>Keywords (comma separated)</label>
+    <input type="text" name="keywords" placeholder="action, fantasy"
+           value="{{ document.keywords | join(', ') }}"/>
+  </div>
+</div>
+<div class="field">
+  <label>Authors (comma separated)</label>
+  <input type="text" name="authors"
+         placeholder="Thomas H. Cormen, Charles E. Leiserson, Ronald L. Rivest, Clifford Stein"
+         value="{{ document.authors | join(', ') }}"/>
+</div>

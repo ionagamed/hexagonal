@@ -6,36 +6,7 @@
     {% if document.type == 'book' %}
       <form class="ui form" action="#" method="POST">
         <input type="hidden" name="type" value="book"/>
-        <div class="field">
-          <label>Title</label>
-          <input type="text" name="title" placeholder="Introduction to Algorithms" value="{{ document.title }}"/>
-        </div>
-        <div class="fields">
-          <div class="three wide field">
-            <label>Price</label>
-            <div class="ui right labeled input">
-              <input type="number" name="price" placeholder="100" value="{{ document.price }}"/>
-              <div class="ui basic label">
-                ₽
-              </div>
-            </div>
-          </div>
-          <div class="five wide field">
-            <label>Copy delta ({{ document.get_available_copies() | length }} available now)</label>
-            <input type="number" name="copy_delta" placeholder="Use +N to add or -N to remove">
-          </div>
-          <div class="eight wide field">
-            <label>Keywords (comma separated)</label>
-            <input type="text" name="keywords" placeholder="action, fantasy"
-                   value="{{ ', '.join(document.keywords) }}"/>
-          </div>
-        </div>
-        <div class="field">
-          <label>Authors (comma separated)</label>
-          <input type="text" name="authors"
-                 placeholder="Thomas H. Cormen, Charles E. Leiserson, Ronald L. Rivest, Clifford Stein"
-                 value="{{ ', '.join(document.authors) }}"/>
-        </div>
+        {% include "admin/documents/edit-common.html" %}
         <div class="fields">
           <div class="four wide field">
             <label>Edition</label>
@@ -59,92 +30,36 @@
         </button>
       </form>
     {% endif %}
-    {% if document.type == 'av' %}
+    {% if document.type == 'av_material' %}
       <form class="ui form" action="#" method="POST">
         <input type="hidden" name="type" value="book"/>
-        <div class="field">
-          <label>Title</label>
-          <input type="text" name="title" placeholder="The Big Book"/>
-        </div>
-        <div class="fields">
-          <div class="eight wide field">
-            <label>Price</label>
-            <div class="ui right labeled input">
-              <input type="number" name="price" placeholder="100"/>
-              <div class="ui basic label">
-                ₽
-              </div>
-            </div>
-          </div>
-          <div class="eight wide field">
-            <label>Keywords (comma separated)</label>
-            <input type="text" name="keywords" placeholder="action, fantasy"/>
-          </div>
-        </div>
-        <div class="fields">
-          <div class="thirteen wide field">
-            <label>Authors (comma separated)</label>
-            <input type="text" name="authors" placeholder="J.K Rowling, Paul Erdos"/>
-          </div>
-          <div class="three wide field">
-            <label>Copies</label>
-            <input type="number" name="copies" placeholder="1">
-          </div>
-        </div>
+        {% include "admin/documents/edit-common.html" %}
         <button type="submit" class="ui fluid blue button">
           Submit
         </button>
       </form>
     {% endif %}
-    {% if document.type == 'article' %}
+    {% if document.type == 'journal_article' %}
       <form class="ui form" action="#" method="POST">
         <input type="hidden" name="type" value="book"/>
-        <div class="field">
-          <label>Title</label>
-          <input type="text" name="title" placeholder="Go to Statement Considered Harmful"/>
-        </div>
-        <div class="fields">
-          <div class="eight wide field">
-            <label>Price</label>
-            <div class="ui right labeled input">
-              <input type="number" name="price" placeholder="100"/>
-              <div class="ui basic label">
-                ₽
-              </div>
-            </div>
-          </div>
-          <div class="eight wide field">
-            <label>Keywords (comma separated)</label>
-            <input type="text" name="keywords" placeholder="action, fantasy"/>
-          </div>
-        </div>
-        <div class="fields">
-          <div class="thirteen wide field">
-            <label>Authors (comma separated)</label>
-            <input type="text" name="authors" placeholder="Edsger W. Dijkstra, Some O.T.H.E.R. Guy"/>
-          </div>
-          <div class="three wide field">
-            <label>Copies</label>
-            <input type="number" name="copies" placeholder="1">
-          </div>
-        </div>
+        {% include "admin/documents/edit-common.html" %}
         <div class="three column fields">
           <div class="field">
             <label>Issue publication date</label>
             <div class="ui calendar" id="publication-date-calendar">
               <div class="ui left icon input">
                 <i class="calendar icon"></i>
-                <input type="text" placeholder="March 1, 1968" name="issue_publication_date">
+                <input type="text" placeholder="March 1, 1968" name="issue_publication_date" value="{{ document.issue_publication_date.strftime("%B %d, %Y") }}">
               </div>
             </div>
           </div>
           <div class="field">
             <label>Issue editor</label>
-            <input type="text" name="issue_editor" placeholder="Edward Nash Yourdon">
+            <input type="text" name="issue_editor" placeholder="Edward Nash Yourdon" value="{{ document.issue_editor }}">
           </div>
           <div class="field">
             <label>Journal</label>
-            <input type="text" name="journal" placeholder="Communication ACM">
+            <input type="text" name="journal" placeholder="Communication ACM" value="{{ document.journal }}">
           </div>
         </div>
         <button type="submit" class="ui fluid blue button">

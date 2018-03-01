@@ -16,8 +16,8 @@
       {% endif %}
       {% if document.type == 'journal_article' %}
         <strong>Published in:</strong> {{ document.issue_publication_date.strftime('%B %Y') }}.<br>
-        <strong>Journal: </strong>.{{ document.journal }}.<br>
-        <strong>Issue editor:</strong>{{ document.issue_editor }}.<br><br>
+        <strong>Journal: </strong> {{ document.journal }}.<br>
+        <strong>Issue editor: </strong> {{ document.issue_editor }}.<br><br>
       {% endif %}
       <strong>Keywords:</strong> {{ document.keywords | join(', ') }}<br>
       {% if document.type == 'book' %}
