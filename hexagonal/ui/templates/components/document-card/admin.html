@@ -5,7 +5,7 @@
     </a>
     <div class="meta">
       {{ document.type | humanize(True) | capitalize_first }}
-      by {{ ', '.join(document.authors) }}
+      by {{ document.authors | join(', ') }}
       {% if document.type == 'book' %}
         , {{ document.edition | ordinal }} edition
       {% endif %}
@@ -19,7 +19,7 @@
         <strong>Journal: </strong>.{{ document.journal }}.<br>
         <strong>Issue editor:</strong>{{ document.issue_editor }}.<br><br>
       {% endif %}
-      <strong>Keywords:</strong> {{ ', '.join(document.keywords) }}<br>
+      <strong>Keywords:</strong> {{ document.keywords | join(', ') }}<br>
       {% if document.type == 'book' %}
         {% if document.bestseller %}
           <strong>Bestseller</strong>
