@@ -1,0 +1,38 @@
+<div id="{{ id }}">
+  <div class="ui cards" id="{{ id }}-container">
+
+  </div>
+
+  <div id="footer">
+    <div class="ui center aligned grid">
+      <div class="eight wide centered column" id="{{ id }}-footer-message">
+        <div class="ui loader" id="{{ id }}-preload"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+    (function () {
+        var skip = 0;
+        var limit = 10;
+        var loadMore = function () {
+            skip = $('#{{ id }} .card').length;
+            $('#{{ id }}-preload').addClass('active');
+            return $.ajax({
+                url: '{{ url | safe }}?skip=' + skip + '&limit=' + limit
+            }).then(function (r) {
+                if (r.indexOf('card') === -1) {
+                    $('#{{ id }}-footer-message').hide();
+                }
+                $('#{{ id }}-container').append(r);
+                $('#{{ id }}-container').visibility({
+                    onPassed: {
+                        '60%': loadMore
+                    }
+                });
+            });
+        };
+        loadMore().then(loadMore);
+    })();
+</script>

@@ -1,38 +1,7 @@
 {% extends "admin/layout.html" %}
 
 {% block admin_body %}
-  <div class="ui cards" id="loan-container">
-
-  </div>
-
-  <div id="footer">
-    <div class="ui center aligned grid">
-      <div class="eight wide centered column" id="footer-message">
-        <div class="ui loader" id="loan-preload"></div>
-      </div>
-    </div>
-  </div>
-
-  <script>
-      var skip = 0;
-      var limit = 10;
-      var loadMore = function () {
-          skip = $('.card').length;
-          $('#loan-preload').addClass('active');
-          return $.ajax({
-              url: '/admin/loans/load?skip=' + skip + '&limit=' + limit
-          }).then(function (r) {
-              if (r.indexOf('card') === -1) {
-                  $('#footer-message').hide();
-              }
-              $('#loan-container').append(r);
-              $('#loan-container').visibility({
-                  onPassed: {
-                      '60%': loadMore
-                  }
-              });
-          });
-      };
-      loadMore().then(loadMore);
-  </script>
+  {% with id = 'loans' + path.split('/')[-1], url = path + '/load' %}
+    {% include "components/loading-item-list.html" %}
+  {% endwith %}
 {% endblock %}

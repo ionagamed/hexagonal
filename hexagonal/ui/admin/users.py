@@ -1,6 +1,7 @@
 from hexagonal import app, User, auth, db
 from flask import request, redirect, render_template
 from hexagonal.auth.permissions import *
+from hexagonal.ui.helpers import loading_list
 
 
 @app.route('/admin/users')
@@ -12,12 +13,7 @@ def users_index():
 @app.route('/admin/users/load')
 @required_permission(Permission.manage)
 def users_index_load():
-    limit = int(request.args.get('limit', 20))
-    if 'skip' in request.args:
-        items = User.query.offset(request.args['skip']).limit(limit)
-    else:
-        items = User.query.limit(limit).all()
-    return render_template('components/item-list.html', type='user', headless=True, items=items)
+    return render_template('components/item-list.html', type='user', headless=True, items=loading_list(User.query))
 
 
 @app.route('/admin/users/new')

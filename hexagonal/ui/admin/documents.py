@@ -1,7 +1,7 @@
 from hexagonal import app, db, AVMaterial, JournalArticle
 from flask import render_template, redirect, request
 from hexagonal import Document, Book, DocumentCopy
-from hexagonal.ui.helpers import comma_to_list
+from hexagonal.ui.helpers import comma_to_list, loading_list
 from hexagonal.auth.permissions import required_permission, Permission
 
 
@@ -15,12 +15,8 @@ def document_index():
 @app.route('/admin/documents/load')
 @required_permission(Permission.manage)
 def document_index_load():
-    limit = int(request.args.get('limit', 20))
-    if 'skip' in request.args:
-        items = Document.query.offset(request.args['skip']).limit(limit)
-    else:
-        items = Document.query.limit(limit).all()
-    return render_template('components/item-list.html', type='document', headless=True, items=items)
+    return render_template('components/item-list.html', type='document', headless=True,
+                           items=loading_list(Document.query))
 
 
 @app.route('/admin/documents/<int:document_id>/delete')
@@ -105,7 +101,8 @@ def document_edit(document_id):
             dc = DocumentCopy(document=doc)
     elif copy_delta < 0:
         if -copy_delta <= len(doc.get_available_copies()):
-            dcs = DocumentCopy.query.filter(DocumentCopy.document == doc, DocumentCopy.loan == None).limit(-copy_delta).all()
+            dcs = DocumentCopy.query.filter(DocumentCopy.document == doc, DocumentCopy.loan == None).limit(
+                -copy_delta).all()
             for dc in dcs:
                 db.session.delete(dc)
             db.session.commit()

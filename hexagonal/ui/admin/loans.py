@@ -2,29 +2,32 @@ from hexagonal import app, Loan, db, User, DocumentCopy
 from flask import request, render_template, redirect
 import datetime
 from hexagonal.auth.permissions import *
+from hexagonal.ui.helpers import loading_list
 
 
 @app.route('/admin/loans')
 @required_permission(Permission.manage)
 def loans_index():
-    return render_template('admin/loans/index.html',  path='/admin/loans')
+    return render_template('admin/loans/index.html', path='/admin/loans')
 
 
 @app.route('/admin/loans/load')
 @required_permission(Permission.manage)
 def loan_index_load():
-    limit = int(request.args.get('limit', 20))
-    if 'skip' in request.args:
-        items = Loan.query.offset(request.args['skip']).limit(limit)
-    else:
-        items = Loan.query.limit(limit).all()
-    return render_template('components/item-list.html', type='loan', headless=True, items=items)
+    return render_template('components/item-list.html', type='loan', headless=True, items=loading_list(Loan.query))
 
 
 @app.route('/admin/loans/requested')
 @required_permission(Permission.manage)
 def loans_requested_index():
-    return render_template('admin/loans/index.html', loans=Loan.get_requested_loans(), path='/admin/loans/requested')
+    return render_template('admin/loans/index.html', path='/admin/loans/requested')
+
+
+@app.route('/admin/loans/requested/load')
+@required_permission(Permission.manage)
+def loans_requested_load():
+    return render_template('components/item-list.html', type='loan', headless=True,
+                           items=loading_list(Loan.requested_loan_query()))
 
 
 @app.route('/admin/loans/overdue')
@@ -33,10 +36,23 @@ def loans_overdue_index():
     return render_template('admin/loans/index.html', loans=Loan.get_overdue_loans(), path='/admin/loans/overdue')
 
 
+@app.route('/admin/loans/overdue/load')
+def loans_overdue_load():
+    return render_template('components/item-list.html', type='loan', headless=True,
+                           items=loading_list(Loan.overdue_loan_query()))
+
+
 @app.route('/admin/loans/returned')
 @required_permission(Permission.manage)
 def loans_returned_index():
     return render_template('admin/loans/index.html', loans=Loan.get_returned_loans(), path='/admin/loans/returned')
+
+
+@app.route('/admin/loans/returned/load')
+@required_permission(Permission.manage)
+def loans_returned_load():
+    return render_template('components/item-list.html', type='loan', headless=True,
+                           items=loading_list(Loan.returned_loan_query()))
 
 
 @app.route('/admin/loans/<int:loan_id>/confirm')
@@ -77,5 +93,3 @@ def loan_forge():
     copy_id = request.args['copy']
     user.checkout(DocumentCopy.query.filter(DocumentCopy.id == copy_id).first())
     return redirect(request.referrer)
-
-
