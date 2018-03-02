@@ -7,7 +7,18 @@ from hexagonal.auth.permissions import *
 @app.route('/admin/loans')
 @required_permission(Permission.manage)
 def loans_index():
-    return render_template('admin/loans/index.html', loans=Loan.query.all(), path='/admin/loans')
+    return render_template('admin/loans/index.html',  path='/admin/loans')
+
+
+@app.route('/admin/loans/load')
+@required_permission(Permission.manage)
+def loan_index_load():
+    limit = int(request.args.get('limit', 20))
+    if 'skip' in request.args:
+        items = Loan.query.offset(request.args['skip']).limit(limit)
+    else:
+        items = Loan.query.limit(limit).all()
+    return render_template('components/item-list.html', type='loan', headless=True, items=items)
 
 
 @app.route('/admin/loans/requested')

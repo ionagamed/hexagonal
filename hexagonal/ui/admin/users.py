@@ -6,11 +6,18 @@ from hexagonal.auth.permissions import *
 @app.route('/admin/users')
 @required_permission(Permission.manage)
 def users_index():
-    if 'search' in request.args:
-        users = User.fuzzy_search(request.args['search'])
+    return render_template('admin/users/index.html', path='/admin/users')
+
+
+@app.route('/admin/users/load')
+@required_permission(Permission.manage)
+def users_index_load():
+    limit = int(request.args.get('limit', 20))
+    if 'skip' in request.args:
+        items = User.query.offset(request.args['skip']).limit(limit)
     else:
-        users = User.query.all()
-    return render_template('admin/users/index.html', users=users, path='/admin/users')
+        items = User.query.limit(limit).all()
+    return render_template('components/item-list.html', type='user', headless=True, items=items)
 
 
 @app.route('/admin/users/new')

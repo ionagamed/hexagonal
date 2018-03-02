@@ -1,7 +1,38 @@
 {% extends "admin/layout.html" %}
 
 {% block admin_body %}
-  {% with items = users, type = 'user' %}
-    {% include "components/item-list.html" %}
-  {% endwith %}
+  <div class="ui cards" id="user-container">
+
+  </div>
+
+  <div id="footer">
+    <div class="ui center aligned grid">
+      <div class="eight wide centered column" id="footer-message">
+        <div class="ui loader" id="user-preload"></div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+      var skip = 0;
+      var limit = 10;
+      var loadMore = function () {
+          skip = $('.card').length;
+          $('#user-preload').addClass('active');
+          return $.ajax({
+              url: '/admin/users/load?skip=' + skip + '&limit=' + limit
+          }).then(function (r) {
+              if (r.indexOf('card') === -1) {
+                  $('#footer-message').hide();
+              }
+              $('#user-container').append(r);
+              $('#user-container').visibility({
+                  onPassed: {
+                      '60%': loadMore
+                  }
+              });
+          });
+      };
+      loadMore().then(loadMore);
+  </script>
 {% endblock %}

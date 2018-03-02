@@ -8,14 +8,19 @@ from hexagonal.auth.permissions import required_permission, Permission
 @app.route('/admin/documents')
 @required_permission(Permission.manage)
 def document_index():
-    if 'search' in request.args:
-        documents = Document.fuzzy_search(request.args['search'])
-    else:
-        documents = Document.query.all()
-
     return render_template('admin/documents/index.html',
-                           documents=documents,
                            path='/admin/documents' + ('/search' if 'search' in request.args else ''))
+
+
+@app.route('/admin/documents/load')
+@required_permission(Permission.manage)
+def document_index_load():
+    limit = int(request.args.get('limit', 20))
+    if 'skip' in request.args:
+        items = Document.query.offset(request.args['skip']).limit(limit)
+    else:
+        items = Document.query.limit(limit).all()
+    return render_template('components/item-list.html', type='document', headless=True, items=items)
 
 
 @app.route('/admin/documents/<int:document_id>/delete')

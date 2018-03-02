@@ -1,7 +1,38 @@
 {% extends "admin/layout.html" %}
 
 {% block admin_body %}
-  {% with items = documents, type = 'document' %}
-    {% include "components/item-list.html" %}
-  {% endwith %}
+  <div class="ui cards" id="document-container">
+
+  </div>
+
+  <div id="footer">
+    <div class="ui center aligned grid">
+      <div class="eight wide centered column" id="footer-message">
+        <div class="ui loader" id="document-preload"></div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+      var skip = 0;
+      var limit = 10;
+      var loadMore = function () {
+          skip = $('.card').length;
+          $('#document-preload').addClass('active');
+          return $.ajax({
+              url: '/admin/documents/load?skip=' + skip + '&limit=' + limit
+          }).then(function (r) {
+              if (r.indexOf('card') === -1) {
+                  $('#footer-message').hide();
+              }
+              $('#document-container').append(r);
+              $('#document-container').visibility({
+                  onPassed: {
+                      '60%': loadMore
+                  }
+              });
+          });
+      };
+      loadMore().then(loadMore);
+  </script>
 {% endblock %}
