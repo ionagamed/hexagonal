@@ -8,6 +8,10 @@ from hexagonal.auth.permissions import required_permission, Permission
 @app.route('/admin/documents')
 @required_permission(Permission.manage)
 def document_index():
+    """
+    Default index view for documents.
+    """
+
     return render_template('admin/documents/index.html',
                            path='/admin/documents' + ('/search' if 'search' in request.args else ''))
 
@@ -15,6 +19,11 @@ def document_index():
 @app.route('/admin/documents/load')
 @required_permission(Permission.manage)
 def document_index_load():
+    """
+    Loader page for dynamic loading of documents.
+    Returns already rendered item-list, but headless.
+    """
+
     return render_template('components/item-list.html', type='document', headless=True,
                            items=loading_list(Document.query))
 
@@ -22,6 +31,10 @@ def document_index_load():
 @app.route('/admin/documents/<int:document_id>/delete')
 @required_permission(Permission.manage)
 def document_delete(document_id):
+    """
+    Delete a document by id.
+    """
+
     doc = Document.query.filter(Document.id == document_id).first_or_404()
     db.session.delete(doc)
     db.session.commit()
@@ -31,12 +44,23 @@ def document_delete(document_id):
 @app.route('/admin/documents/new', methods=['GET'])
 @required_permission(Permission.manage)
 def document_new_view():
+    """
+    New document view.
+    """
+
     return render_template('admin/documents/new.html', path='/admin/documents/new')
 
 
 @app.route('/admin/documents/new', methods=['POST'])
 @required_permission(Permission.manage)
 def document_new():
+    """
+    Create a new document from form data.
+    Takes the type into consideration,
+    if type is not one of {'book', 'av', 'article'} (yeah, it is different, maybe fix later),
+    then nothing will be done, and it will probably fail with an error.
+    """
+
     t = request.form['type']
     if t == 'book':
         doc = Book(
@@ -80,6 +104,10 @@ def document_new():
 @app.route('/admin/documents/<int:document_id>/edit')
 @required_permission(Permission.manage)
 def document_edit_view(document_id):
+    """
+    View for editing a document.
+    """
+
     doc = Document.query.filter(Document.id == document_id).first_or_404()
     return render_template('admin/documents/edit.html', document=doc, path='/admin/documents')
 
@@ -87,6 +115,15 @@ def document_edit_view(document_id):
 @app.route('/admin/documents/<int:document_id>/edit', methods=['POST'])
 @required_permission(Permission.manage)
 def document_edit(document_id):
+    """
+    Actual edit for document.
+    Does just replace the fields with the supplied ones WITH ONE EXCEPTION (!):
+    copy_delta - just an integer:
+        - if  0, does nothing.
+        - if  N, adds blank copies of the document.
+        - if -N, removes all unused copies from the db.
+    """
+
     doc = Document.query.filter(Document.id == document_id).first_or_404()
     doc.title = request.form['title']
     doc.price = request.form['price']
@@ -100,7 +137,7 @@ def document_edit(document_id):
         for _ in range(copy_delta):
             dc = DocumentCopy(document=doc)
     elif copy_delta < 0:
-        if -copy_delta <= len(doc.get_available_copies()):
+        if -copy_delta <= len(doc.available_copies):
             dcs = DocumentCopy.query.filter(DocumentCopy.document == doc, DocumentCopy.loan == None).limit(
                 -copy_delta).all()
             for dc in dcs:
@@ -121,5 +158,8 @@ def document_edit(document_id):
 @app.route('/admin/documents/<int:document_id>')
 @required_permission(Permission.manage)
 def document_view(document_id):
+    """
+    Detail view for a document.
+    """
     doc = Document.query.filter(Document.id == document_id).first_or_404()
     return render_template('admin/documents/view.html', document=doc)

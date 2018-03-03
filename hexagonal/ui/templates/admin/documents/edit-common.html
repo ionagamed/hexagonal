@@ -13,7 +13,7 @@
     </div>
   </div>
   <div class="five wide field">
-    <label>Copy delta ({{ document.get_available_copies() | length }} available now)</label>
+    <label>Copy delta ({{ document.available_copies | length }} available now)</label>
     <input type="number" name="copy_delta" placeholder="Use +N to add or -N to remove">
   </div>
   <div class="eight wide field">

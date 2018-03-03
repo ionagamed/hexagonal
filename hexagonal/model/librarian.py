@@ -11,4 +11,12 @@ class Librarian(User):
     }
 
     def has_permission(self, permission):
+        """
+        Whether this user has the required permission.
+        Librarian has all permissions.
+
+        :param permission: permission to be checked.
+        :return: whether the current user has the required permission.
+        """
+
         return True

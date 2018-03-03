@@ -26,7 +26,7 @@ db.session.commit()
 ionagamed = StudentPatron.query.filter(StudentPatron.login == 'ionagamed').first()
 
 books = []
-for i in range(1, 100):
+for i in range(1, 10):
     b = Book.query.filter(Book.title == 'Avatar, Chapter {}'.format(i)).first()
     if b is None:
         b = Book(

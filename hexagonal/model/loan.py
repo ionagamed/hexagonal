@@ -54,42 +54,100 @@ class Loan(db.Model):
 
     @staticmethod
     def overdue_loan_query():
+        """
+        Get the query for overdue loans.
+
+        :return: query for overdue loans.
+        """
+
         return Loan.query.filter(Loan.status == Loan.Status.approved, Loan.due_date < datetime.date.today())
 
     @staticmethod
     def get_overdue_loans():
+        """
+        Get overdue loans.
+
+        :return: list.
+        """
+
         return Loan.overdue_loan_query().all()
 
     @staticmethod
     def get_overdue_loan_count():
+        """
+        Get the amount of overdue loans.
+
+        :return: amount.
+        """
+
         return Loan.overdue_loan_query().count()
 
     @staticmethod
     def requested_loan_query():
+        """
+        Get the query for requested loans.
+
+        :return: query for requested loans.
+        """
+
         return Loan.query.filter(Loan.status == Loan.Status.requested)
 
     @staticmethod
     def get_requested_loans():
+        """
+        Get requested loans.
+
+        :return: list.
+        """
+
         return Loan.requested_loan_query().all()
 
     @staticmethod
     def get_requested_loan_count():
+        """
+        Get the amount of requested loans.
+
+        :return: amount.
+        """
+
         return Loan.requested_loan_query().count()
 
     @staticmethod
     def returned_loan_query():
+        """
+        Get the query for returned loans.
+
+        :return: query for returned loans.
+        """
+
         return Loan.query.filter(Loan.status == Loan.Status.returned)
 
     @staticmethod
     def get_returned_loans():
+        """
+        Get returned loans.
+
+        :return: list.
+        """
+
         return Loan.returned_loan_query().all()
 
     @staticmethod
     def get_returned_loan_count():
+        """
+        Get the amount of returned loans.
+
+        :return: amount.
+        """
+
         return Loan.returned_loan_query().count()
 
     def overdue(self):
-        """ Check whether this loan is overdue. """
+        """
+        Check whether this loan is overdue.
+
+        :return: whether this loan is overdue.
+        """
 
         return datetime.date.today() >= self.due_date
 

@@ -101,6 +101,11 @@ class Patron(User):
         return Loan.query.filter(Loan.user_id == self.id, Loan.status == Loan.Status.approved)
 
     def get_loans(self):
+        """
+        Get all approved loans for this patron.
+
+        :return: list.
+        """
         return self.loan_query().all()
 
     def get_loan_count(self):

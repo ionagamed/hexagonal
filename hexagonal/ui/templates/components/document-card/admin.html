@@ -30,7 +30,7 @@
   <div class="extra content">
     <div class="right floated">
       <a href="/admin/documents/{{ document.id }}#copies">
-        {{ document.get_available_copies() | length }} copies left
+        {{ document.available_copies | length }} copies left
       </a>
     </div>
     {{ document.price }}₽

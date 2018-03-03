@@ -3,6 +3,12 @@ from hexagonal import User
 
 
 class Permission(enum.Enum):
+    """
+    Permission enum.
+    Users can have any subset of these, and routes are managed by these.
+    See :py:func:`hexagonal.auth.permissions.required_permission`
+    """
+
     checkout = 'checkout'
     manage = 'manage'
 
@@ -13,7 +19,7 @@ def required_permission(permission):
     Must not be used without a route.
 
     :param permission: required permission
-    :return:
+    :return decorated route function
     """
 
     if not isinstance(permission, Permission):

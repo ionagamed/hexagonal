@@ -1,16 +1,8 @@
-import enum
-
-from hexagonal import app, db, env
+from hexagonal import app, db
 from hashlib import sha256
 from itsdangerous import TimedJSONWebSignatureSerializer
 from hexagonal.model.user import User
 
-
-ROLE_ACCESS_LEVEL = {
-    'student-patron': 1,
-    'faculty-patron': 2,
-    'librarian':      3
-}
 
 if 'AUTH_SECRET' not in app.config:
     raise EnvironmentError('No AUTH_SECRET in config')
@@ -25,6 +17,7 @@ def encrypt_password(password):
     :param password: to be encrypted
     :return: the encrypted password
     """
+
     return sha256(password.encode('utf-8')).hexdigest()  # yeah, i know
 
 
@@ -36,6 +29,7 @@ def change_password(login_or_id, new_password):
     :param new_password: new password for the user
     :return: None
     """
+
     password = encrypt_password(new_password)
     if isinstance(login_or_id, str):
         user = User.query.filter(User.login == login_or_id).first()
@@ -77,6 +71,7 @@ def login_and_generate_token(login, password):
     :param password: password of trying user
     :return: new generated token (see :py:func:`decode_token`)
     """
+
     password = encrypt_password(password)
     account = User.query.filter_by(login=login, password=password).first()
     if account is None:
@@ -97,11 +92,16 @@ def decode_token(token):
     :param token: to be decoded
     :return: token data, which was embedded there
     """
+
     s = TimedJSONWebSignatureSerializer(app.config['AUTH_SECRET'], expires_in=token_max_age)
     return s.loads(token)
 
 
 def create_root():
+    """
+    Create a default root user, if not exists
+    """
+
     root = User.query.filter_by(login=app.config['ROOT_LOGIN']).first()
     if root is None:
         root = register_account(

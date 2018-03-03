@@ -31,11 +31,11 @@
   </div>
   <div class="extra content">
     <div class="right floated">
-      {{ document.get_available_copies() | length }} copies left
+      {{ document.available_copies | length }} copies left
     </div>
     {{ document.price }}₽
   </div>
-  {% if document.get_available_copies() | length > 0 %}
+  {% if document.available_copies | length > 0 %}
     {% if claimed %}
       <div class="ui blue bottom attached disabled button">
         <i class="times icon"></i>

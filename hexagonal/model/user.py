@@ -50,4 +50,11 @@ class User(db.Model, Searchable):
     fuzzy_search_fields = ['name', 'address', 'phone']
 
     def has_permission(self, permission):
+        """
+        Whether this user has the required permission.
+
+        :param permission: permission to be checked.
+        :return: whether the current user has the required permission.
+        """
+
         return permission in self.permissions

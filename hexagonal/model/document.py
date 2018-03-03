@@ -1,8 +1,7 @@
 from hexagonal import db
 from hexagonal.model.document_copy import DocumentCopy
-from hexagonal.model.loan import Loan
-from sqlalchemy import or_
 from hexagonal.model.searchable import Searchable
+from sqlalchemy.ext.hybrid import hybrid_property
 
 
 class Document(db.Model, Searchable):
@@ -42,7 +41,13 @@ class Document(db.Model, Searchable):
     fuzzy_search_fields = ['title', 'type']
     fuzzy_array_search_fields = ['keywords', 'authors']
 
-    def get_available_copies(self):
+    @hybrid_property
+    def available_copies(self):
+        """
+        Hybrid property for currently available copies of this document
+        :return:
+        """
+
         return DocumentCopy.query.filter(
-            DocumentCopy.loan == None, DocumentCopy.document == self
+            DocumentCopy.document == self, DocumentCopy.loan == None
         ).all()
