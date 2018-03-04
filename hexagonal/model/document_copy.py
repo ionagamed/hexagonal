@@ -22,3 +22,4 @@ class DocumentCopy(db.Model):
 
     loan = db.relationship('Loan', back_populates='document_copy', uselist=False)
     """ Relation to current loan. May be None when document is available. """
+

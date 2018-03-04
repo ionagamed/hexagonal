@@ -3,12 +3,12 @@ import datetime
 import pytest
 
 from hexagonal import db, FacultyPatron
-from hexagonal.functions.book import create_book
+#from hexagonal.functions.book import create_book
 from tests.common import call, root_login, register_test_account, create_instance, reload_db
 from hexagonal.model.book import Book
 from hexagonal.model.document_copy import DocumentCopy
 from hexagonal.model.student_patron import StudentPatron
-from hexagonal.model.author import Author
+#from hexagonal.model.author import Author
 # from hexagonal.functions import Book
 
 
