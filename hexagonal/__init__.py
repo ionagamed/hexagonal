@@ -48,7 +48,8 @@ db.create_all()
 from hexagonal.auth import create_root
 create_root()
 
-from hexagonal import test_data
+if env != 'testing':
+    from hexagonal import test_data
 
 
 import hexagonal.ui

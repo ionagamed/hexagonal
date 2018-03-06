@@ -66,14 +66,18 @@ def create_instance(cls, **fields):
     return cls.query.filter(cls.id == instance.id).first()
 
 
-def register_test_account(role):
+def register_test_account(role, **kwargs):
     login, password = get_login_pair()
-    return register_account(
-        login=login,
-        password=password,
-        name=login,
-        phone='123',
-        address='123',
-        card_number=123,
-        role=role
-    )
+    args = {
+        'login': login,
+        'password': password,
+        'name': login,
+        'phone': '123',
+        'address': '123',
+        'card_number': 123,
+        'role': role
+    }
+    args.update(kwargs)
+    return register_account(**args)
+
+

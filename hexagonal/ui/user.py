@@ -75,7 +75,7 @@ def user_browse_index():
 
     user = User.query.filter(User.login == session['login']).first()
     documents = list(map(
-        lambda x: (x, Loan.query.with_transformation(Loan.document == x).count() > 0),
+        lambda x: (x, len(Loan.query.with_transformation(Loan.document == x).all()) > 0),
         Document.query.all()
     ))
     return render_template('user/browse.html', documents=documents, path='/user/browse', user=user)
