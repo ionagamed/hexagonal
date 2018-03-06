@@ -112,4 +112,65 @@ def test_tc4_libraria_checks_informarion_of_already_deleted_and_existing_users()
 #     docs, users = create_a_system_of_the_second_state()
 #     book1_copy_set = docs[0]
 #     patron = User.query.filter(User.name == 'Nadia Teixeira')
-#     patron.checkout(book1_copy_set[0])
+#
+#     with pytest.raises(ValueError):
+#         patron.checkout(book1_copy_set[0])
+
+# def test_tc6_patrons_checking_out_books_and_all_information_is_right():
+#     docs, users = create_a_system_of_the_second_state()
+#     p1 = users[0]
+#     p3 = users[2]
+#     book1_copies = docs[0]
+#     p1.checkout(book1_copies[0])
+#     p3.checkout(book1_copies[1])
+#     # здесь должна быть адресация к книге которую взял ПОЛЬЗОВАТЕЛЬ и к дате ее возврата но было 2 экза. мозг устал.
+#     # а по факту я просто такая ооо книжка хмммм дайте мне дату так так так что тут у нас
+#     date_of_returning_book_by_p1 = book1_copies[0].loan.due_date
+#     date_of_returning_book_by_p3 = book1_copies[1].loan.due_date
+#
+#     # p1
+#     # (document checked-out, due date):
+#     # [(b1, April 1st)]
+#     # p3
+#     # [(document checked-out, due date)]:
+#     # [(b2, March 18th)]
+#
+#     assert date_of_returning_book_by_p1 == 1 and date_of_returning_book_by_p3 == 2
+#
+# def test_tc7_patrons_checing_out_books_and_return_date_is_right():
+#     docs, users = create_a_system_of_the_first_state()
+#     p1 = users[0]
+#     p2 = users[1]
+#     book1_copies = docs[0]
+#     book2_copies = docs[1]
+#     book3_copies = docs[2]
+#     av1_copies = docs[3]
+#     av2_copies = docs[4]
+#     p1.checkout(book1_copies[0])
+#     p1.checkout(book2_copies[0])
+#     p1.checkout(book3_copies[0])
+#     p1.checkout(av1_copies[0])
+#     p2.checkout(book1_copies[1])
+#     p2.checkout(book2_copies[1])
+#     p2.checkout(av2_copies[0])
+#
+#     assert information_of_boths_are_correct
+#
+# def test_tc8_checking_is_date_of_overduing_right():
+#     docs, users = create_a_system_of_first_test_state()
+#     p1 = users[0]
+#     p2 = users[1]
+#     book1_copies = docs[0]
+#     book2_copies = docs[1]
+#     book3_copies = docs[2]
+#     av1_copies = docs[3]
+#     av2_copies = docs[4]
+#     p1.checkout(book1_copies[0])
+#     book1_copies[0].date_of_checkout = february 9
+#     p1.checkout(book2_copies[0])
+#     p2.checkout(book1_copies[1])
+#     p2.checkout(av1_copies[0])
+#     # тратата все такое
+#     # здесь еще из patron get overdue period date
+#
+#     assert p1.overdue[book2_copies[0]] == 4 days (tomorrow will be 5) and p2.overdue[book1_copies[0]] == (8 + 1) and p2.overdue[av1] == 2+1
