@@ -1,5 +1,6 @@
 from hexagonal.model.user import User
 from hexagonal.model.document_copy import DocumentCopy
+from hexagonal.model.book import Book
 from hexagonal.model.loan import Loan
 from hexagonal.auth.permissions import Permission
 import datetime
@@ -82,6 +83,10 @@ class Patron(User):
                 document_copy.loan.user.name,
                 document_copy.loan.user.id
             ))
+
+        if isinstance(document_copy.document, Book) and document_copy.document.reference:
+            raise ValueError(
+                'document {} (id {}) is a reference book'.format(document_copy.document.title, document_copy.id))
 
         document_copy.loan = Loan(user_id=self.id, document_copy_id=document_copy.id)
         document_copy.loan.due_date = datetime.date.today() + self.get_checkout_period_for(document_copy.document)
