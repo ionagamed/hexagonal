@@ -12,7 +12,6 @@ from hexagonal import User
 
 
 def create_a_system_of_first_test_state():
-    l = register_test_account(Librarian)
 
     b1 = create_instance(Book, title='Introduction to Algorithms',
                          authors=['Thomas H. Cormen', ' Charles E. Leiserson', 'Ronald L. Rivest', 'Clifford Stein'],
@@ -64,7 +63,7 @@ def create_a_system_of_the_second_state():
 def test_tc1__created_document_copies():
     reload_db()
     create_a_system_of_first_test_state()
-    assert DocumentCopy.query.count() == 8 and User.query.count() - 1 == 4
+    assert DocumentCopy.query.count() == 8 and User.query.count()  == 4
 
 
 def test_tc2_documents_in_system_are_5_after_removing():
@@ -72,7 +71,7 @@ def test_tc2_documents_in_system_are_5_after_removing():
 
     create_a_system_of_the_second_state()
 
-    assert DocumentCopy.query.count() == 5 and User.query.count() - 1 == 3
+    assert DocumentCopy.query.count() == 5 and User.query.count() == 3
 
 
 def test_tc3_librarian_checks_and_returned_information_is_right():
@@ -114,26 +113,50 @@ def test_tc4_libraria_checks_informarion_of_already_deleted_and_existing_users()
 #     with pytest.raises(ValueError):
 #         patron.checkout(book1_copy_set[0])
 
-# def test_tc6_patrons_checking_out_books_and_all_information_is_right():
-#     docs, users = create_a_system_of_the_second_state()
-#     p1 = users[0]
-#     p3 = users[2]
-#     book1_copies = docs[0]
-#     p1.checkout(book1_copies[0])
-#     p3.checkout(book1_copies[1])
-#     # здесь должна быть адресация к книге которую взял ПОЛЬЗОВАТЕЛЬ и к дате ее возврата но было 2 экза. мозг устал.
-#     # а по факту я просто такая ооо книжка хмммм дайте мне дату так так так что тут у нас
-#     date_of_returning_book_by_p1 = book1_copies[0].loan.due_date
-#     date_of_returning_book_by_p3 = book1_copies[1].loan.due_date
-#
-#     # p1
-#     # (document checked-out, due date):
-#     # [(b1, April 1st)]
-#     # p3
-#     # [(document checked-out, due date)]:
-#     # [(b2, March 18th)]
-#
-#     assert date_of_returning_book_by_p1 == 1 and date_of_returning_book_by_p3 == 2
+def test_tc6_patrons_checking_out_books_and_all_information_is_right():
+
+    reload_db()
+
+    b1 = create_instance(Book, title='Introduction to Algorithms',
+                         authors=['Thomas H. Cormen', ' Charles E. Leiserson', 'Ronald L. Rivest', 'Clifford Stein'],
+                         publisher='MIT Press', publishment_year=2009, edition=3)
+    copies_b1 = [create_instance(DocumentCopy, document=b1) for i in range(3)]
+
+    b2 = create_instance(Book, title='Design Patterns: Elements of Reusable Object-Oriented Software',
+                         authors=['Erich Gamma', 'Ralph Johnson', ' John Vlissides', 'Richard Helm'],
+                         publisher='Addison-Wesley Professional', publishment_year=2003, edition=1, bestseller=True)
+    copies_b2 = [create_instance(DocumentCopy, document=b2) for i in range(2)]
+
+    b3 = create_instance(Book, title='The Mythical Man-month', authors=['Brooks,Jr', 'Frederick P'],
+                         publisher='Addison-Wesley Longman Publishing Co., Inc.', publishment_year=1995, edition=2,
+                         reference=True)
+    copies_b3 = create_instance(DocumentCopy, document=b3)
+
+    av1 = create_instance(AVMaterial, title='Null References: The Billion Dollar Mistake', authors='Tony Hoare')
+    av1_copy = create_instance(DocumentCopy, document=av1)
+    av2 = create_instance(AVMaterial, title='NInformation Entropy', authors='Claude Shannon')
+    av2_copy = create_instance(DocumentCopy, document=av2)
+
+    p1 = register_test_account(FacultyPatron, name='Sergey Afonso', address='Via Margutta, 3', phone='30001',
+                               card_number=1010)
+    p2 = register_test_account(StudentPatron, name='Nadia Teixeira', address='Via Sacra, 13', phone='30002',
+                               card_number=1011)
+    p3 = register_test_account(StudentPatron, name='Elvira Espindola', address='Via del Corso, 22', phone='30003',
+                               card_number=1100)
+
+
+    p1_b1_loan = p1.checkout(copies_b1[0])
+    p3_b1_loan  = p3.checkout(copies_b1[1])
+
+    # здесь должна быть адресация к книге которую взял ПОЛЬЗОВАТЕЛЬ и к дате ее возврата но было 2 экза. мозг устал.
+    # а по факту я просто такая ооо книжка хмммм дайте мне дату так так так что тут у нас
+
+    date_of_returning_book_by_p1 = p1_b1_loan.due_date
+    date_of_returning_book_by_p3 = p3_b1_loan.due_date
+
+
+    assert date_of_returning_book_by_p1 == datetime.date(2018, 4, 4) and date_of_returning_book_by_p3 == datetime.date(2018, 3, 28)
+
 #
 # def test_tc7_patrons_checing_out_books_and_return_date_is_right():
 #     docs, users = create_a_system_of_the_first_state()
