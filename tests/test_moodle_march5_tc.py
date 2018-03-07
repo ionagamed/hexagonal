@@ -12,7 +12,6 @@ from hexagonal import User
 
 
 def create_a_system_of_first_test_state():
-
     b1 = create_instance(Book, title='Introduction to Algorithms',
                          authors=['Thomas H. Cormen', ' Charles E. Leiserson', 'Ronald L. Rivest', 'Clifford Stein'],
                          publisher='MIT Press', publishment_year=2009, edition=3)
@@ -60,7 +59,7 @@ def create_a_system_of_the_second_state():
     return docs, users
 
 
-def test_tc1__created_document_copies():
+def test_tc1__number_of_created_document_copies_and_existing_users_is_right():
     reload_db()
     create_a_system_of_first_test_state()
     assert DocumentCopy.query.count() == 8 and User.query.count() == 4
@@ -92,7 +91,7 @@ def test_tc3_librarian_checks_and_returned_information_is_right():
     assert p3_instance.card_number == '1100'
 
 
-def test_tc4_libraria_checks_informarion_of_already_deleted_and_existing_users():
+def test_tc4_librarian_checks_informartion_of_already_deleted_and_existing_users():
     reload_db()
     create_a_system_of_the_second_state()
     p2_instance = User.query.filter(User.name == 'Nadia Teixeira').first()
@@ -118,7 +117,6 @@ def test_tc5_deleted_patron_checkin_out_a_book_and_fails():
 
 
 def test_tc6_patrons_checking_out_books_and_all_information_is_right():
-
     reload_db()
 
     b1 = create_instance(Book, title='Introduction to Algorithms',
@@ -154,6 +152,12 @@ def test_tc6_patrons_checking_out_books_and_all_information_is_right():
     db.session.delete(p2)
     db.session.commit()
 
+    # users, docs = create_a_system_of_the_second_state()
+    # p1 = users[0]
+    # p3 = users[2]
+    # copies_b1 = docs[0]
+    # copies_b2 = docs[1]
+
     p1_b1_loan = p1.checkout(copies_b1[2])
     p3_b2_loan = p3.checkout(copies_b2[1])
 
@@ -171,61 +175,44 @@ def test_tc6_patrons_checking_out_books_and_all_information_is_right():
     assert p3_b2_loan.due_date == datetime.date(2018, 3, 21)
 
 
-def test_tc7_patrons_checing_out_books_and_return_date_is_right():
+
+def test_tc8_checking_is_date_of_overduing_right():
     reload_db()
-    docs, users = create_a_system_of_first_test_state()
-    p1 = users[0]
-    p2 = users[1]
-    book1_copies = docs[0]
-    book2_copies = docs[1]
-    book3_copies = docs[2]
-    av1_copies = docs[3]
-    av2_copies = docs[4]
+    b1 = create_instance(Book, title='Introduction to Algorithms',
+                         authors=['Thomas H. Cormen', ' Charles E. Leiserson', 'Ronald L. Rivest', 'Clifford Stein'],
+                         publisher='MIT Press', publishment_year=2009, edition=3)
+    copies_b1 = [create_instance(DocumentCopy, document=b1) for i in range(3)]
 
-    p1.checkout(book1_copies[0])
-    p1.checkout(book2_copies[0])
-    with pytest.raises(ValueError):
-        p1.checkout(book3_copies[0])
-    p1.checkout(av1_copies[0])
-    p2.checkout(book1_copies[1])
-    p2.checkout(book2_copies[1])
-    p2.checkout(av2_copies[0])
+    b2 = create_instance(Book, title='Design Patterns: Elements of Reusable Object-Oriented Software',
+                         authors=['Erich Gamma', 'Ralph Johnson', ' John Vlissides', 'Richard Helm'],
+                         publisher='Addison-Wesley Professional', publishment_year=2003, edition=1, bestseller=True)
+    copies_b2 = [create_instance(DocumentCopy, document=b2) for i in range(2)]
 
-    p1_docs = list(map(
-        lambda x: (x.document.id, x.due_date),
-        p1.get_borrowed_documents()
-    ))
+    b3 = create_instance(Book, title='The Mythical Man-month', authors=['Brooks,Jr', 'Frederick P'],
+                         publisher='Addison-Wesley Longman Publishing Co., Inc.', publishment_year=1995, edition=2,
+                         reference=True)
+    copies_b3 = [create_instance(DocumentCopy, document=b3)]
 
-    p2_docs = list(map(
-        lambda x: (x.document.id, x.due_date),
-        p2.get_borrowed_documents()
-    ))
+    av1 = create_instance(AVMaterial, title='Null References: The Billion Dollar Mistake', authors='Tony Hoare')
+    av1_copy = [create_instance(DocumentCopy, document=av1)]
+    av2 = create_instance(AVMaterial, title='NInformation Entropy', authors='Claude Shannon')
+    av2_copy = [create_instance(DocumentCopy, document=av2)]
 
-    print(p1_docs)
+    p1 = register_test_account(FacultyPatron, name='Sergey Afonso', address='Via Margutta, 3', phone='30001',
+                               card_number=1010)
+    p2 = register_test_account(StudentPatron, name='Nadia Teixeira', address='Via Sacra, 13', phone='30002',
+                               card_number=1011)
+    p3 = register_test_account(StudentPatron, name='Elvira Espindola', address='Via del Corso, 22', phone='30003',
+                               card_number=1100)
 
-    assert p1_docs == [
-        (
-            book1_copies[5].id,
+    loan_p1_b1 = p1.checkout(copies_b1[0])
 
-        )
-    ]
+    loan_p1_b1.due_date = datetime.date(2018, 2, 9) + (loan_p1_b1.due_date - datetime.date.today())
+    loan_p1_b2 = p1.checkout(copies_b2[0])
+    loan_p1_b2.due_date = datetime.date(2018, 2, 2) + (loan_p1_b2.due_date - datetime.date.today())
+    loan_p2_b1 = p2.checkout(copies_b1[1])
+    loan_p2_b1.due_date = datetime.date(2018, 2, 5) + (loan_p2_b1.due_date - datetime.date.today())
+    loan_p2_av1 = p2.checkout(av1_copy[0])
+    loan_p2_av1.due_date = datetime.date(2018, 2, 17) + (loan_p2_av1.due_date - datetime.date.today())
 
-
-# def test_tc8_checking_is_date_of_overduing_right():
-#     docs, users = create_a_system_of_first_test_state()
-#     p1 = users[0]
-#     p2 = users[1]
-#     book1_copies = docs[0]
-#     book2_copies = docs[1]
-#     book3_copies = docs[2]
-#     av1_copies = docs[3]
-#     av2_copies = docs[4]
-#     p1.checkout(book1_copies[0])
-#     book1_copies[0].date_of_checkout = february 9
-#     p1.checkout(book2_copies[0])
-#     p2.checkout(book1_copies[1])
-#     p2.checkout(av1_copies[0])
-#     # тратата все такое
-#     # здесь еще из patron get overdue period date
-#
-#     assert p1.overdue[book2_copies[0]] == 4 days (tomorrow will be 5) and p2.overdue[book1_copies[0]] == (8 + 1) and p2.overdue[av1] == 2+1
+    assert loan_p1_b2.overdue_days() - 0 == 5 and loan_p2_b1.overdue_days() - 0 == 9 and loan_p2_av1.overdue_days() - 0 == 4

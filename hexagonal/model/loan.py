@@ -151,3 +151,16 @@ class Loan(db.Model):
 
         return datetime.date.today() >= self.due_date
 
+    def overdue_days(self):
+        """
+        Gives number of overdued days of loan.
+
+        :return: number of days
+        """
+
+        if self.overdue():
+            delta = datetime.date.today() - self.due_date
+            return ((delta.total_seconds()/60)/60)/24
+
+
+
