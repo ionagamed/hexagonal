@@ -98,12 +98,12 @@ def test_tc4_libraria_checks_informarion_of_already_deleted_and_existing_users()
     p2_instance = User.query.filter(User.name == 'Nadia Teixeira').first()
     p3_instance = User.query.filter(User.name == 'Elvira Espindola').first()
 
-    information_of_p3_is_right = False
-
-    if (
-            p3_instance.name == 'Elvira Espindola' and p3_instance.address == 'Via del Corso, 22' and p3_instance.phone == '30003' and p3_instance.card_number == '1100' and p3_instance.role == 'student-patron'):
-        information_of_p3_is_right = True
-    assert information_of_p3_is_right and p2_instance == None
+    assert p2_instance is None
+    assert p3_instance.name == 'Elvira Espindola'
+    assert p3_instance.address == 'Via del Corso, 22'
+    assert p3_instance.phone == '30003'
+    assert p3_instance.card_number == '1100'
+    assert isinstance(p3_instance, StudentPatron)
 
 # def test_tc5_deleted_patron_checkin_out_a_book_and_fails():
 #     docs, users = create_a_system_of_the_second_state()
