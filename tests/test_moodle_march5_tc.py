@@ -155,14 +155,22 @@ def test_tc6_patrons_checking_out_books_and_all_information_is_right():
     db.session.commit()
 
     p1_b1_loan = p1.checkout(copies_b1[2])
-    p3_b1_loan = p3.checkout(copies_b2[1])
+    p3_b2_loan = p3.checkout(copies_b2[1])
 
-    date_of_returning_book_by_p1 = p1_b1_loan.due_date
-    date_of_returning_book_by_p3 = p3_b1_loan.due_date
+    assert p1.name == 'Sergey Afonso'
+    assert p3.name == 'Elvira Espindola'
+    assert p1.address == 'Via Margutta, 3'
+    assert p3.address == 'Via del Corso, 22'
+    assert p1.phone == '30001'
+    assert p3.phone == '30003'
+    assert p1.card_number == '1010'
+    assert p3.card_number == '1100'
+    assert p1_b1_loan.document_copy == copies_b1[2]
+    assert p3_b2_loan.document_copy == copies_b2[1]
+    assert p1_b1_loan.due_date == datetime.date(2018, 4, 4)
+    assert p3_b2_loan.due_date == datetime.date(2018, 3, 21)
 
-    assert date_of_returning_book_by_p1 == datetime.date(2018, 4, 4) and date_of_returning_book_by_p3 == datetime.date(2018, 3, 21)
 
-#
 # def test_tc7_patrons_checing_out_books_and_return_date_is_right():
 #     docs, users = create_a_system_of_the_first_state()
 #     p1 = users[0]
