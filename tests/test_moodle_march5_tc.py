@@ -83,16 +83,14 @@ def test_tc3_librarian_checks_and_returned_information_is_right():
     p1_instance = User.query.filter(User.name == 'Sergey Afonso').first()
     p3_instance = User.query.filter(User.name == 'Elvira Espindola').first()
 
-    if (p1_instance.name == 'Sergey Afonso' and p3_instance.name == 'Elvira Espindola'):
-        names_are_right = True
-    if p1_instance.address == 'Via Margutta, 3' and p3_instance.address == 'Via del Corso, 22':
-        addresses_are_right = True
-    if p1_instance.phone == '30001' and p3_instance.phone == '30003':
-        phones_are_right = True
-    if p1_instance.card_number == '1010' and p3_instance.card_number == '1100':
-        card_numbers_are_right = True
-
-    assert names_are_right and addresses_are_right and phones_are_right and card_numbers_are_right
+    assert p1_instance.name == 'Sergey Afonso'
+    assert p3_instance.name == 'Elvira Espindola'
+    assert p1_instance.address == 'Via Margutta, 3'
+    assert p3_instance.address == 'Via del Corso, 22'
+    assert p1_instance.phone == '30001'
+    assert p3_instance.phone == '30003'
+    assert p1_instance.card_number == '1010'
+    assert p3_instance.card_number == '1100'
 
 
 def test_tc4_libraria_checks_informarion_of_already_deleted_and_existing_users():
