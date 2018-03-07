@@ -12,7 +12,6 @@ from hexagonal import User
 
 
 def create_a_system_of_first_test_state():
-
     b1 = create_instance(Book, title='Introduction to Algorithms',
                          authors=['Thomas H. Cormen', ' Charles E. Leiserson', 'Ronald L. Rivest', 'Clifford Stein'],
                          publisher='MIT Press', publishment_year=2009, edition=3)
@@ -63,7 +62,7 @@ def create_a_system_of_the_second_state():
 def test_tc1__created_document_copies():
     reload_db()
     create_a_system_of_first_test_state()
-    assert DocumentCopy.query.count() == 8 and User.query.count()  == 4
+    assert DocumentCopy.query.count() == 8 and User.query.count() == 4
 
 
 def test_tc2_documents_in_system_are_5_after_removing():
@@ -107,6 +106,7 @@ def test_tc4_libraria_checks_informarion_of_already_deleted_and_existing_users()
         information_of_p3_is_right = True
     assert information_of_p3_is_right and p2_instance == None
 
+
 # def test_tc5_deleted_patron_checkin_out_a_book_and_fails():
 #     docs, users = create_a_system_of_the_second_state()
 #     book1_copy_set = docs[0]
@@ -116,7 +116,6 @@ def test_tc4_libraria_checks_informarion_of_already_deleted_and_existing_users()
 #         patron.checkout(book1_copy_set[0])
 
 def test_tc6_patrons_checking_out_books_and_all_information_is_right():
-
     reload_db()
 
     b1 = create_instance(Book, title='Introduction to Algorithms',
@@ -146,18 +145,19 @@ def test_tc6_patrons_checking_out_books_and_all_information_is_right():
     p3 = register_test_account(StudentPatron, name='Elvira Espindola', address='Via del Corso, 22', phone='30003',
                                card_number=1100)
 
+    db.session.delete(copies_b1[0])
+    db.session.delete(copies_b1[1])
+    db.session.delete(copies_b2[0])
+    db.session.delete(p2)
+    db.session.commit()
 
-    p1_b1_loan = p1.checkout(copies_b1[0])
-    p3_b1_loan  = p3.checkout(copies_b1[1])
-
-    # здесь должна быть адресация к книге которую взял ПОЛЬЗОВАТЕЛЬ и к дате ее возврата но было 2 экза. мозг устал.
-    # а по факту я просто такая ооо книжка хмммм дайте мне дату так так так что тут у нас
+    p1_b1_loan = p1.checkout(copies_b1[2])
+    p3_b1_loan = p3.checkout(copies_b2[1])
 
     date_of_returning_book_by_p1 = p1_b1_loan.due_date
     date_of_returning_book_by_p3 = p3_b1_loan.due_date
 
-
-    assert date_of_returning_book_by_p1 == datetime.date(2018, 4, 4) and date_of_returning_book_by_p3 == datetime.date(2018, 3, 28)
+    assert date_of_returning_book_by_p1 == datetime.date(2018, 4, 4) and date_of_returning_book_by_p3 == datetime.date(2018, 3, 21)
 
 #
 # def test_tc7_patrons_checing_out_books_and_return_date_is_right():
