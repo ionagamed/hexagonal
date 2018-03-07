@@ -105,13 +105,17 @@ def test_tc4_libraria_checks_informarion_of_already_deleted_and_existing_users()
     assert p3_instance.card_number == '1100'
     assert isinstance(p3_instance, StudentPatron)
 
-# def test_tc5_deleted_patron_checkin_out_a_book_and_fails():
-#     docs, users = create_a_system_of_the_second_state()
-#     book1_copy_set = docs[0]
-#     patron = User.query.filter(User.name == 'Nadia Teixeira')
-#
-#     with pytest.raises(ValueError):
-#         patron.checkout(book1_copy_set[0])
+
+def test_tc5_deleted_patron_checkin_out_a_book_and_fails():
+    reload_db()
+    docs, users = create_a_system_of_the_second_state()
+    book1_copy_set = docs[0]
+    patron = User.query.filter(User.name == 'Nadia Teixeira').first()
+
+    with pytest.raises(AttributeError):
+        patron.checkout(book1_copy_set[0])
+    assert patron is None
+
 
 def test_tc6_patrons_checking_out_books_and_all_information_is_right():
 
