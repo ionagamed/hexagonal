@@ -8,10 +8,11 @@ from hexagonal.model.book import Book
 from hexagonal.model.document_copy import DocumentCopy
 from hexagonal import Librarian, AVMaterial
 from hexagonal.model.student_patron import StudentPatron
-from hexagonal import User
+from hexagonal import User, Loan
 
 
 def create_a_system_of_first_test_state():
+
     b1 = create_instance(Book, title='Introduction to Algorithms',
                          authors=['Thomas H. Cormen', ' Charles E. Leiserson', 'Ronald L. Rivest', 'Clifford Stein'],
                          publisher='MIT Press', publishment_year=2009, edition=3)
@@ -38,7 +39,7 @@ def create_a_system_of_first_test_state():
                                card_number=1011)
     p3 = register_test_account(StudentPatron, name='Elvira Espindola', address='Via del Corso, 22', phone='30003',
                                card_number=1100)
-    docs_set = [copies, copies_b2, copies_b3, av1_copy, av2_copy, b1, b2, b3]
+    docs_set = [copies, copies_b2, copies_b3, av1_copy, av2_copy, b1, b2, b3, av1, av2]
     users_set = [p1, p2, p3]
 
     return docs_set, users_set
@@ -59,7 +60,14 @@ def create_a_system_of_the_second_state():
     return docs, users
 
 
-def test_tc1__number_of_created_document_copies_and_existing_users_is_right():
+def approve_all_loans():
+    for loan in Loan.query.all():
+        loan.status = Loan.Status.approved
+        db.session.add(loan)
+    db.session.commit()
+
+
+def test_tc1__created_document_copies():
     reload_db()
     create_a_system_of_first_test_state()
     assert DocumentCopy.query.count() == 8 and User.query.count() == 4
@@ -117,6 +125,7 @@ def test_tc5_deleted_patron_checkin_out_a_book_and_fails():
 
 
 def test_tc6_patrons_checking_out_books_and_all_information_is_right():
+
     reload_db()
 
     b1 = create_instance(Book, title='Introduction to Algorithms',
@@ -152,12 +161,6 @@ def test_tc6_patrons_checking_out_books_and_all_information_is_right():
     db.session.delete(p2)
     db.session.commit()
 
-    # users, docs = create_a_system_of_the_second_state()
-    # p1 = users[0]
-    # p3 = users[2]
-    # copies_b1 = docs[0]
-    # copies_b2 = docs[1]
-
     p1_b1_loan = p1.checkout(copies_b1[2])
     p3_b2_loan = p3.checkout(copies_b2[1])
 
@@ -192,11 +195,21 @@ def test_tc8_checking_is_date_of_overduing_right():
                          publisher='Addison-Wesley Longman Publishing Co., Inc.', publishment_year=1995, edition=2,
                          reference=True)
     copies_b3 = [create_instance(DocumentCopy, document=b3)]
+    approve_all_loans()
+
+    p1_docs = list(map(
+        lambda x: (x.document.id, x.loan.due_date),
+        p1.get_borrowed_document_copies()
+    ))
 
     av1 = create_instance(AVMaterial, title='Null References: The Billion Dollar Mistake', authors='Tony Hoare')
     av1_copy = [create_instance(DocumentCopy, document=av1)]
     av2 = create_instance(AVMaterial, title='NInformation Entropy', authors='Claude Shannon')
     av2_copy = [create_instance(DocumentCopy, document=av2)]
+    p2_docs = list(map(
+        lambda x: (x.document.id, x.loan.due_date),
+        p2.get_borrowed_document_copies()
+    ))
 
     p1 = register_test_account(FacultyPatron, name='Sergey Afonso', address='Via Margutta, 3', phone='30001',
                                card_number=1010)
@@ -204,6 +217,20 @@ def test_tc8_checking_is_date_of_overduing_right():
                                card_number=1011)
     p3 = register_test_account(StudentPatron, name='Elvira Espindola', address='Via del Corso, 22', phone='30003',
                                card_number=1100)
+    assert set(p1_docs) == {
+        (
+            docs[5].id,
+            datetime.date.today() + datetime.timedelta(weeks=4)
+        ),
+        (
+            docs[6].id,
+            datetime.date.today() + datetime.timedelta(weeks=4)
+        ),
+        (
+            docs[8].id,
+            datetime.date.today() + datetime.timedelta(weeks=2)
+        )
+    }
 
     loan_p1_b1 = p1.checkout(copies_b1[0])
 
@@ -214,5 +241,19 @@ def test_tc8_checking_is_date_of_overduing_right():
     loan_p2_b1.due_date = datetime.date(2018, 2, 5) + (loan_p2_b1.due_date - datetime.date.today())
     loan_p2_av1 = p2.checkout(av1_copy[0])
     loan_p2_av1.due_date = datetime.date(2018, 2, 17) + (loan_p2_av1.due_date - datetime.date.today())
+    assert set(p2_docs) == {
+        (
+            docs[5].id,
+            datetime.date.today() + datetime.timedelta(weeks=3)
+        ),
+        (
+            docs[6].id,
+            datetime.date.today() + datetime.timedelta(weeks=2)
+        ),
+        (
+            docs[9].id,
+            datetime.date.today() + datetime.timedelta(weeks=2)
+        )
+    }
 
     assert loan_p1_b2.overdue_days() - 0 == 5 and loan_p2_b1.overdue_days() - 0 == 9 and loan_p2_av1.overdue_days() - 0 == 4
