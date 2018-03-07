@@ -26,12 +26,12 @@ def create_a_system_of_first_test_state():
     b3 = create_instance(Book, title='The Mythical Man-month', authors=['Brooks,Jr', 'Frederick P'],
                          publisher='Addison-Wesley Longman Publishing Co., Inc.', publishment_year=1995, edition=2,
                          reference=True)
-    copies_b3 = create_instance(DocumentCopy, document=b3)
+    copies_b3 = [create_instance(DocumentCopy, document=b3)]
 
     av1 = create_instance(AVMaterial, title='Null References: The Billion Dollar Mistake', authors='Tony Hoare')
-    av1_copy = create_instance(DocumentCopy, document=av1)
+    av1_copy = [create_instance(DocumentCopy, document=av1)]
     av2 = create_instance(AVMaterial, title='NInformation Entropy', authors='Claude Shannon')
-    av2_copy = create_instance(DocumentCopy, document=av2)
+    av2_copy = [create_instance(DocumentCopy, document=av2)]
 
     p1 = register_test_account(FacultyPatron, name='Sergey Afonso', address='Via Margutta, 3', phone='30001',
                                card_number=1010)
@@ -39,7 +39,7 @@ def create_a_system_of_first_test_state():
                                card_number=1011)
     p3 = register_test_account(StudentPatron, name='Elvira Espindola', address='Via del Corso, 22', phone='30003',
                                card_number=1100)
-    docs_set = [copies, copies_b2, copies_b3, av1_copy, av2_copy]
+    docs_set = [copies, copies_b2, copies_b3, av1_copy, av2_copy, b1, b2, b3]
     users_set = [p1, p2, p3]
 
     return docs_set, users_set
@@ -171,25 +171,46 @@ def test_tc6_patrons_checking_out_books_and_all_information_is_right():
     assert p3_b2_loan.due_date == datetime.date(2018, 3, 21)
 
 
-# def test_tc7_patrons_checing_out_books_and_return_date_is_right():
-#     docs, users = create_a_system_of_the_first_state()
-#     p1 = users[0]
-#     p2 = users[1]
-#     book1_copies = docs[0]
-#     book2_copies = docs[1]
-#     book3_copies = docs[2]
-#     av1_copies = docs[3]
-#     av2_copies = docs[4]
-#     p1.checkout(book1_copies[0])
-#     p1.checkout(book2_copies[0])
-#     p1.checkout(book3_copies[0])
-#     p1.checkout(av1_copies[0])
-#     p2.checkout(book1_copies[1])
-#     p2.checkout(book2_copies[1])
-#     p2.checkout(av2_copies[0])
-#
-#     assert information_of_boths_are_correct
-#
+def test_tc7_patrons_checing_out_books_and_return_date_is_right():
+    reload_db()
+    docs, users = create_a_system_of_first_test_state()
+    p1 = users[0]
+    p2 = users[1]
+    book1_copies = docs[0]
+    book2_copies = docs[1]
+    book3_copies = docs[2]
+    av1_copies = docs[3]
+    av2_copies = docs[4]
+
+    p1.checkout(book1_copies[0])
+    p1.checkout(book2_copies[0])
+    with pytest.raises(ValueError):
+        p1.checkout(book3_copies[0])
+    p1.checkout(av1_copies[0])
+    p2.checkout(book1_copies[1])
+    p2.checkout(book2_copies[1])
+    p2.checkout(av2_copies[0])
+
+    p1_docs = list(map(
+        lambda x: (x.document.id, x.due_date),
+        p1.get_borrowed_documents()
+    ))
+
+    p2_docs = list(map(
+        lambda x: (x.document.id, x.due_date),
+        p2.get_borrowed_documents()
+    ))
+
+    print(p1_docs)
+
+    assert p1_docs == [
+        (
+            book1_copies[5].id,
+
+        )
+    ]
+
+
 # def test_tc8_checking_is_date_of_overduing_right():
 #     docs, users = create_a_system_of_first_test_state()
 #     p1 = users[0]
