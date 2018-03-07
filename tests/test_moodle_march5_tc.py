@@ -12,6 +12,7 @@ from hexagonal import User
 
 
 def create_a_system_of_first_test_state():
+
     b1 = create_instance(Book, title='Introduction to Algorithms',
                          authors=['Thomas H. Cormen', ' Charles E. Leiserson', 'Ronald L. Rivest', 'Clifford Stein'],
                          publisher='MIT Press', publishment_year=2009, edition=3)
@@ -81,16 +82,14 @@ def test_tc3_librarian_checks_and_returned_information_is_right():
     p1_instance = User.query.filter(User.name == 'Sergey Afonso').first()
     p3_instance = User.query.filter(User.name == 'Elvira Espindola').first()
 
-    if (p1_instance.name == 'Sergey Afonso' and p3_instance.name == 'Elvira Espindola'):
-        names_are_right = True
-    if p1_instance.address == 'Via Margutta, 3' and p3_instance.address == 'Via del Corso, 22':
-        addresses_are_right = True
-    if p1_instance.phone == '30001' and p3_instance.phone == '30003':
-        phones_are_right = True
-    if p1_instance.card_number == '1010' and p3_instance.card_number == '1100':
-        card_numbers_are_right = True
-
-    assert names_are_right and addresses_are_right and phones_are_right and card_numbers_are_right
+    assert p1_instance.name == 'Sergey Afonso'
+    assert p3_instance.name == 'Elvira Espindola'
+    assert p1_instance.address == 'Via Margutta, 3'
+    assert p3_instance.address == 'Via del Corso, 22'
+    assert p1_instance.phone == '30001'
+    assert p3_instance.phone == '30003'
+    assert p1_instance.card_number == '1010'
+    assert p3_instance.card_number == '1100'
 
 
 def test_tc4_libraria_checks_informarion_of_already_deleted_and_existing_users():
@@ -99,23 +98,27 @@ def test_tc4_libraria_checks_informarion_of_already_deleted_and_existing_users()
     p2_instance = User.query.filter(User.name == 'Nadia Teixeira').first()
     p3_instance = User.query.filter(User.name == 'Elvira Espindola').first()
 
-    information_of_p3_is_right = False
+    assert p2_instance is None
+    assert p3_instance.name == 'Elvira Espindola'
+    assert p3_instance.address == 'Via del Corso, 22'
+    assert p3_instance.phone == '30003'
+    assert p3_instance.card_number == '1100'
+    assert isinstance(p3_instance, StudentPatron)
 
-    if (
-            p3_instance.name == 'Elvira Espindola' and p3_instance.address == 'Via del Corso, 22' and p3_instance.phone == '30003' and p3_instance.card_number == '1100' and p3_instance.role == 'student-patron'):
-        information_of_p3_is_right = True
-    assert information_of_p3_is_right and p2_instance == None
 
+def test_tc5_deleted_patron_checkin_out_a_book_and_fails():
+    reload_db()
+    docs, users = create_a_system_of_the_second_state()
+    book1_copy_set = docs[0]
+    patron = User.query.filter(User.name == 'Nadia Teixeira').first()
 
-# def test_tc5_deleted_patron_checkin_out_a_book_and_fails():
-#     docs, users = create_a_system_of_the_second_state()
-#     book1_copy_set = docs[0]
-#     patron = User.query.filter(User.name == 'Nadia Teixeira')
-#
-#     with pytest.raises(ValueError):
-#         patron.checkout(book1_copy_set[0])
+    with pytest.raises(AttributeError):
+        patron.checkout(book1_copy_set[0])
+    assert patron is None
+
 
 def test_tc6_patrons_checking_out_books_and_all_information_is_right():
+
     reload_db()
 
     b1 = create_instance(Book, title='Introduction to Algorithms',
