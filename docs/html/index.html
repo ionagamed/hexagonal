@@ -35,8 +35,7 @@
         <link rel="index" title="Index"
               href="genindex.html"/>
         <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="hexagonal  documentation" href="#"/>
-        <link rel="next" title="hexagonal.auth package" href="hexagonal.auth.html"/> 
+    <link rel="top" title="hexagonal  documentation" href="#"/> 
 
   
   <script src="_static/js/modernizr.min.js"></script>
@@ -85,12 +84,16 @@
               
             
             
-              <p class="caption"><span class="caption-text">Contents:</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="hexagonal.auth.html">hexagonal.auth package</a></li>
-<li class="toctree-l1"><a class="reference internal" href="hexagonal.model.html">hexagonal.model package</a></li>
+              <!-- Local TOC -->
+              <div class="local-toc"><ul>
+<li><a class="reference internal" href="#">Welcome to hexagonal’s documentation!</a><ul>
+<li><a class="reference internal" href="#technology-stack">Technology stack</a></li>
+<li><a class="reference internal" href="#model">Model</a></li>
+<li><a class="reference internal" href="#booking-system">Booking System</a></li>
 </ul>
-
+</li>
+</ul>
+</div>
             
           
         </div>
@@ -155,53 +158,58 @@
   <div class="section" id="welcome-to-hexagonal-s-documentation">
 <h1>Welcome to hexagonal’s documentation!<a class="headerlink" href="#welcome-to-hexagonal-s-documentation" title="Permalink to this headline">¶</a></h1>
 <p>hexagonal is an LMS (library management system) build as a first year bachelors’ project at Innopolis University.
-Class diagram can be found at hexagonal.docs.hexagonal-classes.uml. Also a rendered version
-<a class="reference download internal" href="_downloads/hexagonal-classes.pdf" download=""><code class="xref download docutils literal"><span class="pre">here</span></code></a>.</p>
-<p>A good starting point would be docs for all models in <span class="xref std std-ref">hexagonal.model</span>.</p>
+Class diagram can be found at hexagonal.docs.hexagonal-classes.uml. Also a
+<a class="reference download internal" href="_downloads/BON DIAGRAM MODEL.pdf" download=""><code class="xref download docutils literal"><span class="pre">rendered</span> <span class="pre">version</span></code></a>.</p>
 <p>It should also be noted that as a dynamic by nature language, Python doesn’t have native support for class attribute
 documentation. This is also a bad practice, because it hurts readability of code.</p>
-<div class="toctree-wrapper compound">
-<p class="caption"><span class="caption-text">Contents:</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="hexagonal.auth.html">hexagonal.auth package</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="hexagonal.auth.html#submodules">Submodules</a></li>
-<li class="toctree-l2"><a class="reference internal" href="hexagonal.auth.html#module-hexagonal.auth.helpers">hexagonal.auth.helpers module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="hexagonal.auth.html#module-hexagonal.auth">Module contents</a></li>
+<div class="section" id="technology-stack">
+<h2>Technology stack<a class="headerlink" href="#technology-stack" title="Permalink to this headline">¶</a></h2>
+<p>Our technology stack is mainly focused on flexibility and ease-of-use:</p>
+<blockquote>
+<div><ul class="simple">
+<li>Flask was used over django because it is definitely more lightweight, and is more flexible.</li>
+<li>SQLAlchemy was used because of its, again, flexibility and speed of development.
+SQLAlchemy uses data-mapper model instead of Django’s familiar Active Record, and it allows for some interesting
+features such as association proxies.</li>
+<li>Itsdangerous is a small library with ‘good’ cryptography. It is a common knowledge that you shouldn’t implement
+cryptography by yourself, and this library contains a lot of neat things to help with that.</li>
+<li>PostgreSQL was chosen for backend because it is feature-rich, stable, and easy to use.
+SQLite didn’t have ARRAY builtin type and full index support for JSON.
+MySQL just tends to fall apart randomly (from my experience).
+Other SQL (MS SQL, Oracle) are too much enterprise for such project</li>
 </ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="hexagonal.model.html">hexagonal.model package</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="hexagonal.model.html#submodules">Submodules</a></li>
-<li class="toctree-l2"><a class="reference internal" href="hexagonal.model.html#module-hexagonal.model.author">hexagonal.model.author module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="hexagonal.model.html#module-hexagonal.model.av_material">hexagonal.model.av_material module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="hexagonal.model.html#module-hexagonal.model.book">hexagonal.model.book module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="hexagonal.model.html#module-hexagonal.model.document">hexagonal.model.document module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="hexagonal.model.html#module-hexagonal.model.document_copy">hexagonal.model.document_copy module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="hexagonal.model.html#module-hexagonal.model.editor">hexagonal.model.editor module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="hexagonal.model.html#module-hexagonal.model.faculty_patron">hexagonal.model.faculty_patron module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="hexagonal.model.html#module-hexagonal.model.helpers">hexagonal.model.helpers module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="hexagonal.model.html#module-hexagonal.model.journal">hexagonal.model.journal module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="hexagonal.model.html#module-hexagonal.model.journal_article">hexagonal.model.journal_article module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="hexagonal.model.html#module-hexagonal.model.journal_issue">hexagonal.model.journal_issue module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="hexagonal.model.html#module-hexagonal.model.keyword">hexagonal.model.keyword module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="hexagonal.model.html#module-hexagonal.model.librarian">hexagonal.model.librarian module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="hexagonal.model.html#module-hexagonal.model.loan">hexagonal.model.loan module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="hexagonal.model.html#module-hexagonal.model.patron">hexagonal.model.patron module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="hexagonal.model.html#module-hexagonal.model.publisher">hexagonal.model.publisher module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="hexagonal.model.html#module-hexagonal.model.student_patron">hexagonal.model.student_patron module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="hexagonal.model.html#module-hexagonal.model.user">hexagonal.model.user module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="hexagonal.model.html#module-hexagonal.model">Module contents</a></li>
-</ul>
-</li>
-</ul>
+</div></blockquote>
 </div>
-</div>
-<div class="section" id="indices-and-tables">
-<h1>Indices and tables<a class="headerlink" href="#indices-and-tables" title="Permalink to this headline">¶</a></h1>
-<ul class="simple">
-<li><a class="reference internal" href="genindex.html"><span class="std std-ref">Index</span></a></li>
-<li><a class="reference internal" href="py-modindex.html"><span class="std std-ref">Module Index</span></a></li>
-<li><a class="reference internal" href="search.html"><span class="std std-ref">Search Page</span></a></li>
+<div class="section" id="model">
+<h2>Model<a class="headerlink" href="#model" title="Permalink to this headline">¶</a></h2>
+<p>The user model consists currently of four classes:</p>
+<blockquote>
+<div><ul class="simple">
+<li>User is an abstract base class for all users</li>
+<li>Librarian is a kind of an admin which can manage everything else</li>
+<li>Patron is an abstract base class for all patrons</li>
+<li>StudentPatron is a class that represents all student-patrons</li>
+<li>FacultyPatron is a class that represents all faculty-patrons</li>
 </ul>
+</div></blockquote>
+<p>The document model consists currently of five classes:</p>
+<blockquote>
+<div><ul class="simple">
+<li>Document is an abstract base class for all documents, which contains all common fields.</li>
+<li>DocumentCopy is a class for a copy of a document, which is just linked to a loan and a document.</li>
+<li>And a class for each document type (Book, AVMaterial, Article).</li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="booking-system">
+<h2>Booking System<a class="headerlink" href="#booking-system" title="Permalink to this headline">¶</a></h2>
+<p>Also, a Loan class, which represents the booking system.
+One Loan has a status - it can be:
+<em>requested</em> - user wants this book. Then librarian can push a button and make the loan
+<em>approved</em> - which means that it is currently in patron’s possession. Then, finally, user brings the book back,
+and it becomes <em>returned</em>, until a librarian approves the return request, and the loan is removed.
+This is the whole lifecycle of one Loan.m</p>
+</div>
 </div>
 
 
@@ -211,13 +219,6 @@ documentation. This is also a bad practice, because it hurts readability of code
            </div>
           </div>
           <footer>
-  
-    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-      
-        <a href="hexagonal.auth.html" class="btn btn-neutral float-right" title="hexagonal.auth package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
-      
-      
-    </div>
   
 
   <hr/>

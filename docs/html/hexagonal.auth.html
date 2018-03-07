@@ -35,9 +35,7 @@
         <link rel="index" title="Index"
               href="genindex.html"/>
         <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="hexagonal  documentation" href="index.html"/>
-        <link rel="next" title="hexagonal.model package" href="hexagonal.model.html"/>
-        <link rel="prev" title="Welcome to hexagonal’s documentation!" href="index.html"/> 
+    <link rel="top" title="hexagonal  documentation" href="index.html"/> 
 
   
   <script src="_static/js/modernizr.min.js"></script>
@@ -86,17 +84,16 @@
               
             
             
-              <p class="caption"><span class="caption-text">Contents:</span></p>
-<ul class="current">
-<li class="toctree-l1 current"><a class="current reference internal" href="#">hexagonal.auth package</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#submodules">Submodules</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#module-hexagonal.auth.helpers">hexagonal.auth.helpers module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#module-hexagonal.auth">Module contents</a></li>
+              <!-- Local TOC -->
+              <div class="local-toc"><ul>
+<li><a class="reference internal" href="#">hexagonal.auth package</a><ul>
+<li><a class="reference internal" href="#submodules">Submodules</a></li>
+<li><a class="reference internal" href="#hexagonal-auth-helpers-module">hexagonal.auth.helpers module</a></li>
+<li><a class="reference internal" href="#module-contents">Module contents</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="hexagonal.model.html">hexagonal.model package</a></li>
 </ul>
-
+</div>
             
           
         </div>
@@ -163,99 +160,11 @@
 <div class="section" id="submodules">
 <h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
 </div>
-<div class="section" id="module-hexagonal.auth.helpers">
-<span id="hexagonal-auth-helpers-module"></span><h2>hexagonal.auth.helpers module<a class="headerlink" href="#module-hexagonal.auth.helpers" title="Permalink to this headline">¶</a></h2>
-<dl class="function">
-<dt id="hexagonal.auth.helpers.minimum_access_level">
-<code class="descclassname">hexagonal.auth.helpers.</code><code class="descname">minimum_access_level</code><span class="sig-paren">(</span><em>level</em><span class="sig-paren">)</span><a class="headerlink" href="#hexagonal.auth.helpers.minimum_access_level" title="Permalink to this definition">¶</a></dt>
-<dd><p>Decorator for bound functions which restricts the allowed users to at least <cite>level</cite> access level.
-Throws <a class="reference internal" href="hexagonal.auth.jsonrpc.html#hexagonal.auth.jsonrpc.exceptions.JSONRPCAccessDeniedException" title="hexagonal.auth.jsonrpc.exceptions.JSONRPCAccessDeniedException"><code class="xref py py-class docutils literal"><span class="pre">hexagonal.auth.jsonrpc.exceptions.JSONRPCAccessDeniedException</span></code></a> when user isn’t allowed.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>level</strong> – minimal access level</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">wrapped function</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
+<div class="section" id="hexagonal-auth-helpers-module">
+<h2>hexagonal.auth.helpers module<a class="headerlink" href="#hexagonal-auth-helpers-module" title="Permalink to this headline">¶</a></h2>
 </div>
-<div class="section" id="module-hexagonal.auth">
-<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-hexagonal.auth" title="Permalink to this headline">¶</a></h2>
-<dl class="function">
-<dt id="hexagonal.auth.decode_token">
-<code class="descclassname">hexagonal.auth.</code><code class="descname">decode_token</code><span class="sig-paren">(</span><em>token</em><span class="sig-paren">)</span><a class="headerlink" href="#hexagonal.auth.decode_token" title="Permalink to this definition">¶</a></dt>
-<dd><p>Try to decode token, which was (or wasn’t) received from the user.
-Throws an exception upon failure (invalid token for any reason).</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>token</strong> – to be decoded</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">token data, which was embedded there</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="function">
-<dt id="hexagonal.auth.encrypt_password">
-<code class="descclassname">hexagonal.auth.</code><code class="descname">encrypt_password</code><span class="sig-paren">(</span><em>password</em><span class="sig-paren">)</span><a class="headerlink" href="#hexagonal.auth.encrypt_password" title="Permalink to this definition">¶</a></dt>
-<dd><p>Encrypt the password for storage in database</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>password</strong> – to be encrypted</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">the encrypted password</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="function">
-<dt id="hexagonal.auth.login_and_generate_token">
-<code class="descclassname">hexagonal.auth.</code><code class="descname">login_and_generate_token</code><span class="sig-paren">(</span><em>login</em>, <em>password</em><span class="sig-paren">)</span><a class="headerlink" href="#hexagonal.auth.login_and_generate_token" title="Permalink to this definition">¶</a></dt>
-<dd><p>Try to login the user with specified credentials.
-If no such user exists (either not valid login, or not valid password) raises ValueError.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>login</strong> – login of trying user</li>
-<li><strong>password</strong> – password of trying user</li>
-</ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">new generated token (see <a class="reference internal" href="#hexagonal.auth.decode_token" title="hexagonal.auth.decode_token"><code class="xref py py-func docutils literal"><span class="pre">decode_token()</span></code></a>)</p>
-</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="function">
-<dt id="hexagonal.auth.register_account">
-<code class="descclassname">hexagonal.auth.</code><code class="descname">register_account</code><span class="sig-paren">(</span><em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#hexagonal.auth.register_account" title="Permalink to this definition">¶</a></dt>
-<dd><p>Register a new account</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>kwargs</strong> – field of the new account</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">instance of the created <code class="xref py py-class docutils literal"><span class="pre">Account</span></code></td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
+<div class="section" id="module-contents">
+<h2>Module contents<a class="headerlink" href="#module-contents" title="Permalink to this headline">¶</a></h2>
 </div>
 </div>
 
@@ -266,15 +175,6 @@ If no such user exists (either not valid login, or not valid password) raises Va
            </div>
           </div>
           <footer>
-  
-    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-      
-        <a href="hexagonal.model.html" class="btn btn-neutral float-right" title="hexagonal.model package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
-      
-      
-        <a href="index.html" class="btn btn-neutral" title="Welcome to hexagonal’s documentation!" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
-      
-    </div>
   
 
   <hr/>
