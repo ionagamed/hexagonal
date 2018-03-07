@@ -8,7 +8,7 @@ from hexagonal.model.book import Book
 from hexagonal.model.document_copy import DocumentCopy
 from hexagonal import Librarian, AVMaterial
 from hexagonal.model.student_patron import StudentPatron
-from hexagonal import User
+from hexagonal import User, Loan
 
 
 def create_a_system_of_first_test_state():
@@ -39,7 +39,7 @@ def create_a_system_of_first_test_state():
                                card_number=1011)
     p3 = register_test_account(StudentPatron, name='Elvira Espindola', address='Via del Corso, 22', phone='30003',
                                card_number=1100)
-    docs_set = [copies, copies_b2, copies_b3, av1_copy, av2_copy, b1, b2, b3]
+    docs_set = [copies, copies_b2, copies_b3, av1_copy, av2_copy, b1, b2, b3, av1, av2]
     users_set = [p1, p2, p3]
 
     return docs_set, users_set
@@ -58,6 +58,13 @@ def create_a_system_of_the_second_state():
     db.session.commit()
 
     return docs, users
+
+
+def approve_all_loans():
+    for loan in Loan.query.all():
+        loan.status = Loan.Status.approved
+        db.session.add(loan)
+    db.session.commit()
 
 
 def test_tc1__created_document_copies():
@@ -191,24 +198,47 @@ def test_tc7_patrons_checing_out_books_and_return_date_is_right():
     p2.checkout(book2_copies[1])
     p2.checkout(av2_copies[0])
 
+    approve_all_loans()
+
     p1_docs = list(map(
-        lambda x: (x.document.id, x.due_date),
-        p1.get_borrowed_documents()
+        lambda x: (x.document.id, x.loan.due_date),
+        p1.get_borrowed_document_copies()
     ))
 
     p2_docs = list(map(
-        lambda x: (x.document.id, x.due_date),
-        p2.get_borrowed_documents()
+        lambda x: (x.document.id, x.loan.due_date),
+        p2.get_borrowed_document_copies()
     ))
 
-    print(p1_docs)
-
-    assert p1_docs == [
+    assert set(p1_docs) == {
         (
-            book1_copies[5].id,
-
+            docs[5].id,
+            datetime.date.today() + datetime.timedelta(weeks=4)
+        ),
+        (
+            docs[6].id,
+            datetime.date.today() + datetime.timedelta(weeks=4)
+        ),
+        (
+            docs[8].id,
+            datetime.date.today() + datetime.timedelta(weeks=2)
         )
-    ]
+    }
+
+    assert set(p2_docs) == {
+        (
+            docs[5].id,
+            datetime.date.today() + datetime.timedelta(weeks=3)
+        ),
+        (
+            docs[6].id,
+            datetime.date.today() + datetime.timedelta(weeks=2)
+        ),
+        (
+            docs[9].id,
+            datetime.date.today() + datetime.timedelta(weeks=2)
+        )
+    }
 
 
 # def test_tc8_checking_is_date_of_overduing_right():
