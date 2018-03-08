@@ -11,4 +11,4 @@ config = {
 }
 
 postgres_password = os.environ.get('PGPASSWORD', 'test')
-config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:{}@db/postgres'.format(postgres_password)
+config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:{}@localhost/postgres'.format(postgres_password)
