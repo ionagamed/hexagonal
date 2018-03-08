@@ -53,6 +53,8 @@ class User(db.Model, Searchable):
         """
         Whether this user has the required permission.
 
+        By default returns whether permission is present in the class static field `permissions`.
+
         :param permission: permission to be checked.
         :return: whether the current user has the required permission.
         """

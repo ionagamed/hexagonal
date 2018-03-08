@@ -6,6 +6,7 @@ from hexagonal.model.document import Document
 class JournalArticle(Document):
     """
     Journal article type of document.
+    These could be checked out for two weeks by anyone.
     """
 
     __tablename__ = 'journal_articles'

@@ -5,6 +5,7 @@ from hexagonal import db
 class AVMaterial(Document):
     """
     AVMaterial document type.
+    These could be checked out for 2 weeks by anyone.
     """
 
     __tablename__ = 'av_materials'

@@ -4,7 +4,7 @@ from sqlalchemy import func, or_
 class Searchable:
     """
     Searchable base class.
-    To add search functionality to the SQLAlchemy model class, just extend it from this class,
+    To add search functionality to an SQLAlchemy model class, just extend it from this class,
     and if you need fuzzy search specify `fuzzy_search_fields` and `fuzzy_array_search_fields`.
 
     E.g.
@@ -19,6 +19,21 @@ class Searchable:
             role = db.Column(db.String, ...)
 
             notes = db.Column(db.ARRAY(db.String), ...)
+
+    To search by a specific field, use ``search_by_<field>`` (yeah, dynamic getattr)
+
+    E.g. (with the previous example)
+
+    .. sourcecode:: python
+
+        user = User(...)
+        user.search_by_name('Alina')
+
+    will produce something like
+
+    .. sourcecode:: sql
+
+        SELECT * FROM users WHERE name ILIKE '%Alina%'
     """
 
     fuzzy_search_fields = []

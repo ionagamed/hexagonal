@@ -8,11 +8,11 @@ Users
 
 The user model consists currently of five classes:
 
- * User is an abstract base class for all users
- * Librarian is a kind of an admin which can manage everything else
- * Patron is an abstract base class for all patrons
- * StudentPatron is a class that represents all student-patrons
- * FacultyPatron is a class that represents all faculty-patrons
+ * :py:class:`~hexagonal.model.user.User` is an abstract base class for all users
+ * :py:class:`~hexagonal.model.librarian.Librarian` is a kind of an admin which can manage everything else
+ * :py:class:`~hexagonal.model.patron.Patron` is an abstract base class for all patrons
+ * :py:class:`~hexagonal.model.student_patron.StudentPatron` is a class that represents all student-patrons
+ * :py:class:`~hexagonal.model.faculty_patron.FacultyPatron` is a class that represents all faculty-patrons
 
 
 Documents
@@ -21,17 +21,17 @@ Documents
 
 The document model consists currently of five classes:
 
- * Document is an abstract base class for all documents, which contains all common fields.
- * DocumentCopy is a class for a copy of a document, which is just linked to a loan and a document.
- * And a class for each document type (Book, AVMaterial, Article).
+ * :py:class:`~hexagonal.model.document.Document` is an abstract base class for all documents, which contains all common fields.
+ * :py:class:`~hexagonal.model.document_copy.DocumentCopy` is a class for a copy of a document, which is just linked to a loan and a document.
+ * And a class for each document type (:py:class:`~hexagonal.model.book.Book`, :py:class:`~hexagonal.model.av_material.AVMaterial`, :py:class:`~hexagonal.model.journal_article.JournalArticle`).
 
 
 Booking System
 --------------
 
-Also, a Loan class, which represents the booking system.
-One Loan has a status - it can be:
+The :py:class:`~hexagonal.model.loan.Loan` is the single class which represents the booking system.
+Each `Loan` has a status (:py:class:`hexagonal.model.loan.Loan.Status`) - it can be:
 *requested* - user wants this book. Then librarian can push a button and make the loan
 *approved* - which means that it is currently in patron's possession. Then, finally, user brings the book back,
 and it becomes *returned*, until a librarian approves the return request, and the loan is removed.
-This is the whole lifecycle of one Loan.
+This is the whole lifecycle of one `Loan`.

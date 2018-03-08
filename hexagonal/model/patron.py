@@ -114,6 +114,11 @@ class Patron(User):
         return self.loan_query().all()
 
     def get_loan_count(self):
+        """
+        Get the amount of all approved loans for this patron.
+
+        :return: list.
+        """
         return self.loan_query().count()
 
     def get_borrowed_document_copies(self):

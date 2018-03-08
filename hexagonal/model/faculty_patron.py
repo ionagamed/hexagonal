@@ -17,7 +17,6 @@ class FacultyPatron(Patron):
     def get_checkout_period_for(self, document):
         """
         Get checkout period for a specific document.
-        Abstract in User.
 
         :param document: to be checked out
         :return: timedelta

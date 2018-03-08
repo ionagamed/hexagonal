@@ -12,6 +12,16 @@ class Loan(db.Model):
     """
 
     class Status(enum.Enum):
+        """
+        Loan status.
+        Each loan can be:
+
+         * `requested` - which means that it has been requested by a patron.
+
+         * `approved` - which means that a librarian has approved the request, and the document is now in patron's possession
+
+         * `returned` - which means that the patron has supposedly brought the document into the library, and it is now waiting for approval from a librarian
+        """
         approved = 1
         requested = 2
         returned = 3
@@ -47,6 +57,8 @@ class Loan(db.Model):
     def get_overdue_fine(self):
         """
         Get total overdue fine for this loan.
+        Returns 0 if it is not overdue.
+
         :return: the overdue fine, in rubles.
         """
         days = (datetime.date.today() - self.due_date).days

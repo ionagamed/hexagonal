@@ -14,6 +14,7 @@ class DocumentCopy(db.Model):
 
     document_id = db.Column(db.Integer, db.ForeignKey('documents.id'))
     """ Foreign key to documents. """
+
     document = db.relationship('Document', back_populates='copies')
     """ Associated document. """
 

@@ -8,6 +8,12 @@ class Document(db.Model, Searchable):
     """
     Base class for all documents.
     Should not be instantiated directly.
+
+    Contains common fields for all documents, and inherits from :py:class:`hexagonal.model.searchable.Searchable`,
+    adding search capability.
+
+    Fuzzy search fields are `title` and `type`.
+    Fuzzy array search fields are `keywords` and `authors`.
     """
 
     __tablename__ = 'documents'
@@ -44,8 +50,8 @@ class Document(db.Model, Searchable):
     @hybrid_property
     def available_copies(self):
         """
-        Hybrid property for currently available copies of this document
-        :return:
+        Hybrid property for currently available copies of this document.
+        Available copies are copies which don't have an associated loan.
         """
 
         return DocumentCopy.query.filter(

@@ -6,6 +6,8 @@ from hexagonal.model.document import Document
 class Book(Document):
     """
     Book document type.
+    These could be checked out for 2 weeks, if they are bestsellers.
+    Otherwise, students check out these for 3 weeks, and faculty members check out these for 4 weeks.
     """
 
     __tablename__ = 'books'
