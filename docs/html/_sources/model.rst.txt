@@ -14,6 +14,9 @@ The user model consists currently of five classes:
  * :py:class:`~hexagonal.model.student_patron.StudentPatron` is a class that represents all student-patrons
  * :py:class:`~hexagonal.model.faculty_patron.FacultyPatron` is a class that represents all faculty-patrons
 
+There is a single `root` user throughout the runtime, which is a librarian.
+This is done because only a librarian can create new users, and wee need an entry point.
+
 
 Documents
 ---------
