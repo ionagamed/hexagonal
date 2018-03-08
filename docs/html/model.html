@@ -1,0 +1,271 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Model &mdash; hexagonal  documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+        <link rel="index" title="Index"
+              href="genindex.html"/>
+        <link rel="search" title="Search" href="search.html"/>
+    <link rel="top" title="hexagonal  documentation" href="index.html"/>
+        <link rel="next" title="Classes" href="classes.html"/>
+        <link rel="prev" title="Reasoning" href="reasoning.html"/> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="index.html" class="icon icon-home"> hexagonal
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="reasoning.html">Reasoning</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Model</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#users">Users</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#documents">Documents</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#booking-system">Booking System</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="classes.html">Classes</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">hexagonal</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li>Model</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/model.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="model">
+<h1>Model<a class="headerlink" href="#model" title="Permalink to this headline">¶</a></h1>
+<p>This part contains overview for used model classes. For a more in-depth explanation see <a class="reference internal" href="classes.html"><span class="doc">Classes</span></a></p>
+<div class="section" id="users">
+<h2>Users<a class="headerlink" href="#users" title="Permalink to this headline">¶</a></h2>
+<p>The user model consists currently of five classes:</p>
+<blockquote>
+<div><ul class="simple">
+<li><a class="reference internal" href="classes.html#hexagonal.model.user.User" title="hexagonal.model.user.User"><code class="xref py py-class docutils literal"><span class="pre">User</span></code></a> is an abstract base class for all users</li>
+<li><a class="reference internal" href="classes.html#hexagonal.model.librarian.Librarian" title="hexagonal.model.librarian.Librarian"><code class="xref py py-class docutils literal"><span class="pre">Librarian</span></code></a> is a kind of an admin which can manage everything else</li>
+<li><a class="reference internal" href="classes.html#hexagonal.model.patron.Patron" title="hexagonal.model.patron.Patron"><code class="xref py py-class docutils literal"><span class="pre">Patron</span></code></a> is an abstract base class for all patrons</li>
+<li><a class="reference internal" href="classes.html#hexagonal.model.student_patron.StudentPatron" title="hexagonal.model.student_patron.StudentPatron"><code class="xref py py-class docutils literal"><span class="pre">StudentPatron</span></code></a> is a class that represents all student-patrons</li>
+<li><a class="reference internal" href="classes.html#hexagonal.model.faculty_patron.FacultyPatron" title="hexagonal.model.faculty_patron.FacultyPatron"><code class="xref py py-class docutils literal"><span class="pre">FacultyPatron</span></code></a> is a class that represents all faculty-patrons</li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="documents">
+<h2>Documents<a class="headerlink" href="#documents" title="Permalink to this headline">¶</a></h2>
+<p>The document model consists currently of five classes:</p>
+<blockquote>
+<div><ul class="simple">
+<li><a class="reference internal" href="classes.html#hexagonal.model.document.Document" title="hexagonal.model.document.Document"><code class="xref py py-class docutils literal"><span class="pre">Document</span></code></a> is an abstract base class for all documents, which contains all common fields.</li>
+<li><a class="reference internal" href="classes.html#hexagonal.model.document_copy.DocumentCopy" title="hexagonal.model.document_copy.DocumentCopy"><code class="xref py py-class docutils literal"><span class="pre">DocumentCopy</span></code></a> is a class for a copy of a document, which is just linked to a loan and a document.</li>
+<li>And a class for each document type (<a class="reference internal" href="classes.html#hexagonal.model.book.Book" title="hexagonal.model.book.Book"><code class="xref py py-class docutils literal"><span class="pre">Book</span></code></a>, <a class="reference internal" href="classes.html#hexagonal.model.av_material.AVMaterial" title="hexagonal.model.av_material.AVMaterial"><code class="xref py py-class docutils literal"><span class="pre">AVMaterial</span></code></a>, <a class="reference internal" href="classes.html#hexagonal.model.journal_article.JournalArticle" title="hexagonal.model.journal_article.JournalArticle"><code class="xref py py-class docutils literal"><span class="pre">JournalArticle</span></code></a>).</li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="booking-system">
+<h2>Booking System<a class="headerlink" href="#booking-system" title="Permalink to this headline">¶</a></h2>
+<p>The <a class="reference internal" href="classes.html#hexagonal.model.loan.Loan" title="hexagonal.model.loan.Loan"><code class="xref py py-class docutils literal"><span class="pre">Loan</span></code></a> is the single class which represents the booking system.
+Each <cite>Loan</cite> has a status (<a class="reference internal" href="classes.html#hexagonal.model.loan.Loan.Status" title="hexagonal.model.loan.Loan.Status"><code class="xref py py-class docutils literal"><span class="pre">hexagonal.model.loan.Loan.Status</span></code></a>) - it can be:
+<em>requested</em> - user wants this book. Then librarian can push a button and make the loan
+<em>approved</em> - which means that it is currently in patron’s possession. Then, finally, user brings the book back,
+and it becomes <em>returned</em>, until a librarian approves the return request, and the loan is removed.
+This is the whole lifecycle of one <cite>Loan</cite>.</p>
+</div>
+</div>
+
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="classes.html" class="btn btn-neutral float-right" title="Classes" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="reasoning.html" class="btn btn-neutral" title="Reasoning" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, ionagamed.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

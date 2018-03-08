@@ -1,0 +1,1093 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Classes &mdash; hexagonal  documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+        <link rel="index" title="Index"
+              href="genindex.html"/>
+        <link rel="search" title="Search" href="search.html"/>
+    <link rel="top" title="hexagonal  documentation" href="index.html"/>
+        <link rel="prev" title="Model" href="model.html"/> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="index.html" class="icon icon-home"> hexagonal
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="reasoning.html">Reasoning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="model.html">Model</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Classes</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#user-model">User model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#document-model">Document model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#booking-model">Booking model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#search">Search</a></li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">hexagonal</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li>Classes</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/classes.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="classes">
+<h1>Classes<a class="headerlink" href="#classes" title="Permalink to this headline">¶</a></h1>
+<p>This part contains in-depth view of the used classes.
+Subclassing with only role changing was used to implement a rather flexible permission system.</p>
+<div class="section" id="user-model">
+<h2>User model<a class="headerlink" href="#user-model" title="Permalink to this headline">¶</a></h2>
+<p>In SQL users use single-table inheritance model, which allows for compact data storage, when we do not have
+additional fields in subclasses.</p>
+<dl class="class">
+<dt id="hexagonal.model.user.User">
+<em class="property">class </em><code class="descclassname">hexagonal.model.user.</code><code class="descname">User</code><span class="sig-paren">(</span><em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#hexagonal.model.user.User" title="Permalink to this definition">¶</a></dt>
+<dd><p>Base class for all users in the system.
+Should not be directly instantiated. (<cite>hexagonal.auth</cite> currently does that, but i’m working on it)</p>
+<dl class="attribute">
+<dt id="hexagonal.model.user.User.address">
+<code class="descname">address</code><a class="headerlink" href="#hexagonal.model.user.User.address" title="Permalink to this definition">¶</a></dt>
+<dd><p>User’s full address.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="hexagonal.model.user.User.card_number">
+<code class="descname">card_number</code><a class="headerlink" href="#hexagonal.model.user.User.card_number" title="Permalink to this definition">¶</a></dt>
+<dd><p>User’s library card number.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="hexagonal.model.user.User.has_permission">
+<code class="descname">has_permission</code><span class="sig-paren">(</span><em>permission</em><span class="sig-paren">)</span><a class="headerlink" href="#hexagonal.model.user.User.has_permission" title="Permalink to this definition">¶</a></dt>
+<dd><p>Whether this user has the required permission.</p>
+<p>By default returns whether permission is present in the class static field <cite>permissions</cite>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>permission</strong> – permission to be checked.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">whether the current user has the required permission.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="hexagonal.model.user.User.id">
+<code class="descname">id</code><a class="headerlink" href="#hexagonal.model.user.User.id" title="Permalink to this definition">¶</a></dt>
+<dd><p>Integer primary key.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="hexagonal.model.user.User.login">
+<code class="descname">login</code><a class="headerlink" href="#hexagonal.model.user.User.login" title="Permalink to this definition">¶</a></dt>
+<dd><p>Login of the user. Must be unique.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="hexagonal.model.user.User.name">
+<code class="descname">name</code><a class="headerlink" href="#hexagonal.model.user.User.name" title="Permalink to this definition">¶</a></dt>
+<dd><p>User’s full name.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="hexagonal.model.user.User.password">
+<code class="descname">password</code><a class="headerlink" href="#hexagonal.model.user.User.password" title="Permalink to this definition">¶</a></dt>
+<dd><p>Password hash of the user.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="hexagonal.model.user.User.phone">
+<code class="descname">phone</code><a class="headerlink" href="#hexagonal.model.user.User.phone" title="Permalink to this definition">¶</a></dt>
+<dd><p>User’s phone number.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="hexagonal.model.user.User.reset_password">
+<code class="descname">reset_password</code><a class="headerlink" href="#hexagonal.model.user.User.reset_password" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reset password flag. If true, on next login user would be prompted to reset the password.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="hexagonal.model.user.User.role">
+<code class="descname">role</code><a class="headerlink" href="#hexagonal.model.user.User.role" title="Permalink to this definition">¶</a></dt>
+<dd><p>Polymorphic identity of the user. Used to implement inheritance.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="hexagonal.model.patron.Patron">
+<em class="property">class </em><code class="descclassname">hexagonal.model.patron.</code><code class="descname">Patron</code><span class="sig-paren">(</span><em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#hexagonal.model.patron.Patron" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#hexagonal.model.user.User" title="hexagonal.model.user.User"><code class="xref py py-class docutils literal"><span class="pre">hexagonal.model.user.User</span></code></a></p>
+<p>Abstract base class for patrons.
+Should not be directly instantiated</p>
+<dl class="method">
+<dt id="hexagonal.model.patron.Patron.checkout">
+<code class="descname">checkout</code><span class="sig-paren">(</span><em>document_copy</em><span class="sig-paren">)</span><a class="headerlink" href="#hexagonal.model.patron.Patron.checkout" title="Permalink to this definition">¶</a></dt>
+<dd><p>Try to checkout the required document_copy.
+Raises TypeError if document_copy is not a DocumentCopy.
+Raises ValueError if document_copy is not available for loan.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>document_copy</strong> – to be checked out.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">loan object</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="hexagonal.model.patron.Patron.get_borrowed_document_copies">
+<code class="descname">get_borrowed_document_copies</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#hexagonal.model.patron.Patron.get_borrowed_document_copies" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get document copies that are currently borrowed by this user.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">list of document_copies</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="hexagonal.model.patron.Patron.get_borrowed_document_copy_count">
+<code class="descname">get_borrowed_document_copy_count</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#hexagonal.model.patron.Patron.get_borrowed_document_copy_count" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the amount of borrowed document copies.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">amount</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="hexagonal.model.patron.Patron.get_checkout_period_for">
+<code class="descname">get_checkout_period_for</code><span class="sig-paren">(</span><em>document</em><span class="sig-paren">)</span><a class="headerlink" href="#hexagonal.model.patron.Patron.get_checkout_period_for" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get checkout period for a specific document.
+Abstract in User.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>document</strong> – to be checked out</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">timedelta</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="hexagonal.model.patron.Patron.get_loan_count">
+<code class="descname">get_loan_count</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#hexagonal.model.patron.Patron.get_loan_count" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the amount of all approved loans for this patron.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">list.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="hexagonal.model.patron.Patron.get_loans">
+<code class="descname">get_loans</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#hexagonal.model.patron.Patron.get_loans" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get all approved loans for this patron.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">list.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="hexagonal.model.patron.Patron.get_overdue_loan_count">
+<code class="descname">get_overdue_loan_count</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#hexagonal.model.patron.Patron.get_overdue_loan_count" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the amount of overdue associated items.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">amount</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="hexagonal.model.patron.Patron.get_overdue_loans">
+<code class="descname">get_overdue_loans</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#hexagonal.model.patron.Patron.get_overdue_loans" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get current overdue associated loans.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">list of loans</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="hexagonal.model.patron.Patron.get_total_overdue_fine">
+<code class="descname">get_total_overdue_fine</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#hexagonal.model.patron.Patron.get_total_overdue_fine" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get total current overdue fine across all loans.
+Abstract in User.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">total overdue fine, in rubles</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="hexagonal.model.patron.Patron.loan_query">
+<code class="descname">loan_query</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#hexagonal.model.patron.Patron.loan_query" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get BaseQuery for all approved loans with borrowed documents</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">BaseQuery</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="hexagonal.model.patron.Patron.overdue_loan_query">
+<code class="descname">overdue_loan_query</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#hexagonal.model.patron.Patron.overdue_loan_query" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get BaseQuery for all overdue loans of this user.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">BaseQuery</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="hexagonal.model.librarian.Librarian">
+<em class="property">class </em><code class="descclassname">hexagonal.model.librarian.</code><code class="descname">Librarian</code><span class="sig-paren">(</span><em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#hexagonal.model.librarian.Librarian" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#hexagonal.model.user.User" title="hexagonal.model.user.User"><code class="xref py py-class docutils literal"><span class="pre">hexagonal.model.user.User</span></code></a></p>
+<p>Librarian type of user.</p>
+<dl class="method">
+<dt id="hexagonal.model.librarian.Librarian.has_permission">
+<code class="descname">has_permission</code><span class="sig-paren">(</span><em>permission</em><span class="sig-paren">)</span><a class="headerlink" href="#hexagonal.model.librarian.Librarian.has_permission" title="Permalink to this definition">¶</a></dt>
+<dd><p>Whether this user has the required permission.
+Librarian has all permissions, so this returns True in this case.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>permission</strong> – permission to be checked.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">whether the current user has the required permission.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="hexagonal.model.student_patron.StudentPatron">
+<em class="property">class </em><code class="descclassname">hexagonal.model.student_patron.</code><code class="descname">StudentPatron</code><span class="sig-paren">(</span><em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#hexagonal.model.student_patron.StudentPatron" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#hexagonal.model.patron.Patron" title="hexagonal.model.patron.Patron"><code class="xref py py-class docutils literal"><span class="pre">hexagonal.model.patron.Patron</span></code></a></p>
+<p>Student patron user type.
+Internal model, gets squashed in the api.</p>
+<dl class="method">
+<dt id="hexagonal.model.student_patron.StudentPatron.get_checkout_period_for">
+<code class="descname">get_checkout_period_for</code><span class="sig-paren">(</span><em>document</em><span class="sig-paren">)</span><a class="headerlink" href="#hexagonal.model.student_patron.StudentPatron.get_checkout_period_for" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get checkout period for a specific document.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>document</strong> – to be checked out</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">timedelta</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="hexagonal.model.faculty_patron.FacultyPatron">
+<em class="property">class </em><code class="descclassname">hexagonal.model.faculty_patron.</code><code class="descname">FacultyPatron</code><span class="sig-paren">(</span><em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#hexagonal.model.faculty_patron.FacultyPatron" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#hexagonal.model.patron.Patron" title="hexagonal.model.patron.Patron"><code class="xref py py-class docutils literal"><span class="pre">hexagonal.model.patron.Patron</span></code></a></p>
+<p>Faculty patron user type.</p>
+<dl class="method">
+<dt id="hexagonal.model.faculty_patron.FacultyPatron.get_checkout_period_for">
+<code class="descname">get_checkout_period_for</code><span class="sig-paren">(</span><em>document</em><span class="sig-paren">)</span><a class="headerlink" href="#hexagonal.model.faculty_patron.FacultyPatron.get_checkout_period_for" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get checkout period for a specific document.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>document</strong> – to be checked out</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">timedelta</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="document-model">
+<h2>Document model<a class="headerlink" href="#document-model" title="Permalink to this headline">¶</a></h2>
+<p>In SQL documents use joined-table inheritance, so id of any specific document is a foreign key to id of a document.
+All common fields are kept in the <code class="docutils literal"><span class="pre">documents</span></code> table, whereas fields unique for the specific type are held in a separate table.</p>
+<dl class="class">
+<dt id="hexagonal.model.document.Document">
+<em class="property">class </em><code class="descclassname">hexagonal.model.document.</code><code class="descname">Document</code><span class="sig-paren">(</span><em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#hexagonal.model.document.Document" title="Permalink to this definition">¶</a></dt>
+<dd><p>Base class for all documents.
+Should not be instantiated directly.</p>
+<p>Contains common fields for all documents, and inherits from <a class="reference internal" href="#hexagonal.model.searchable.Searchable" title="hexagonal.model.searchable.Searchable"><code class="xref py py-class docutils literal"><span class="pre">hexagonal.model.searchable.Searchable</span></code></a>,
+adding search capability.</p>
+<p>Fuzzy search fields are <cite>title</cite> and <cite>type</cite>.
+Fuzzy array search fields are <cite>keywords</cite> and <cite>authors</cite>.</p>
+<dl class="attribute">
+<dt id="hexagonal.model.document.Document.authors">
+<code class="descname">authors</code><a class="headerlink" href="#hexagonal.model.document.Document.authors" title="Permalink to this definition">¶</a></dt>
+<dd><p>Authors of this document.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="hexagonal.model.document.Document.available_copies">
+<code class="descname">available_copies</code><a class="headerlink" href="#hexagonal.model.document.Document.available_copies" title="Permalink to this definition">¶</a></dt>
+<dd><p>Hybrid property for currently available copies of this document.
+Available copies are copies which don’t have an associated loan.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="hexagonal.model.document.Document.copies">
+<code class="descname">copies</code><a class="headerlink" href="#hexagonal.model.document.Document.copies" title="Permalink to this definition">¶</a></dt>
+<dd><p>Relation with copies of this document.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="hexagonal.model.document.Document.id">
+<code class="descname">id</code><a class="headerlink" href="#hexagonal.model.document.Document.id" title="Permalink to this definition">¶</a></dt>
+<dd><p>Integer primary key (referenced from subclasses)</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="hexagonal.model.document.Document.keywords">
+<code class="descname">keywords</code><a class="headerlink" href="#hexagonal.model.document.Document.keywords" title="Permalink to this definition">¶</a></dt>
+<dd><p>Relation with keywords.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="hexagonal.model.document.Document.price">
+<code class="descname">price</code><a class="headerlink" href="#hexagonal.model.document.Document.price" title="Permalink to this definition">¶</a></dt>
+<dd><p>Document price (used in calculating overdue fine)</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="hexagonal.model.document.Document.title">
+<code class="descname">title</code><a class="headerlink" href="#hexagonal.model.document.Document.title" title="Permalink to this definition">¶</a></dt>
+<dd><p>Document title (exists for all types)</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="hexagonal.model.document.Document.type">
+<code class="descname">type</code><a class="headerlink" href="#hexagonal.model.document.Document.type" title="Permalink to this definition">¶</a></dt>
+<dd><p>Polymorphic identity column for inheritance support.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="hexagonal.model.document_copy.DocumentCopy">
+<em class="property">class </em><code class="descclassname">hexagonal.model.document_copy.</code><code class="descname">DocumentCopy</code><span class="sig-paren">(</span><em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#hexagonal.model.document_copy.DocumentCopy" title="Permalink to this definition">¶</a></dt>
+<dd><p>Copy of a document.
+References a specific document and document type by foreign key.</p>
+<dl class="attribute">
+<dt id="hexagonal.model.document_copy.DocumentCopy.document">
+<code class="descname">document</code><a class="headerlink" href="#hexagonal.model.document_copy.DocumentCopy.document" title="Permalink to this definition">¶</a></dt>
+<dd><p>Associated document.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="hexagonal.model.document_copy.DocumentCopy.document_id">
+<code class="descname">document_id</code><a class="headerlink" href="#hexagonal.model.document_copy.DocumentCopy.document_id" title="Permalink to this definition">¶</a></dt>
+<dd><p>Foreign key to documents.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="hexagonal.model.document_copy.DocumentCopy.id">
+<code class="descname">id</code><a class="headerlink" href="#hexagonal.model.document_copy.DocumentCopy.id" title="Permalink to this definition">¶</a></dt>
+<dd><p>Integer primary key.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="hexagonal.model.document_copy.DocumentCopy.loan">
+<code class="descname">loan</code><a class="headerlink" href="#hexagonal.model.document_copy.DocumentCopy.loan" title="Permalink to this definition">¶</a></dt>
+<dd><p>Relation to current loan. May be None when document is available.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="hexagonal.model.document_copy.DocumentCopy.location">
+<code class="descname">location</code><a class="headerlink" href="#hexagonal.model.document_copy.DocumentCopy.location" title="Permalink to this definition">¶</a></dt>
+<dd><p>Location of the copy in the physical library.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="hexagonal.model.book.Book">
+<em class="property">class </em><code class="descclassname">hexagonal.model.book.</code><code class="descname">Book</code><span class="sig-paren">(</span><em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#hexagonal.model.book.Book" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#hexagonal.model.document.Document" title="hexagonal.model.document.Document"><code class="xref py py-class docutils literal"><span class="pre">hexagonal.model.document.Document</span></code></a></p>
+<p>Book document type.
+These could be checked out for 2 weeks, if they are bestsellers.
+Otherwise, students check out these for 3 weeks, and faculty members check out these for 4 weeks.</p>
+<dl class="attribute">
+<dt id="hexagonal.model.book.Book.bestseller">
+<code class="descname">bestseller</code><a class="headerlink" href="#hexagonal.model.book.Book.bestseller" title="Permalink to this definition">¶</a></dt>
+<dd><p>Whether this book is a bestseller.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="hexagonal.model.book.Book.edition">
+<code class="descname">edition</code><a class="headerlink" href="#hexagonal.model.book.Book.edition" title="Permalink to this definition">¶</a></dt>
+<dd><p>Book edition.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="hexagonal.model.book.Book.id">
+<code class="descname">id</code><a class="headerlink" href="#hexagonal.model.book.Book.id" title="Permalink to this definition">¶</a></dt>
+<dd><p>Integer primary foreign key to documents.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="hexagonal.model.book.Book.publisher">
+<code class="descname">publisher</code><a class="headerlink" href="#hexagonal.model.book.Book.publisher" title="Permalink to this definition">¶</a></dt>
+<dd><p>Relation with publisher.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="hexagonal.model.book.Book.publishment_year">
+<code class="descname">publishment_year</code><a class="headerlink" href="#hexagonal.model.book.Book.publishment_year" title="Permalink to this definition">¶</a></dt>
+<dd><p>Publishment year.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="hexagonal.model.book.Book.reference">
+<code class="descname">reference</code><a class="headerlink" href="#hexagonal.model.book.Book.reference" title="Permalink to this definition">¶</a></dt>
+<dd><p>Whether this book is a reference book</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="hexagonal.model.journal_article.JournalArticle">
+<em class="property">class </em><code class="descclassname">hexagonal.model.journal_article.</code><code class="descname">JournalArticle</code><span class="sig-paren">(</span><em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#hexagonal.model.journal_article.JournalArticle" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#hexagonal.model.document.Document" title="hexagonal.model.document.Document"><code class="xref py py-class docutils literal"><span class="pre">hexagonal.model.document.Document</span></code></a></p>
+<p>Journal article type of document.
+These could be checked out for two weeks by anyone.</p>
+<dl class="attribute">
+<dt id="hexagonal.model.journal_article.JournalArticle.id">
+<code class="descname">id</code><a class="headerlink" href="#hexagonal.model.journal_article.JournalArticle.id" title="Permalink to this definition">¶</a></dt>
+<dd><p>Integer primary key.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="hexagonal.model.journal_article.JournalArticle.issue_editor">
+<code class="descname">issue_editor</code><a class="headerlink" href="#hexagonal.model.journal_article.JournalArticle.issue_editor" title="Permalink to this definition">¶</a></dt>
+<dd><p>Editor of the issue.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="hexagonal.model.journal_article.JournalArticle.issue_publication_date">
+<code class="descname">issue_publication_date</code><a class="headerlink" href="#hexagonal.model.journal_article.JournalArticle.issue_publication_date" title="Permalink to this definition">¶</a></dt>
+<dd><p>Publication date of the issue.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="hexagonal.model.journal_article.JournalArticle.journal">
+<code class="descname">journal</code><a class="headerlink" href="#hexagonal.model.journal_article.JournalArticle.journal" title="Permalink to this definition">¶</a></dt>
+<dd><p>Journal.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="hexagonal.model.av_material.AVMaterial">
+<em class="property">class </em><code class="descclassname">hexagonal.model.av_material.</code><code class="descname">AVMaterial</code><span class="sig-paren">(</span><em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#hexagonal.model.av_material.AVMaterial" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#hexagonal.model.document.Document" title="hexagonal.model.document.Document"><code class="xref py py-class docutils literal"><span class="pre">hexagonal.model.document.Document</span></code></a></p>
+<p>AVMaterial document type.
+These could be checked out for 2 weeks by anyone.</p>
+<dl class="attribute">
+<dt id="hexagonal.model.av_material.AVMaterial.id">
+<code class="descname">id</code><a class="headerlink" href="#hexagonal.model.av_material.AVMaterial.id" title="Permalink to this definition">¶</a></dt>
+<dd><p>Primary foreign key to documents.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="booking-model">
+<h2>Booking model<a class="headerlink" href="#booking-model" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="hexagonal.model.loan.Loan">
+<em class="property">class </em><code class="descclassname">hexagonal.model.loan.</code><code class="descname">Loan</code><span class="sig-paren">(</span><em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#hexagonal.model.loan.Loan" title="Permalink to this definition">¶</a></dt>
+<dd><p>Model for one loan of a specific document by a specific user.
+Internal model, gets squashed in the api.</p>
+<dl class="class">
+<dt id="hexagonal.model.loan.Loan.Status">
+<em class="property">class </em><code class="descname">Status</code><a class="headerlink" href="#hexagonal.model.loan.Loan.Status" title="Permalink to this definition">¶</a></dt>
+<dd><p>Loan status.
+Each loan can be:</p>
+<blockquote>
+<div><ul class="simple">
+<li><cite>requested</cite> - which means that it has been requested by a patron.</li>
+<li><cite>approved</cite> - which means that a librarian has approved the request, and the document is now in patron’s possession</li>
+<li><cite>returned</cite> - which means that the patron has supposedly brought the document into the library, and it is now waiting for approval from a librarian</li>
+</ul>
+</div></blockquote>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="hexagonal.model.loan.Loan.document_copy">
+<code class="descname">document_copy</code><a class="headerlink" href="#hexagonal.model.loan.Loan.document_copy" title="Permalink to this definition">¶</a></dt>
+<dd><p>Loaned document_copy.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="hexagonal.model.loan.Loan.document_copy_id">
+<code class="descname">document_copy_id</code><a class="headerlink" href="#hexagonal.model.loan.Loan.document_copy_id" title="Permalink to this definition">¶</a></dt>
+<dd><p>Foreign key to document_copy.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="hexagonal.model.loan.Loan.due_date">
+<code class="descname">due_date</code><a class="headerlink" href="#hexagonal.model.loan.Loan.due_date" title="Permalink to this definition">¶</a></dt>
+<dd><p>Date when the document_copy must be returned.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="hexagonal.model.loan.Loan.get_overdue_fine">
+<code class="descname">get_overdue_fine</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#hexagonal.model.loan.Loan.get_overdue_fine" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get total overdue fine for this loan.
+Returns 0 if it is not overdue.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">the overdue fine, in rubles.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="staticmethod">
+<dt id="hexagonal.model.loan.Loan.get_overdue_loan_count">
+<em class="property">static </em><code class="descname">get_overdue_loan_count</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#hexagonal.model.loan.Loan.get_overdue_loan_count" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the amount of overdue loans.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">amount.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="staticmethod">
+<dt id="hexagonal.model.loan.Loan.get_overdue_loans">
+<em class="property">static </em><code class="descname">get_overdue_loans</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#hexagonal.model.loan.Loan.get_overdue_loans" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get overdue loans.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">list.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="staticmethod">
+<dt id="hexagonal.model.loan.Loan.get_requested_loan_count">
+<em class="property">static </em><code class="descname">get_requested_loan_count</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#hexagonal.model.loan.Loan.get_requested_loan_count" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the amount of requested loans.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">amount.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="staticmethod">
+<dt id="hexagonal.model.loan.Loan.get_requested_loans">
+<em class="property">static </em><code class="descname">get_requested_loans</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#hexagonal.model.loan.Loan.get_requested_loans" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get requested loans.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">list.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="staticmethod">
+<dt id="hexagonal.model.loan.Loan.get_returned_loan_count">
+<em class="property">static </em><code class="descname">get_returned_loan_count</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#hexagonal.model.loan.Loan.get_returned_loan_count" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the amount of returned loans.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">amount.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="staticmethod">
+<dt id="hexagonal.model.loan.Loan.get_returned_loans">
+<em class="property">static </em><code class="descname">get_returned_loans</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#hexagonal.model.loan.Loan.get_returned_loans" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get returned loans.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">list.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="hexagonal.model.loan.Loan.id">
+<code class="descname">id</code><a class="headerlink" href="#hexagonal.model.loan.Loan.id" title="Permalink to this definition">¶</a></dt>
+<dd><p>Integer primary key.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="hexagonal.model.loan.Loan.overdue">
+<code class="descname">overdue</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#hexagonal.model.loan.Loan.overdue" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check whether this loan is overdue.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">whether this loan is overdue.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="hexagonal.model.loan.Loan.overdue_days">
+<code class="descname">overdue_days</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#hexagonal.model.loan.Loan.overdue_days" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gives number of overdued days of loan.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">number of days</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="staticmethod">
+<dt id="hexagonal.model.loan.Loan.overdue_loan_query">
+<em class="property">static </em><code class="descname">overdue_loan_query</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#hexagonal.model.loan.Loan.overdue_loan_query" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the query for overdue loans.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">query for overdue loans.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="hexagonal.model.loan.Loan.renewed">
+<code class="descname">renewed</code><a class="headerlink" href="#hexagonal.model.loan.Loan.renewed" title="Permalink to this definition">¶</a></dt>
+<dd><p>Whether this loan was renewed.</p>
+</dd></dl>
+
+<dl class="staticmethod">
+<dt id="hexagonal.model.loan.Loan.requested_loan_query">
+<em class="property">static </em><code class="descname">requested_loan_query</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#hexagonal.model.loan.Loan.requested_loan_query" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the query for requested loans.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">query for requested loans.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="staticmethod">
+<dt id="hexagonal.model.loan.Loan.returned_loan_query">
+<em class="property">static </em><code class="descname">returned_loan_query</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#hexagonal.model.loan.Loan.returned_loan_query" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the query for returned loans.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">query for returned loans.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="hexagonal.model.loan.Loan.status">
+<code class="descname">status</code><a class="headerlink" href="#hexagonal.model.loan.Loan.status" title="Permalink to this definition">¶</a></dt>
+<dd><p>Current loan status.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="hexagonal.model.loan.Loan.user">
+<code class="descname">user</code><a class="headerlink" href="#hexagonal.model.loan.Loan.user" title="Permalink to this definition">¶</a></dt>
+<dd><p>Borrowing user id.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="hexagonal.model.loan.Loan.user_id">
+<code class="descname">user_id</code><a class="headerlink" href="#hexagonal.model.loan.Loan.user_id" title="Permalink to this definition">¶</a></dt>
+<dd><p>Foreign key to user.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="search">
+<h2>Search<a class="headerlink" href="#search" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="hexagonal.model.searchable.Searchable">
+<em class="property">class </em><code class="descclassname">hexagonal.model.searchable.</code><code class="descname">Searchable</code><a class="headerlink" href="#hexagonal.model.searchable.Searchable" title="Permalink to this definition">¶</a></dt>
+<dd><p>Searchable base class.
+To add search functionality to an SQLAlchemy model class, just extend it from this class,
+and if you need fuzzy search specify <cite>fuzzy_search_fields</cite> and <cite>fuzzy_array_search_fields</cite>.</p>
+<p>E.g.</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">User</span><span class="p">(</span><span class="n">db</span><span class="o">.</span><span class="n">Model</span><span class="p">,</span> <span class="n">Searchable</span><span class="p">):</span>
+    <span class="n">fuzzy_search_fields</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">,</span> <span class="s1">&#39;role&#39;</span><span class="p">]</span>
+    <span class="n">fuzzy_array_search_fields</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;notes&#39;</span><span class="p">]</span>
+
+    <span class="n">name</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">Column</span><span class="p">(</span><span class="n">db</span><span class="o">.</span><span class="n">String</span><span class="p">,</span> <span class="o">...</span><span class="p">)</span>
+    <span class="n">role</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">Column</span><span class="p">(</span><span class="n">db</span><span class="o">.</span><span class="n">String</span><span class="p">,</span> <span class="o">...</span><span class="p">)</span>
+
+    <span class="n">notes</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">Column</span><span class="p">(</span><span class="n">db</span><span class="o">.</span><span class="n">ARRAY</span><span class="p">(</span><span class="n">db</span><span class="o">.</span><span class="n">String</span><span class="p">),</span> <span class="o">...</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>To search by a specific field, use <code class="docutils literal"><span class="pre">search_by_&lt;field&gt;</span></code> (yeah, dynamic getattr)</p>
+<p>E.g. (with the previous example)</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">user</span> <span class="o">=</span> <span class="n">User</span><span class="p">(</span><span class="o">...</span><span class="p">)</span>
+<span class="n">user</span><span class="o">.</span><span class="n">search_by_name</span><span class="p">(</span><span class="s1">&#39;Alina&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>will produce something like</p>
+<div class="highlight-sql"><div class="highlight"><pre><span></span><span class="k">SELECT</span> <span class="o">*</span> <span class="k">FROM</span> <span class="n">users</span> <span class="k">WHERE</span> <span class="n">name</span> <span class="k">ILIKE</span> <span class="s1">&#39;%Alina%&#39;</span>
+</pre></div>
+</div>
+<dl class="classmethod">
+<dt id="hexagonal.model.searchable.Searchable._search_factory">
+<em class="property">classmethod </em><code class="descname">_search_factory</code><span class="sig-paren">(</span><em>field</em><span class="sig-paren">)</span><a class="headerlink" href="#hexagonal.model.searchable.Searchable._search_factory" title="Permalink to this definition">¶</a></dt>
+<dd><p>Produce a function which searches the required field.
+(used later in __getattr__)</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>field</strong> – field in which the search will occur.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">searching function.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="hexagonal.model.searchable.Searchable._search_in_fields">
+<em class="property">classmethod </em><code class="descname">_search_in_fields</code><span class="sig-paren">(</span><em>term</em>, <em>fields=None</em>, <em>array_fields=None</em><span class="sig-paren">)</span><a class="headerlink" href="#hexagonal.model.searchable.Searchable._search_in_fields" title="Permalink to this definition">¶</a></dt>
+<dd><p>Perform the actual search in specified fields.</p>
+<p>Search is performed using SQL ILIKE, and all array fields are joined using a comma (‘,’).
+All clauses are OR’ed.
+E.g. <code class="docutils literal"><span class="pre">Searchable._search_in_fields('aba',</span> <span class="pre">['title',</span> <span class="pre">'description'],</span> <span class="pre">['keywords'])</span></code>
+gives the following SQL:</p>
+<div class="highlight-sql"><div class="highlight"><pre><span></span><span class="k">SELECT</span> <span class="o">*</span> <span class="k">FROM</span> <span class="n">whatever</span> <span class="k">WHERE</span>
+    <span class="n">title</span> <span class="k">ILIKE</span> <span class="s1">&#39;aba&#39;</span> <span class="k">OR</span>
+    <span class="n">description</span> <span class="k">ILIKE</span> <span class="s1">&#39;aba&#39;</span> <span class="k">OR</span>
+    <span class="n">array_to_string</span><span class="p">(</span><span class="n">keywords</span><span class="p">,</span> <span class="ss">&quot;,&quot;</span><span class="p">)</span> <span class="k">ILIKE</span> <span class="s1">&#39;aba&#39;</span><span class="p">;</span>
+</pre></div>
+</div>
+<p><code class="docutils literal"><span class="pre">array_to_string</span></code> is <code class="docutils literal"><span class="pre">sqlalchemy.func.array_to_string</span></code>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>term</strong> – term to search for.</li>
+<li><strong>fields</strong> – usual text fields to perform search in.</li>
+<li><strong>array_fields</strong> – array fields to perform search in.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">list of results.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="hexagonal.model.searchable.Searchable.fuzzy_search">
+<em class="property">classmethod </em><code class="descname">fuzzy_search</code><span class="sig-paren">(</span><em>term</em><span class="sig-paren">)</span><a class="headerlink" href="#hexagonal.model.searchable.Searchable.fuzzy_search" title="Permalink to this definition">¶</a></dt>
+<dd><p>Perform a search of the specified field through all defined fields.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>term</strong> – term to search for.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">list of results.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+      
+        <a href="model.html" class="btn btn-neutral" title="Model" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, ionagamed.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>
