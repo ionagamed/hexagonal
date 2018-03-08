@@ -7,11 +7,18 @@ class Searchable:
     To add search functionality to the SQLAlchemy model class, just extend it from this class,
     and if you need fuzzy search specify `fuzzy_search_fields` and `fuzzy_array_search_fields`.
 
-    E.g.:`
+    E.g.
+
+    .. sourcecode:: python
+
         class User(db.Model, Searchable):
             fuzzy_search_fields = ['name', 'role']
             fuzzy_array_search_fields = ['notes']
-    `
+
+            name = db.Column(db.String, ...)
+            role = db.Column(db.String, ...)
+
+            notes = db.Column(db.ARRAY(db.String), ...)
     """
 
     fuzzy_search_fields = []
@@ -38,13 +45,17 @@ class Searchable:
 
         Search is performed using SQL ILIKE, and all array fields are joined using a comma (',').
         All clauses are OR'ed.
-        E.g. `Searchable._search_in_fields('aba', ['title', 'description'], ['keywords'])`
+        E.g. ``Searchable._search_in_fields('aba', ['title', 'description'], ['keywords'])``
         gives the following SQL:
-        `SELECT * FROM whatever WHERE
-            title ILIKE 'aba' OR
-            description ILIKE 'aba' OR
-            array_to_string(keywords, ",") ILIKE 'aba';`
-        array_to_string is `sqlalchemy.func.array_to_string`.
+
+        .. sourcecode:: sql
+
+            SELECT * FROM whatever WHERE
+                title ILIKE 'aba' OR
+                description ILIKE 'aba' OR
+                array_to_string(keywords, ",") ILIKE 'aba';
+
+        ``array_to_string`` is ``sqlalchemy.func.array_to_string``.
 
         :param term: term to search for.
         :param fields: usual text fields to perform search in.

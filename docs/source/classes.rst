@@ -63,6 +63,7 @@ Search
 ------
 
 .. autoclass:: hexagonal.model.searchable.Searchable
+    :private-members:
     :members:
 
 
