@@ -44,9 +44,9 @@ from hexagonal.model.loan import Loan
 from hexagonal.model.patron import Patron
 from hexagonal.model.student_patron import StudentPatron
 
-db.create_all()
-from hexagonal.auth import create_root
 if env != 'docs':
+    db.create_all()
+    from hexagonal.auth import create_root
     create_root()
 
 if env != 'testing' and env != 'docs':
