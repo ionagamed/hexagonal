@@ -1,0 +1,5 @@
+{% if loan.status == Loan.Status.requested %}
+  <i class="{{ size }} hex-popup question icon" title="Requested for checkout"></i>
+{% elif loan.status == Loan.Status.returned %}
+  <i class="{{ size }} hex-popup undo icon" title="Requested for return approval"></i>
+{% endif %}

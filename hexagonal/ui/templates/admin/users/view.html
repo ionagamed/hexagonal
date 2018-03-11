@@ -2,78 +2,79 @@
 
 {% block admin_body %}
 
-  <br>
+  <div class="ui segment">
 
-  <div class="ui stackable fluid divided grid">
-    <div class="four wide column">
-      <h3 style="display: inline-block">{{ user.name }}</h3>&nbsp;&nbsp;&nbsp;
-      <a href="/admin/users/{{ user.id }}/edit"><i class="pencil icon"></i>Edit</a>
-      <p>
-        <strong>Login: </strong> {{ user.login }}<br>
-        <strong>Role: </strong> {{ user.role }}<br>
-        <strong>Address: </strong> {{ user.address }}<br>
-        <strong>Phone: </strong> {{ user.phone }}<br>
-        <strong>Library card number: </strong> {{ user.card_number }}<br><br>
-      </p>
-    </div>
+    <div class="ui stackable fluid divided grid">
+      <div class="four wide column">
+        <h3 style="display: inline-block">{{ user.name }}</h3>&nbsp;&nbsp;&nbsp;
+        <a href="/admin/users/{{ user.id }}/edit"><i class="pencil icon"></i>Edit</a>
+        <p>
+          <strong>Login: </strong> {{ user.login }}<br>
+          <strong>Role: </strong> {{ user.role }}<br>
+          <strong>Address: </strong> {{ user.address }}<br>
+          <strong>Phone: </strong> {{ user.phone }}<br>
+          <strong>Library card number: </strong> {{ user.card_number }}<br><br>
+        </p>
+      </div>
 
-    <div class="twelve wide column">
-      {% if 'patron' in user.role %}
-        <strong>Loans:</strong>
-        <div class="ui secondary menu">
-          <a class="active item" data-tab="all">
-            <i class="bars icon"></i>
-            All
-          </a>
-          <a class="teal item" data-tab="requested">
-            <i class="question icon"></i>
-            Requests
-            {% if user.get_requested_loan_count() > 0 %}
-              <div class="ui teal label">
-                {{ user.get_requested_loan_count() }}
-              </div>
-            {% endif %}
-          </a>
-          <a class="red item" data-tab="overdue">
-            <i class="exclamation icon"></i>
-            Overdue
-            {% if user.get_overdue_loan_count() > 0 %}
-              <div class="ui red label">
-                {{ user.get_overdue_loan_count() }}
-              </div>
-            {% endif %}
-          </a>
-          <a class="item" data-tab="returned">
-            <i class="undo icon"></i>
-            Return requests
-            {% if user.get_returned_loan_count() > 0 %}
-              <div class="ui teal label">
-                {{ user.get_returned_loan_count() }}
-              </div>
-            {% endif %}
-          </a>
-        </div>
-        <div class="transition fade in ui active tab" data-tab="all">
-          {% with loans = user.get_loans() %}
-            {% include "components/loan-list.html" %}
-          {% endwith %}
-        </div>
-        <div class="transition fade in ui tab" data-tab="requested">
-          {% with loans = user.get_requested_loans() %}
-            {% include "components/loan-list.html" %}
-          {% endwith %}
-        </div>
-        <div class="transition fade in ui tab" data-tab="overdue">
-          {% with loans = user.get_overdue_loans() %}
-            {% include "components/loan-list.html" %}
-          {% endwith %}
-        </div>
-        <div class="transition fade in ui tab" data-tab="returned">
-          {% with loans = user.get_returned_loans() %}
-            {% include "components/loan-list.html" %}
-          {% endwith %}
-        </div>
-      {% endif %}
+      <div class="twelve wide column">
+        {% if 'patron' in user.role %}
+          <strong>Loans:</strong>
+          <div class="ui secondary menu">
+            <a class="active item" data-tab="all">
+              <i class="bars icon"></i>
+              All
+            </a>
+            <a class="teal item" data-tab="requested">
+              <i class="question icon"></i>
+              Requests
+              {% if user.get_requested_loan_count() > 0 %}
+                <div class="ui teal label">
+                  {{ user.get_requested_loan_count() }}
+                </div>
+              {% endif %}
+            </a>
+            <a class="red item" data-tab="overdue">
+              <i class="exclamation icon"></i>
+              Overdue
+              {% if user.get_overdue_loan_count() > 0 %}
+                <div class="ui red label">
+                  {{ user.get_overdue_loan_count() }}
+                </div>
+              {% endif %}
+            </a>
+            <a class="item" data-tab="returned">
+              <i class="undo icon"></i>
+              Return requests
+              {% if user.get_returned_loan_count() > 0 %}
+                <div class="ui teal label">
+                  {{ user.get_returned_loan_count() }}
+                </div>
+              {% endif %}
+            </a>
+          </div>
+          <div class="transition fade in ui active tab" data-tab="all">
+            {% with loans = user.get_loans() %}
+              {% include "components/loan-list.html" %}
+            {% endwith %}
+          </div>
+          <div class="transition fade in ui tab" data-tab="requested">
+            {% with loans = user.get_requested_loans() %}
+              {% include "components/loan-list.html" %}
+            {% endwith %}
+          </div>
+          <div class="transition fade in ui tab" data-tab="overdue">
+            {% with loans = user.get_overdue_loans() %}
+              {% include "components/loan-list.html" %}
+            {% endwith %}
+          </div>
+          <div class="transition fade in ui tab" data-tab="returned">
+            {% with loans = user.get_returned_loans() %}
+              {% include "components/loan-list.html" %}
+            {% endwith %}
+          </div>
+        {% endif %}
+      </div>
     </div>
   </div>
 

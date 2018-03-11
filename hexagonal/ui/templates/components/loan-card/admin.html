@@ -1,8 +1,10 @@
-<div class="card" data-overdue="{{ loan.overdue() }}">
+<div class="hex-loan card" data-overdue="{{ loan.overdue() }}">
   {% if loan.status == Loan.Status.requested %}
     <div class="content">
       <div class="right floated meta">
-        request
+        {% with size = 'big' %}
+          {% include "components/loan-card/type-icon.html" %}
+        {% endwith %}
       </div>
       <a class="header" href="/admin/loans/{{ loan.id }}">
         {{ loan.document.title }}
@@ -46,7 +48,9 @@
   {% elif loan.status == Loan.Status.returned %}
     <div class="content">
       <div class="right floated meta">
-        return request
+        {% with size = 'big' %}
+          {% include "components/loan-card/type-icon.html" %}
+        {% endwith %}
       </div>
       <a class="header" href="/admin/loans/{{ loan.id }}">
         {{ loan.document.title }}
@@ -79,13 +83,13 @@
 </style>
 
 <script>
-  window.overdueShown = false;
-  $(function () {
-      if (!window.overdueShown) {
-          window.overdueShown = true;
-          $('.card').filter(function () {
-              return $(this).data('overdue') === 'True';
-          }).transition('pulse');
-      }
-  });
+    window.overdueShown = false;
+    $(function () {
+        if (!window.overdueShown) {
+            window.overdueShown = true;
+            $('.card').filter(function () {
+                return $(this).data('overdue') === 'True';
+            }).transition('pulse');
+        }
+    });
 </script>
