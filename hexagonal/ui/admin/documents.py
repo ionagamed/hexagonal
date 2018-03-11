@@ -51,6 +51,7 @@ def document_new_view():
     return render_template('admin/documents/new.html', path='/admin/documents/new')
 
 
+# noinspection PyArgumentList
 @app.route('/admin/documents/new', methods=['POST'])
 @required_permission(Permission.manage)
 def document_new():
@@ -71,7 +72,8 @@ def document_new():
             edition=request.form['edition'],
             publisher=request.form['publisher'],
             publishment_year=request.form['publishment_year'],
-            bestseller='bestseller' in request.form
+            bestseller='bestseller' in request.form,
+            reference='reference' in request.form
         )
     elif t == 'av':
         doc = AVMaterial(
@@ -138,6 +140,7 @@ def document_edit(document_id):
             dc = DocumentCopy(document=doc)
     elif copy_delta < 0:
         if -copy_delta <= len(doc.available_copies):
+            # noinspection PyComparisonWithNone
             dcs = DocumentCopy.query.filter(DocumentCopy.document == doc, DocumentCopy.loan == None).limit(
                 -copy_delta).all()
             for dc in dcs:
@@ -148,6 +151,7 @@ def document_edit(document_id):
         doc.publisher = request.form['publisher']
         doc.publishment_year = request.form['publishment_year']
         doc.bestseller = 'bestseller' in request.form
+        doc.reference = 'reference' in request.form
 
     db.session.add(doc)
     db.session.commit()

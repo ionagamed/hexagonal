@@ -1,0 +1,43 @@
+<div class="ui two fluid buttons" id="{{ name }}">
+  <div class="ui basic green button" data-choice="yes">
+    Yes
+  </div>
+  <div class="ui basic red button" data-choice="no">
+    No
+  </div>
+</div>
+
+<script>
+    (function () {
+        var yes = function () {
+            $('#{{ name }} .button').removeClass('basic');
+            $('#{{ name }} .red.button').addClass('basic');
+            $('#{{ name }}.buttons').append($.parseHTML('<input type="hidden" name="{{ name }}" value="true">'));
+        };
+        var no = function () {
+            $('#{{ name }} .button').removeClass('basic');
+            $('#{{ name }} .green.button').addClass('basic');
+            $('#{{ name }}.buttons input').remove();
+        };
+        $('#{{ name }} .button').click(function () {
+            var choice = $(this).data('choice');
+            if (choice === 'yes') {
+                yes();
+            } else {
+                no();
+            }
+        });
+
+        {% if document and document[name] %}
+            $(yes);
+        {% else %}
+            $(no);
+        {% endif %}
+    })();
+</script>
+
+<style>
+  #{{ name }} .buttons {
+    height: 62%;
+  }
+</style>

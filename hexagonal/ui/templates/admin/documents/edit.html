@@ -20,9 +20,17 @@
             <label>Year</label>
             <input type="number" name="publishment_year" placeholder="2009" value="{{ document.publishment_year }}">
           </div>
-          <div class="four wide field">
+          <div class="two wide field">
             <label>Bestseller</label>
-            {% include "admin/documents/bestseller-toggle.html" %}
+            {% with name='bestseller' %}
+              {% include "components/toggle-button.html" %}
+            {% endwith %}
+          </div>
+          <div class="two wide field">
+            <label class="hex-popup" title="Whether this book is a reference book">Reference</label>
+            {% with name='reference' %}
+              {% include "components/toggle-button.html" %}
+            {% endwith %}
           </div>
         </div>
         <button type="submit" class="ui fluid blue button">
@@ -49,13 +57,15 @@
             <div class="ui calendar" id="publication-date-calendar">
               <div class="ui left icon input">
                 <i class="calendar icon"></i>
-                <input type="text" placeholder="March 1, 1968" name="issue_publication_date" value="{{ document.issue_publication_date.strftime("%B %d, %Y") }}">
+                <input type="text" placeholder="March 1, 1968" name="issue_publication_date"
+                       value="{{ document.issue_publication_date.strftime("%B %d, %Y") }}">
               </div>
             </div>
           </div>
           <div class="field">
             <label>Issue editor</label>
-            <input type="text" name="issue_editor" placeholder="Edward Nash Yourdon" value="{{ document.issue_editor }}">
+            <input type="text" name="issue_editor" placeholder="Edward Nash Yourdon"
+                   value="{{ document.issue_editor }}">
           </div>
           <div class="field">
             <label>Journal</label>

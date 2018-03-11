@@ -25,9 +25,17 @@
             <label>Year</label>
             <input type="number" name="publishment_year" placeholder="2009">
           </div>
-          <div class="four wide field">
+          <div class="two wide field">
             <label>Bestseller</label>
-            {% include "admin/documents/bestseller-toggle.html" %}
+            {% with name='bestseller' %}
+              {% include "components/toggle-button.html" %}
+            {% endwith %}
+          </div>
+          <div class="two wide field">
+            <label class="hex-popup" title="Whether this book is a reference book">Reference</label>
+            {% with name='reference' %}
+              {% include "components/toggle-button.html" %}
+            {% endwith %}
           </div>
         </div>
         <button type="submit" class="ui fluid blue button">
