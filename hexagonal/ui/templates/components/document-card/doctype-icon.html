@@ -1,0 +1,7 @@
+{% if document.type == 'book' %}
+  <i class="{{ size }} hex-popup book icon" title="Book"></i>
+{% elif document.type == 'av_material' %}
+  <i class="{{ size }} hex-popup headphones icon" title="A/V Material"></i>
+{% elif document.type == 'journal_article' %}
+  <i class="{{ size }} hex-popup newspaper icon" title="Journal Article"></i>
+{% endif %}

@@ -2,12 +2,16 @@
 <span class="display-none">{{ document.copies | ids }}</span>
 <div class="card">
   <div class="content">
+    <div class="right floated meta">
+      {% with size = 'big' %}
+        {% include "components/document-card/doctype-icon.html" %}
+      {% endwith %}
+    </div>
     <a class="header" href="/admin/documents/{{ document.id }}">
       {{ document.title }}
     </a>
     <div class="meta">
-      {{ document.type | humanize | capitalize_first }}
-      by {{ document.authors | join(', ') }}
+      By {{ document.authors | join(', ') }}
       {% if document.type == 'book' %}
         , {{ document.edition | ordinal }} edition
       {% endif %}

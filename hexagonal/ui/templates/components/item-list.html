@@ -42,6 +42,9 @@
     {% endif %}
   {% endfor %}
 {% endif %}
+<script>
+  $('.hex-popup').popup();
+</script>
 {% if not headless %}
   </div>
   {% if items | length == 0 %}
