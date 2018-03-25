@@ -333,12 +333,10 @@ def test_9_renew_is_working():
     p1 = register_test_account(FacultyPatron, name='Sergey Afonso', address='Via Margutta, 3', phone='30001',
                                card_number=1010)
     loan_p1_b3 = p1.checkout(copies_b3[0])
+    loan_p1_b3.due_date = datetime.date(2018, 2, 9)
     old_date = loan_p1_b3.due_date
-
-    loan_p1_b3.due_date = datetime.date(2018, 2, 9) + (loan_p1_b3.due_date - datetime.date.today())
-
     loan_p1_b3.renew_document()
 
     renewed_date = loan_p1_b3.due_date
 
-    assert loan_p1_b3.due_date == 2
+    assert old_date != renewed_date
