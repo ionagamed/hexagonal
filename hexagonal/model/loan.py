@@ -172,7 +172,20 @@ class Loan(db.Model):
 
         if self.overdue():
             delta = datetime.date.today() - self.due_date
-            return ((delta.total_seconds()/60)/60)/24
+            return ((delta.total_seconds() / 60) / 60) / 24
 
+    def renew_document(self):
+        """
 
+        Allows user to renew his period of book checkout for one more period,
+        without overduing the renewable document by old date
 
+        :return: new date, when book will become overdued
+        """
+
+        self.renewed = True
+
+        delta = self.user.get_checkout_period_for(self.document)
+        self.due_date = datetime.date.today() + delta
+
+        return self.due_date
