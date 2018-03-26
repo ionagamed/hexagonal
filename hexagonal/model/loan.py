@@ -184,13 +184,17 @@ class Loan(db.Model):
         :return: new date, when book will become overdued
         """
 
-        if self.due_date > datetime.date.today():
-            if isinstance(self.user, VisitingProfessorPatron) or not self.renewed :
-                self.renewed = True
-
-                delta = self.user.get_checkout_period_for(self.document)
-                self.due_date = datetime.date.today() + delta
-
+        if self.can_be_renewed():
+            self.renewed = True
+            delta = self.user.get_checkout_period_for(self.document)
+            self.due_date = datetime.date.today() + delta
             return self.due_date
         else:
             raise ValueError
+
+    def can_be_renewed(self):
+        state = False
+        if self.due_date > datetime.date.today():
+            if isinstance(self.user, VisitingProfessorPatron) or not self.renewed:
+                state = True
+        return state
