@@ -3,6 +3,7 @@ import enum
 
 from sqlalchemy.ext.associationproxy import association_proxy
 from hexagonal import db, app
+from hexagonal.model.visiting_professor_patron import VisitingProfessorPatron
 
 
 class Loan(db.Model):
@@ -183,9 +184,13 @@ class Loan(db.Model):
         :return: new date, when book will become overdued
         """
 
-        self.renewed = True
+        if self.due_date > datetime.date.today():
+            if isinstance(self.user, VisitingProfessorPatron) or not self.renewed :
+                self.renewed = True
 
-        delta = self.user.get_checkout_period_for(self.document)
-        self.due_date = datetime.date.today() + delta
+                delta = self.user.get_checkout_period_for(self.document)
+                self.due_date = datetime.date.today() + delta
 
-        return self.due_date
+            return self.due_date
+        else:
+            raise ValueError
