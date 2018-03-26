@@ -193,6 +193,15 @@ class Loan(db.Model):
             raise ValueError
 
     def can_be_renewed(self):
+        """
+
+        Flag for renew_document fuction.
+        Gives information is renew option is it available to renew loan or not.
+
+        :return: Flag
+        """
+
+
         state = False
         if self.due_date > datetime.date.today():
             if isinstance(self.user, VisitingProfessorPatron) or not self.renewed:
