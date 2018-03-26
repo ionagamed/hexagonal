@@ -9,6 +9,7 @@ from hexagonal.model.document_copy import DocumentCopy
 from hexagonal import Librarian, AVMaterial
 from hexagonal.model.student_patron import StudentPatron
 from hexagonal import User, Loan, Patron
+from hexagonal.model.visiting_professor_patron import VisitingProfessorPatron
 
 
 # def create_a_system_of_first_test_state():
@@ -324,19 +325,3 @@ from hexagonal import User, Loan, Patron
 #
 #     assert loan_p1_b2.overdue_days() - 0 == 5 and loan_p2_b1.overdue_days() - 0 == 9 and loan_p2_av1.overdue_days() - 0 == 4
 
-def test_9_renew_is_working():
-    reload_db()
-    b3 = create_instance(Book, title='The Mythical Man-month', authors=['Brooks,Jr', 'Frederick P'],
-                         publisher='Addison-Wesley Longman Publishing Co., Inc.', publishment_year=1995, edition=2,
-                         reference=False)
-    copies_b3 = [create_instance(DocumentCopy, document=b3)]
-    p1 = register_test_account(FacultyPatron, name='Sergey Afonso', address='Via Margutta, 3', phone='30001',
-                               card_number=1010)
-    loan_p1_b3 = p1.checkout(copies_b3[0])
-    loan_p1_b3.due_date = datetime.date(2018, 2, 9)
-    old_date = loan_p1_b3.due_date
-    loan_p1_b3.renew_document()
-
-    renewed_date = loan_p1_b3.due_date
-
-    assert old_date != renewed_date
