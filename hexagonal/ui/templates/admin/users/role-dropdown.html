@@ -1,0 +1,12 @@
+{% with roles = ['student-patron', 'faculty-patron', 'vp-patron', 'librarian'] %}
+<div class="ui fluid selection dropdown">
+  <input type="hidden" name="role">
+  <i class="dropdown icon"></i>
+  <div class="default text">Select role</div>
+  <div class="menu">
+    {% for role in roles %}
+      <div class="item" data-value="{{ role }}">{{ role | humanize | title }}</div>
+    {% endfor %}
+  </div>
+</div>
+{% endwith %}

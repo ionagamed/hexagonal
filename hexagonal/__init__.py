@@ -33,6 +33,7 @@ from hexagonal.model.journal_article import JournalArticle
 from hexagonal.model.loan import Loan
 from hexagonal.model.patron import Patron
 from hexagonal.model.student_patron import StudentPatron
+from hexagonal.model.visiting_professor_patron import VisitingProfessorPatron
 
 if env != 'docs':
     db.create_all()

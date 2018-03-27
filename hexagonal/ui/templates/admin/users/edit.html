@@ -15,16 +15,7 @@
       </div>
       <div class="field">
         <label>Role</label>
-        <div class="ui fluid selection dropdown">
-          <input type="hidden" name="role" value="{{ user.role }}">
-          <i class="dropdown icon"></i>
-          <div class="default text">Select role</div>
-          <div class="menu">
-            <div class="item" data-value="student-patron">Student Patron</div>
-            <div class="item" data-value="faculty-patron">Faculty Patron</div>
-            <div class="item" data-value="librarian">Librarian</div>
-          </div>
-        </div>
+        {% include "admin/users/role-dropdown.html" %}
       </div>
     </div>
     <div class="three fields">
