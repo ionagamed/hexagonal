@@ -21,16 +21,6 @@ if env == 'docs':
 db = SQLAlchemy(app)
 
 
-@app.after_request
-def print_sql(r):
-    for q in get_debug_queries():
-        print('-' * 140)
-        print(q.statement)
-        print('@')
-        print(q.context)
-    return r
-
-
 from hexagonal.model.user import User
 from hexagonal.model.librarian import Librarian
 
