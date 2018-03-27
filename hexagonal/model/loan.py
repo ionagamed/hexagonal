@@ -3,7 +3,6 @@ import enum
 
 from sqlalchemy.ext.associationproxy import association_proxy
 from hexagonal import db, app
-from hexagonal.model.visiting_professor_patron import VisitingProfessorPatron
 
 
 class Loan(db.Model):
@@ -194,16 +193,15 @@ class Loan(db.Model):
 
     def can_be_renewed(self):
         """
-
-        Flag for renew_document fuction.
+        Flag for renew_document function.
         Gives information is renew option is it available to renew loan or not.
 
-        :return: Flag
+        :return: whether the loan can be renewed.
         """
 
+        from hexagonal.model.visiting_professor_patron import VisitingProfessorPatron
 
-        state = False
         if self.due_date > datetime.date.today():
             if isinstance(self.user, VisitingProfessorPatron) or not self.renewed:
-                state = True
-        return state
+                return True
+        return False
