@@ -1,0 +1,13 @@
+
+<i class="{{ size }}
+{% if role == 'student-patron' %}
+  user
+{% elif role == 'faculty-patron' %}
+  graduation cap
+{% elif role == 'librarian' %}
+  book
+{% elif role == 'vp-patron' %}
+  suitcase
+{% endif %}
+hex-popup icon
+" title="{{ role | humanize | title }}"></i>

@@ -1,7 +1,9 @@
 <div class="card">
   <div class="content">
-    <div class="right floated meta">
-      {{ user.role | humanize | title }}
+    <div class="right floated cleared meta">
+      {% with size = 'big', role = user.role %}
+        {% include "components/user-card/role-icon.html" %}
+      {% endwith %}
     </div>
     <a class="header" href="/admin/users/{{ user.id }}">
       {{ user.name }}
