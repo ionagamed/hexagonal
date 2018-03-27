@@ -700,6 +700,21 @@ Each loan can be:</p>
 </div></blockquote>
 </dd></dl>
 
+<dl class="method">
+<dt id="hexagonal.model.loan.Loan.can_be_renewed">
+<code class="descname">can_be_renewed</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#hexagonal.model.loan.Loan.can_be_renewed" title="Permalink to this definition">¶</a></dt>
+<dd><p>Flag for renew_document function.
+Gives information is renew option is it available to renew loan or not.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">whether the loan can be renewed.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
 <dl class="attribute">
 <dt id="hexagonal.model.loan.Loan.document_copy">
 <code class="descname">document_copy</code><a class="headerlink" href="#hexagonal.model.loan.Loan.document_copy" title="Permalink to this definition">¶</a></dt>
@@ -860,6 +875,21 @@ Returns 0 if it is not overdue.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">query for overdue loans.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="hexagonal.model.loan.Loan.renew_document">
+<code class="descname">renew_document</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#hexagonal.model.loan.Loan.renew_document" title="Permalink to this definition">¶</a></dt>
+<dd><p>Allows user to renew his period of book checkout for one more period,
+without overduing the renewable document by old date</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">new date, when book will become overdued</td>
 </tr>
 </tbody>
 </table>
