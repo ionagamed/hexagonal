@@ -34,10 +34,12 @@
         overdue (fine {{ loan.get_overdue_fine() }}₽)
       </div>
     {% endif %}
-    <a href="/user/borrowed/{{ loan.id }}/renew" class="ui basic green attached button">
-      <i class="sync alternate icon"></i>
-      Renew
-    </a>
+    {% if loan.can_be_renewed() %}
+      <a href="/user/borrowed/{{ loan.id }}/renew" class="ui basic green attached button">
+        <i class="sync alternate icon"></i>
+        Renew
+      </a>
+    {% endif %}
     <a href="/user/borrowed/{{ loan.id }}/return" class="ui bottom attached button">
       <i class="undo icon"></i>
       Request return approval
