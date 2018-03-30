@@ -5,6 +5,8 @@ from hexagonal.model.document import Document
 from hexagonal.model.patron import Patron
 from hexagonal.model.user import User
 
+from sqlalchemy.ext.hybrid import hybrid_property
+
 
 class StudentPatron(Patron):
     """
@@ -35,3 +37,9 @@ class StudentPatron(Patron):
             else:
                 return datetime.timedelta(weeks=3)
         return datetime.timedelta(weeks=2)
+
+    @hybrid_property
+    def queuing_priority(self):
+        return 1
+
+

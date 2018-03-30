@@ -156,6 +156,9 @@ def document_edit(document_id):
     db.session.add(doc)
     db.session.commit()
 
+    from hexagonal.ui.user import update_qr_dates
+    update_qr_dates()
+
     return redirect(request.referrer)
 
 
@@ -167,3 +170,20 @@ def document_view(document_id):
     """
     doc = Document.query.filter(Document.id == document_id).first_or_404()
     return render_template('admin/documents/view.html', document=doc)
+
+
+@app.route('/admin/documents/<int:document_id>/outstanding_request')
+@required_permission(Permission.manage)
+def document_outstanding_request(document_id):
+    """
+    Delete the priority queue for the document.
+    """
+
+    from hexagonal import QueuedRequest
+
+    qrs = QueuedRequest.query.filter(QueuedRequest.document_id == document_id).all()
+    for qr in qrs:
+        db.session.delete(qr)
+    db.session.commit()
+
+    return redirect(request.referrer)

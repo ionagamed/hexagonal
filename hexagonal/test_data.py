@@ -14,7 +14,7 @@ if ionagamed is None:
     ionagamed = register_account(
         login='ionagamed',
         password='123',
-        role='student-patron',
+        role=StudentPatron,
 
         address='123',
         phone='123',
@@ -23,7 +23,7 @@ if ionagamed is None:
     )
 db.session.add(ionagamed)
 db.session.commit()
-ionagamed = StudentPatron.query.filter(StudentPatron.login == 'ionagamed').first()
+# ionagamed = StudentPatron.query.filter(StudentPatron.login == 'ionagamed').first()
 
 books = []
 for i in range(1, 10):
@@ -42,7 +42,7 @@ for i in range(1, 10):
         )
     db.session.add(b)
 
-    if DocumentCopy.query.filter(DocumentCopy.document_id == b.id).count() < 2:
+    if DocumentCopy.query.filter(DocumentCopy.document_id == b.id).count() < 1:
         cp1 = DocumentCopy(document=b)
         db.session.add(cp1)
         cp2 = DocumentCopy(document=b)

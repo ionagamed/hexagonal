@@ -34,6 +34,10 @@ from hexagonal.model.loan import Loan
 from hexagonal.model.patron import Patron
 from hexagonal.model.student_patron import StudentPatron
 from hexagonal.model.visiting_professor_patron import VisitingProfessorPatron
+from hexagonal.model.instructor import Instructor
+from hexagonal.model.professor import Professor
+from hexagonal.model.teaching_assistant import TeachingAssistant
+from hexagonal.model.queued_request import QueuedRequest
 
 if env != 'docs':
     db.create_all()

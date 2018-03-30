@@ -37,6 +37,8 @@ def login():
     if user.reset_password:
         return redirect('/reset_password')
 
+    session['uid'] = user.id
+
     if session['role'] == 'librarian':
         return redirect('/admin/documents')
     else:

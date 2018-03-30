@@ -15,11 +15,27 @@
   {#    <link rel="stylesheet" type="text/css" href="/static/login/styles.css"/>#}
 </head>
 <body>
+{% if 'qr_messages' in session %}
+  <div class="ui grid">
+    <div class="one wide column"></div>
+    <div class="fourteen wide column">
+      <br>
+      {% for message in session['qr_messages'] %}
+        <div class="ui message">
+          <p>
+            {{ message | safe }}
+          </p>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+{% endif %}
+
 {% block body %} {% endblock %}
 </body>
 
 <script>
-  $('.hex-popup').popup();
+    $('.hex-popup').popup();
 </script>
 
 <style>
@@ -35,9 +51,11 @@
   .hex-document.card .header {
     max-width: 80%;
   }
+
   .hex-loan.card .header {
     max-width: 80%;
   }
+
   .hex-user.card .header {
     max-width: 80%;
   }

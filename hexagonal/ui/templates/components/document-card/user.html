@@ -51,5 +51,12 @@
         Claim
       </a>
     {% endif %}
+  {% else %}
+    {% if session['uid'] not in document.awaiting_patrons | ids %}
+      <a class="ui bottom attached button" href="/user/enqueue/{{ document.id }}">
+        <i class="book icon"></i>
+        Enqueue (no free copies left)
+      </a>
+    {% endif %}
   {% endif %}
 </div>

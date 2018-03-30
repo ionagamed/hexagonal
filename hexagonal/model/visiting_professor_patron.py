@@ -3,6 +3,8 @@ import datetime
 from hexagonal.model.document import Document
 from hexagonal.model.patron import Patron
 
+from sqlalchemy.ext.hybrid import hybrid_property
+
 
 class VisitingProfessorPatron(Patron):
     """
@@ -27,3 +29,7 @@ class VisitingProfessorPatron(Patron):
             if document.reference:
                 raise ValueError('type is not available to check out')
             return datetime.timedelta(weeks=1)
+
+    @hybrid_property
+    def queuing_priority(self):
+        return 4

@@ -1,5 +1,7 @@
 import datetime
 
+from sqlalchemy.ext.associationproxy import association_proxy
+
 from hexagonal import db
 from hexagonal.model.document_copy import DocumentCopy
 from hexagonal.model.loan import Loan
@@ -39,6 +41,9 @@ class User(db.Model, Searchable):
 
     card_number = db.Column(db.String(80), nullable=False)
     """ User's library card number. """
+
+    queued_requests = db.relationship('QueuedRequest', back_populates='patron')
+    queued_documents = association_proxy('queued_requests', 'document')
 
     __mapper_args__ = {
         'polymorphic_on': role,

@@ -30,7 +30,9 @@ HUMANIZE_MAP = {
 
     'librarian': 'librarian',
     'student-patron': 'student patron',
-    'faculty-patron': 'faculty patron',
+    'inst-patron': 'instructor',
+    'prof-patron': 'professor',
+    'ta-patron': 'teaching assistant',
     'vp-patron': 'visiting professor',
 }
 
@@ -42,8 +44,10 @@ HUMANIZE_ARTICLE_MAP = {
 
     'librarian': 'a',
     'student-patron': 'a',
-    'faculty-patron': 'a',
-    'vp-patron': 'a'
+    'inst-patron': 'a',
+    'prof-patron': 'a',
+    'ta-patron': 'a',
+    'vp-patron': 'a',
 }
 
 

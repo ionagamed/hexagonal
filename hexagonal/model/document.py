@@ -1,3 +1,5 @@
+from sqlalchemy.ext.associationproxy import association_proxy
+
 from hexagonal import db
 from hexagonal.model.document_copy import DocumentCopy
 from hexagonal.model.searchable import Searchable
@@ -38,6 +40,9 @@ class Document(db.Model, Searchable):
 
     type = db.Column(db.String(20), nullable=False)
     """ Polymorphic identity column for inheritance support. """
+
+    queued_requests = db.relationship('QueuedRequest', back_populates='document')
+    awaiting_patrons = association_proxy('queued_requests', 'patron')
 
     __mapper_args__ = {
         'polymorphic_on': type,

@@ -8,6 +8,10 @@
     <strong>By: </strong> {{ ', '.join(document.authors) }}<br>
     <strong>Keywords: </strong> {{ ', '.join(document.keywords) }}
     </p>
+    <a class="ui red labeled icon button" href="/admin/documents/{{ document.id }}/outstanding_request">
+      <i class="exclamation icon"></i>
+      Outstanding request (delete the priority queue)
+    </a>
   </div>
 
 {% endblock %}

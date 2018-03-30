@@ -6,6 +6,8 @@ from hexagonal.auth.permissions import Permission
 import datetime
 from hexagonal import db
 
+from sqlalchemy.ext.hybrid import hybrid_property
+
 
 class Patron(User):
     """
@@ -159,3 +161,7 @@ class Patron(User):
 
     def get_returned_loan_count(self):
         return self.returned_loans_query().count()
+
+    @hybrid_property
+    def queuing_priority(self):
+        raise NotImplementedError
