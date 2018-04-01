@@ -3,15 +3,38 @@
 {% block admin_body %}
 
   <div class="ui segment">
-    <h3 style="display: inline-block">{{ document.title }}</h3> <a href="/admin/documents/{{ document.id }}/edit"><i class="pencil icon"></i>Edit</a>
-    <p>
-    <strong>By: </strong> {{ ', '.join(document.authors) }}<br>
-    <strong>Keywords: </strong> {{ ', '.join(document.keywords) }}
-    </p>
-    <a class="ui red labeled icon button" href="/admin/documents/{{ document.id }}/outstanding_request">
-      <i class="exclamation icon"></i>
-      Outstanding request (delete the priority queue)
-    </a>
+
+    <div class="ui stackable fluid divided grid">
+      <div class="four wide column">
+        <h3 style="display: inline-block">{{ document.title }}</h3> <a href="/admin/documents/{{ document.id }}/edit"><i
+              class="pencil icon"></i>Edit</a>
+        <p>
+          <strong>By: </strong> {{ ', '.join(document.authors) }}<br>
+          <strong>Keywords: </strong> {{ ', '.join(document.keywords) }}
+        </p>
+        <a class="ui red labeled icon button" href="/admin/documents/{{ document.id }}/outstanding_request">
+          <i class="exclamation icon"></i>
+          Outstanding request (delete the priority queue)
+        </a>
+      </div>
+
+      <div class="twelve wide column">
+        <table class="ui celled table">
+          <thead>
+          <tr>
+            <th>Name</th>
+            <th>Date</th>
+          </tr>
+          </thead>
+          {% for req in queued %}
+            <tr>
+              <td>{{ req.patron.name }}</td>
+              <td>{{ req.created_at }}</td>
+            </tr>
+          {% endfor %}
+        </table>
+      </div>
+    </div>
   </div>
 
 {% endblock %}

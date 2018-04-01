@@ -1,6 +1,6 @@
 from hexagonal import app, db, AVMaterial, JournalArticle
 from flask import render_template, redirect, request
-from hexagonal import Document, Book, DocumentCopy
+from hexagonal import Document, Book, DocumentCopy, QueuedRequest
 from hexagonal.ui.helpers import comma_to_list, loading_list
 from hexagonal.auth.permissions import required_permission, Permission
 
@@ -169,7 +169,10 @@ def document_view(document_id):
     Detail view for a document.
     """
     doc = Document.query.filter(Document.id == document_id).first_or_404()
-    return render_template('admin/documents/view.html', document=doc)
+    queued = QueuedRequest.query.filter(QueuedRequest.document == doc).order_by(
+        QueuedRequest.created_at
+    )
+    return render_template('admin/documents/view.html', document=doc, queued=queued)
 
 
 @app.route('/admin/documents/<int:document_id>/outstanding_request')
