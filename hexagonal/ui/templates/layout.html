@@ -15,7 +15,7 @@
   {#    <link rel="stylesheet" type="text/css" href="/static/login/styles.css"/>#}
 </head>
 <body>
-{% if 'qr_messages' in session %}
+{% if 'qr_messages' in session and session['qr_messages'] %}
   <div class="ui grid">
     <div class="one wide column"></div>
     <div class="fourteen wide column">
