@@ -8,6 +8,7 @@ from hexagonal.model.patron import Patron
 class FacultyPatron(Patron):
     """
     Faculty patron user type.
+    All teaching body.
     """
 
     __mapper_args__ = {
