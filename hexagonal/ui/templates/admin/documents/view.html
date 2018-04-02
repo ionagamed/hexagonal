@@ -19,17 +19,25 @@
       </div>
 
       <div class="twelve wide column">
-        <table class="ui celled table">
+        <table class="ui striped table">
           <thead>
           <tr>
             <th>Name</th>
             <th>Date</th>
+            <th>Priority</th>
+            <th>Notes</th>
           </tr>
           </thead>
           {% for req in queued %}
             <tr>
               <td>{{ req.patron.name }}</td>
-              <td>{{ req.created_at }}</td>
+              <td>{{ req.created_at.strftime("%B %d, %Y, %H:%m") }}</td>
+              <td>{{ req.priority }}</td>
+              <td>
+                {% if req.notified %}
+                  notified
+                {% endif %}
+              </td>
             </tr>
           {% endfor %}
         </table>

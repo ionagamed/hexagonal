@@ -64,6 +64,7 @@ def reset_password():
 def logout():
     del session['login']
     del session['role']
+    del session['qr_messages']
     return redirect('/login')
 
 

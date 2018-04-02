@@ -19,5 +19,7 @@ class QueuedRequest(db.Model):
 
     priority = association_proxy('patron', 'queuing_priority')
 
+    notified = db.Column(db.Boolean, nullable=False, default=False)
+
     def resolve(self):
         self.resolved_at = datetime.datetime.now()

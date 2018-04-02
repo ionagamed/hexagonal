@@ -154,7 +154,10 @@ def user_notify():
 
         qrs = QueuedRequest.query.filter(QueuedRequest.patron_id == session['uid'], QueuedRequest.resolved_at != None).all()
         for qr in qrs:
+            db.session.add(qr)
+            qr.notified = True
             session['qr_messages'].append(
                 'Document \'{}\' you requested is now available! <a href="/user/claim/{}">Claim</a> it now, you only have one '
                 'day! '.format(qr.document.title, qr.document.id)
             )
+        db.session.commit()

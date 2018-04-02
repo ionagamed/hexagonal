@@ -171,7 +171,8 @@ def document_view(document_id):
     doc = Document.query.filter(Document.id == document_id).first_or_404()
     queued = QueuedRequest.query.filter(QueuedRequest.document == doc).order_by(
         QueuedRequest.created_at
-    )
+    ).all()
+    queued = sorted(queued, key=lambda x: (x.priority, x.created_at))
     return render_template('admin/documents/view.html', document=doc, queued=queued)
 
 
