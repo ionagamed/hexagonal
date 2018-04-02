@@ -59,6 +59,12 @@ Booking model
 .. autoclass:: hexagonal.model.loan.Loan
     :members:
 
+Priority Queue
+--------------
+
+.. autoclass:: hexagonal.model.queued_request.QueuedRequest
+    :members:
+
 Search
 ------
 

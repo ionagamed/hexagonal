@@ -94,6 +94,7 @@
 <li class="toctree-l2"><a class="reference internal" href="#booking-system">Booking System</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="#priority-queue">Priority Queue</a></li>
 <li class="toctree-l1"><a class="reference internal" href="classes.html">Classes</a></li>
 </ul>
 
@@ -196,6 +197,11 @@ Each <cite>Loan</cite> has a status (<a class="reference internal" href="classes
 and it becomes <em>returned</em>, until a librarian approves the return request, and the loan is removed.
 This is the whole lifecycle of one <cite>Loan</cite>.</p>
 </div>
+</div>
+<div class="section" id="priority-queue">
+<h1>Priority Queue<a class="headerlink" href="#priority-queue" title="Permalink to this headline">¶</a></h1>
+<p>The <a class="reference internal" href="classes.html#hexagonal.model.queued_request.QueuedRequest" title="hexagonal.model.queued_request.QueuedRequest"><code class="xref py py-class docutils literal"><span class="pre">QueuedRequest</span></code></a> is the single class responsible for the priority queue.
+It uses SQL <cite>ORDER BY</cite>’s to implement the required behaviour, and contains indices for them to be fast enough.</p>
 </div>
 
 

@@ -38,3 +38,10 @@ Each `Loan` has a status (:py:class:`hexagonal.model.loan.Loan.Status`) - it can
 *approved* - which means that it is currently in patron's possession. Then, finally, user brings the book back,
 and it becomes *returned*, until a librarian approves the return request, and the loan is removed.
 This is the whole lifecycle of one `Loan`.
+
+
+Priority Queue
+==============
+
+The :py:class:`~hexagonal.model.queued_request.QueuedRequest` is the single class responsible for the priority queue.
+It uses SQL `ORDER BY`'s to implement the required behaviour, and contains indices for them to be fast enough.
