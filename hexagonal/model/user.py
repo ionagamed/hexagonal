@@ -33,6 +33,7 @@ class User(db.Model, Searchable):
     name = db.Column(db.String(80), index=True, nullable=False)
     """ User's full name. """
 
+
     address = db.Column(db.String(80), nullable=False)
     """ User's full address. """
 

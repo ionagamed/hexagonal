@@ -57,16 +57,307 @@ def test_tc1__patron_checkout_a_document_and_doc_is_not_overdued():
     d1_copies = documents[0]
     d2_copies = documents[1]
 
-    datetime.date(2018, 2, 17)
     datetime.today = datetime.date(2018, 3, 5)
     loan_p1_d1 = p1.checkout(d1_copies[0])
     loan_p1_d2 = p1.checkout(d2_copies[0])
+
     datetime.today = datetime.date(2018, 4, 2)
     db.session.delete(loan_p1_d2)
     db.session.commit()
 
-    docs_of_p1 = p1.get_borrowed_document_copies()
+    overdued_docs_of_p1 = p1.get_overdue_loans()
+    overdued_fine_of_p1_by_d1 = loan_p1_d1.get_overdue_fine()
 
-    assert len(docs_of_p1) == 0
+    assert len(overdued_docs_of_p1) == 0 and overdued_fine_of_p1_by_d1 == 0
 
-# def test_tc2_patron_check_out_some_docs_and_some_of_them_are_overdued():
+
+def test_tc2_patron_check_out_some_docs_and_some_of_them_are_overdued():
+    reload_db()
+    documents, patrons, students, visiting_profs = state_of_system()
+
+    p1 = patrons[0]
+    s = students[0]
+    v = visiting_profs[0]
+
+    d1_copies = documents[0]
+    d2_copies = documents[1]
+
+    datetime.today = datetime.date(2018, 3, 5)
+    loan_p1_d1 = p1.checkout(d1_copies[0])
+    loan_p1_d1.status = Loan.Status.approved
+    loan_p1_d1.due_date = datetime.date(2018, 3, 5) + (loan_p1_d1.due_date - datetime.date.today())
+
+    loan_p1_d2 = p1.checkout(d2_copies[0])
+    loan_p1_d2.status = Loan.Status.approved
+    loan_p1_d2.due_date = datetime.date(2018, 3, 5) + (loan_p1_d2.due_date - datetime.date.today())
+
+    loan_s_d1 = s.checkout(d1_copies[1])
+    loan_s_d1.status = Loan.Status.approved
+    loan_s_d1.due_date = datetime.date(2018, 3, 5) + (loan_s_d1.due_date - datetime.date.today())
+
+    loan_s_d2 = s.checkout(d2_copies[1])
+    loan_s_d2.status = Loan.Status.approved
+    loan_s_d2.due_date = datetime.date(2018, 3, 5) + (loan_s_d2.due_date - datetime.date.today())
+
+    loan_v_d1 = v.checkout(d1_copies[2])
+    loan_v_d1.status = Loan.Status.approved
+    loan_v_d1.due_date = datetime.date(2018, 3, 5) + (loan_v_d1.due_date - datetime.date.today())
+
+    loan_v_d2 = v.checkout(d2_copies[2])
+    loan_v_d2.status = Loan.Status.approved
+    loan_v_d2.due_date = datetime.date(2018, 3, 5) + (loan_v_d2.due_date - datetime.date.today())
+
+    # loan_p1_b1.due_date = datetime.date(2018, 2, 9) + (loan_p1_b1.due_date - datetime.date.today())
+
+    p1_overdued_docs = p1.get_overdue_loans()
+    p1_fines = [loan_p1_d1.get_overdue_fine(), loan_p1_d2.get_overdue_fine()]
+
+    s_overdued_docs = s.get_overdue_loans()
+    s_fines = [loan_s_d1.get_overdue_fine(), loan_s_d2.get_overdue_fine()]
+
+    v_overdued_docs = v.get_overdue_loans()
+    v_fines = [loan_v_d1, loan_v_d2]
+
+
+
+    # #     loan_p1_b1.due_date = datetime.date(2018, 2, 9) + (loan_p1_b1.due_date - datetime.date.today())
+    # ПОДУМАТЬ НАД ЗАМОРОЗКОЙ ВРЕМЕНИ
+
+    assert len(p1_overdued_docs) == 0 and p1_fines[0] == 0 and p1_fines[1] == 0
+
+    assert loan_s_d1.due_date == datetime.date(2018, 4, 2)
+
+    assert s_overdued_docs == 0
+
+    assert s_overdued_docs[0].overdued_days == 7+2 and s_overdued_docs[1].overdued_days == 14+2
+    assert s_fines[0] == 700 and s_fines[1] == 1400
+
+    assert v_overdued_docs[0].overdued_days == 21+2 and v_overdued_docs[1].overdued_days == 21+2
+    assert v_fines[0] == 2100 and v_fines[1] == 2100
+
+
+def test_tc3_patron_check_out_some_docs_and_due_date_is_correct():
+    reload_db()
+    documents, patrons, students, visiting_profs = state_of_system()
+
+    p1 = patrons[0]
+    s = students[0]
+    v = visiting_profs[0]
+
+    d1_copies = documents[0]
+    d2_copies = documents[1]
+
+    datetime.today = datetime.date(2018, 3, 29)
+    loan_p1_d1 = p1.checkout(d1_copies[0])
+    loan_p1_d1.status = Loan.Status.approved
+    loan_s_d2 = s.checkout(d2_copies[0])
+    loan_s_d2.status = Loan.Status.approved
+    loan_v_d2 = v.checkout(d2_copies[1])
+    loan_v_d2.status = Loan.Status.approved
+
+    p1_docs = p1.get_borrowed_document_copies()
+    s_docs = s.get_borrowed_document_copies()
+    v_docs = v.get_borrowed_document_copies()
+
+    assert p1_docs[0] == d1_copies[0]
+    # assert loan_p1_d1.due_date == datetime.date(2018, 4, 30)
+    assert s_docs[0] == d2_copies[0]
+    # assert loan_s_d2.due_date == datetime.date(2018, 4, 16)
+    assert v_docs[0] == d2_copies[1]
+    # assert loan_v_d2.due_date == datetime.date(2018, 4, 9)
+
+def test_tc4_patrons_checkout_docs_and_due_date_is_correct():
+    reload_db()
+    documents, patrons, students, visiting_profs = state_of_system()
+
+    p1 = patrons[0]
+    s = students[0]
+    v = visiting_profs[0]
+
+    d1_copies = documents[0]
+    d2_copies = documents[1]
+
+    datetime.today = datetime.date(2018, 3, 29)
+    loan_p1_d1 = p1.checkout(d1_copies[0])
+    loan_p1_d1.status = Loan.Status.approved
+    loan_s_d2 = s.checkout(d2_copies[0])
+    loan_s_d2.status = Loan.Status.approved
+    loan_v_d2 = v.checkout(d2_copies[1])
+    loan_v_d2.status = Loan.Status.approved
+
+    # datetime.today() = datetime.date(2018,4,2)
+
+    loan_p1_d1.renew_document()
+    loan_s_d2.renew_document()
+    loan_v_d2.renew_document()
+
+    p1_docs = p1.get_borrowed_document_copies()
+    s_docs = s.get_borrowed_document_copies()
+    v_docs = v.get_borrowed_document_copies()
+
+    assert p1_docs[0] == d1_copies[0]
+    # assert loan_p1_d1.due_date == datetime.date(2018, 4, 30)
+    assert s_docs[0] == d2_copies[0]
+    # assert loan_s_d2.due_date == datetime.date(2018, 4, 2)
+    assert v_docs[0] == d2_copies[1]
+    # assert loan_v_d2.due_date == datetime.date(2018, 4, 2)
+
+def test_tc5_waiting_list_with_1_user_is_correct():
+    reload_db()
+    documents, patrons, students, visiting_profs = state_of_system()
+
+    p1 = patrons[0]
+    s = students[0]
+    v = visiting_profs[0]
+
+    d3_copies = documents[2]
+
+    loan_p1_d3 = p1.checkout(d3_copies[0])
+    loan_p1_d3.status = Loan.Status.approved
+    loan_s_d3 = s.checkout(d3_copies[1])
+    loan_s_d3.status = Loan.Status.approved
+
+    #мм та часть в которой хуе мое waiting list что делать господи дай пожалуйста патисипы по итп
+
+    # loan_v_d3 = v.checkout(d3_copies[1])
+    #
+    # assert waiting_list[0] == v
+
+
+def test_tc6_waiting_list_with_3_users_is_correct():
+    reload_db()
+    documents, patrons, students, visiting_profs = state_of_system()
+
+    p1 = patrons[0]
+    p2 = patrons[1]
+    p3 = patrons[2]
+    s = students[0]
+    v = visiting_profs[0]
+
+    d3_copies = documents[2]
+
+    loan_p1_d3 = p1.checkout(d3_copies[0])
+    loan_p1_d3.status = Loan.Status.approved
+    loan_p2_d3 = p2.checkout(d3_copies[1])
+    loan_p2_d3.status = Loan.Status.approved
+
+    # # мм та часть в которой у нас все должно работать
+    # loan_s_d3 = s.checkout(d3_copies)
+    # loan_v_d3 = v.checkout(d3_copies)
+    # loan_p3_d3 = p3.checkout(d3_copies)
+    #
+    # assert waiting_list[0] == s and waiting_list[1] == v and waiting_list[2] == p3
+
+def test_tc7_():
+    reload_db()
+    documents, patrons, students, visiting_profs = state_of_system()
+
+    p1 = patrons[0]
+    p2 = patrons[1]
+    p3 = patrons[2]
+    s = students[0]
+    v = visiting_profs[0]
+
+    d3_copies = documents[2]
+
+    loan_p1_d3 = p1.checkout(d3_copies[0])
+    loan_p1_d3.status = Loan.Status.approved
+    loan_p2_d3 = p2.checkout(d3_copies[1])
+    loan_p2_d3.status = Loan.Status.approved
+
+    # # # мм та часть в которой у нас все должно работать
+    # # loan_s_d3 = s.checkout(d3_copies)
+    # # loan_v_d3 = v.checkout(d3_copies)
+    # # loan_p3_d3 = p3.checkout(d3_copies)
+    # d3.outstanding_request()
+    #
+    # assert len(d3.queue) == 0
+    # # p1 and p2 notified that they should return books
+    # # s, v, p1 notified that d3 is no longer available
+
+def tests_tc8_notificatioin_about_availibility_of_d3_book_from_waiting_list():
+    reload_db()
+    documents, patrons, students, visiting_profs = state_of_system()
+
+    p1 = patrons[0]
+    p2 = patrons[1]
+    p3 = patrons[2]
+    s = students[0]
+    v = visiting_profs[0]
+
+    d3_copies = documents[2]
+
+    loan_p1_d3 = p1.checkout(d3_copies[0])
+    loan_p1_d3.status = Loan.Status.approved
+    loan_p2_d3 = p2.checkout(d3_copies[1])
+    loan_p2_d3.status = Loan.Status.approved
+
+    # # # мм та часть в которой у нас все должно работать
+    # # loan_s_d3 = s.checkout(d3_copies)
+    # # loan_v_d3 = v.checkout(d3_copies)
+    # # loan_p3_d3 = p3.checkout(d3_copies)
+
+    # db.session.delete(loan_p2_d3)
+    # db.session.commit()
+    # s is notified about d3
+
+    # assert p2.get_loans() == []
+    # # assert waiting_list == [s,v,p3]
+
+# def test_tc9_():
+#     reload_db()
+#     documents, patrons, students, visiting_profs = state_of_system()
+#
+#     p1 = patrons[0]
+#     p2 = patrons[1]
+#     p3 = patrons[2]
+#     s = students[0]
+#     v = visiting_profs[0]
+#
+#     d3_copies = documents[2]
+#
+#     loan_p1_d3 = p1.checkout(d3_copies[0])
+#     loan_p1_d3.status = Loan.Status.approved
+#     loan_p2_d3 = p2.checkout(d3_copies[1])
+#     loan_p2_d3.status = Loan.Status.approved
+#
+#     # # мм та часть в которой у нас все должно работать
+#     # loan_s_d3 = s.checkout(d3_copies)
+#     # loan_v_d3 = v.checkout(d3_copies)
+#     # loan_p3_d3 = p3.checkout(d3_copies)
+#
+#     loan_p1_d3.renew()
+#
+#     assert loan_p1_d3.due_date() == datetime.date(2018, 4, 30)
+#     assert loan_p1_d3.document_copy() == d3_copies[0]
+#     # assert waiting_list == [s,v,p3]
+
+# def test_tc10_():
+#     reload_db()
+#     documents, patrons, students, visiting_profs = state_of_system()
+#
+#     p1 = patrons[0]
+#     p2 = patrons[1]
+#     p3 = patrons[2]
+#     s = students[0]
+#     v = visiting_profs[0]
+#
+#     d1_copies = documents[0]
+#     d3_copies = documents[2]
+#
+#     datetime.today = datetime.date(2018, 3, 26)
+#     loan_p1_d1 = p1.checkout(d1_copies[0])
+#     loan_p1_d1.status = Loan.Status.approved
+#     loan_v_d1 = v.checkout(d1_copies[1])
+#     loan_v_d1.status = Loan.Status.approved
+#
+#     datetime.today = datetime.date(2018,3,29)
+#     loan_p1_d1.renew_document()
+#     loan_v_d1.renew_document()
+#
+#     datetime.today = datetime.date(2018,4,2)
+#     loan_p1_d1.renew_document()
+#     loan_v_d1.renew_document()
+#
+#     assert loan_p1_d1.document_copy == d1_copies[0] and loan_p1_d1.due_date == datetime.date(2018, 4, 26)
+#     assert loan_v_d1.document_copy == d1_copies[1] and loan_v_d1.due_date == datetime.date(2018, 4, 5)
