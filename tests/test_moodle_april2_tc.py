@@ -337,17 +337,34 @@ def tests_tc8_notificatioin_about_availibility_of_d3_book_from_waiting_list():
     loan_p2_d3 = p2.checkout(d3_copies[1])
     loan_p2_d3.status = Loan.Status.approved
 
-    # # # мм та часть в которой у нас все должно работать
-    # # loan_s_d3 = s.checkout(d3_copies)
-    # # loan_v_d3 = v.checkout(d3_copies)
-    # # loan_p3_d3 = p3.checkout(d3_copies)
+    qr_s_d3 = QueuedRequest(
+        patron=s,
+        document=documents[5]
+    )
+    db.session.add(qr_s_d3)
+    qr_v_d3 = QueuedRequest(
+        patron=v,
+        document=documents[5]
+    )
+    db.session.add(qr_v_d3)
+    qr_p3_d3 = QueuedRequest(
+        patron=p3,
+        document=documents[5]
+    )
+    db.session.add(qr_p3_d3)
 
-    # db.session.delete(loan_p2_d3)
-    # db.session.commit()
+    db.session.delete(loan_p2_d3)
+    db.session.commit()
+
+    waiting_list = QueuedRequest.query.order_by(QueuedRequest.created_at).all()
+    waiting_list = sorted(waiting_list, key=lambda x: (x.priority, x.created_at))
+
     # s is notified about d3
 
-    # assert p2.get_loans() == []
-    # # assert waiting_list == [s,v,p3]
+    assert p2.get_loans() == []
+    assert waiting_list[0].patron == s
+    assert waiting_list[1].patron == v
+    assert waiting_list[2].patron == p3
 
 def test_tc9_():
     reload_db()
@@ -396,32 +413,35 @@ def test_tc9_():
     assert waiting_list[1].patron == v
     assert waiting_list[2].patron == p3
 
-# def test_tc10_():
-#     reload_db()
-#     documents, patrons, students, visiting_profs = state_of_system()
-#
-#     p1 = patrons[0]
-#     p2 = patrons[1]
-#     p3 = patrons[2]
-#     s = students[0]
-#     v = visiting_profs[0]
-#
-#     d1_copies = documents[0]
-#     d3_copies = documents[2]
-#
-#     datetime.today = datetime.date(2018, 3, 26)
-#     loan_p1_d1 = p1.checkout(d1_copies[0])
-#     loan_p1_d1.status = Loan.Status.approved
-#     loan_v_d1 = v.checkout(d1_copies[1])
-#     loan_v_d1.status = Loan.Status.approved
-#
-#     datetime.today = datetime.date(2018,3,29)
-#     loan_p1_d1.renew_document()
-#     loan_v_d1.renew_document()
-#
-#     datetime.today = datetime.date(2018,4,2)
-#     loan_p1_d1.renew_document()
-#     loan_v_d1.renew_document()
-#
-#     assert loan_p1_d1.document_copy == d1_copies[0] and loan_p1_d1.due_date == datetime.date(2018, 4, 26)
-#     assert loan_v_d1.document_copy == d1_copies[1] and loan_v_d1.due_date == datetime.date(2018, 4, 5)
+def test_tc10_():
+    reload_db()
+    documents, patrons, students, visiting_profs = state_of_system()
+
+    p1 = patrons[0]
+    p2 = patrons[1]
+    p3 = patrons[2]
+    s = students[0]
+    v = visiting_profs[0]
+
+    d1_copies = documents[0]
+    d3_copies = documents[2]
+
+    with freeze_time('March 26th, 2018'):
+        loan_p1_d1 = p1.checkout(d1_copies[0])
+        loan_p1_d1.status = Loan.Status.approved
+        loan_v_d1 = v.checkout(d1_copies[1])
+        loan_v_d1.status = Loan.Status.approved
+    with freeze_time('March 29th, 2018'):
+        loan_p1_d1.renew_document()
+        loan_v_d1.renew_document()
+
+    with freeze_time('April 2nd, 2018'):
+
+        with pytest.raises(ValueError):
+            loan_p1_d1.renew_document()
+        loan_v_d1.renew_document()
+
+    assert loan_p1_d1.document_copy == d1_copies[0]
+    assert loan_p1_d1.due_date == datetime.date(2018, 4, 26)
+    assert loan_v_d1.document_copy == d1_copies[1]
+    assert loan_v_d1.due_date == datetime.date(2018, 4, 9)
