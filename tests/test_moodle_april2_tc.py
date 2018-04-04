@@ -292,15 +292,33 @@ def test_tc7_():
     loan_p2_d3 = p2.checkout(d3_copies[1])
     loan_p2_d3.status = Loan.Status.approved
 
-    # # # мм та часть в которой у нас все должно работать
-    # # loan_s_d3 = s.checkout(d3_copies)
-    # # loan_v_d3 = v.checkout(d3_copies)
-    # # loan_p3_d3 = p3.checkout(d3_copies)
-    # d3.outstanding_request()
-    #
-    # assert len(d3.queue) == 0
-    # # p1 and p2 notified that they should return books
-    # # s, v, p1 notified that d3 is no longer available
+    qr_s_d3 = QueuedRequest(
+        patron=s,
+        document=documents[5]
+    )
+    db.session.add(qr_s_d3)
+    qr_v_d3 = QueuedRequest(
+        patron=v,
+        document=documents[5]
+    )
+    db.session.add(qr_v_d3)
+    qr_p3_d3 = QueuedRequest(
+        patron=p3,
+        document=documents[5]
+    )
+    db.session.add(qr_p3_d3)
+
+    db.session.commit()
+
+    d3 = documents[5]
+    d3.outstanding_request()
+
+    waiting_list = QueuedRequest.query.order_by(QueuedRequest.created_at).all()
+    waiting_list = sorted(waiting_list, key=lambda x: (x.priority, x.created_at))
+
+    assert len(waiting_list) == 0
+    # p1 and p2 notified that they should return books
+    # s, v, p1 notified that d3 is no longer available
 
 def tests_tc8_notificatioin_about_availibility_of_d3_book_from_waiting_list():
     reload_db()
@@ -336,9 +354,9 @@ def tests_tc8_notificatioin_about_availibility_of_d3_book_from_waiting_list():
 #     documents, patrons, students, visiting_profs = state_of_system()
 #
 #     p1 = patrons[0]
-#     p2 = patrons[1]
 #     p3 = patrons[2]
 #     s = students[0]
+#     p2 = patrons[1]
 #     v = visiting_profs[0]
 #
 #     d3_copies = documents[2]
