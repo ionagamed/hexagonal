@@ -9,7 +9,7 @@ from hexagonal.model.book import Book
 from hexagonal.model.document_copy import DocumentCopy
 from hexagonal import Librarian, AVMaterial
 from hexagonal.model.student_patron import StudentPatron
-from hexagonal import User, Loan, Patron
+from hexagonal import User, Loan, Patron, QueuedRequest
 from hexagonal.model.visiting_professor_patron import VisitingProfessorPatron
 
 
@@ -151,12 +151,9 @@ def test_tc3_patron_check_out_some_docs_and_due_date_is_correct():
         loan_v_d2.status = Loan.Status.approved
 
     with freeze_time('April 2nd, 2018'):
-        try:
-            loan_p1_d1.renew_document()
-            loan_s_d2.renew_document()
-            loan_v_d2.renew_document()
-        except:
-            pass
+        loan_p1_d1.renew_document()
+        loan_s_d2.renew_document()
+        loan_v_d2.renew_document()
 
     p1_docs = p1.get_borrowed_document_copies()
     s_docs = s.get_borrowed_document_copies()
@@ -191,9 +188,12 @@ def test_tc4_patrons_checkout_docs_and_due_date_is_correct():
     documents[4].outstanding_request()
 
     with freeze_time('April 2nd, 2018'):
-        loan_p1_d1.renew_document()
-        loan_s_d2.renew_document()
-        loan_v_d2.renew_document()
+        try:
+            loan_p1_d1.renew_document()
+            loan_s_d2.renew_document()
+            loan_v_d2.renew_document()
+        except:
+            pass
 
     p1_docs = p1.get_borrowed_document_copies()
     s_docs = s.get_borrowed_document_copies()
@@ -220,6 +220,19 @@ def test_tc5_waiting_list_with_1_user_is_correct():
     loan_p1_d3.status = Loan.Status.approved
     loan_s_d3 = s.checkout(d3_copies[1])
     loan_s_d3.status = Loan.Status.approved
+
+    qr_v_d3 = QueuedRequest(
+        patron=v,
+        document=documents[5]
+    )
+    db.session.add(qr_v_d3)
+    db.session.commit()
+
+    waiting_list = QueuedRequest.query.order_by(QueuedRequest.created_at).all()
+    waiting_list = sorted(waiting_list, key=lambda x: (x.priority, x.created_at))
+
+    assert len(waiting_list) == 1
+    assert waiting_list[0].patron.id == v.id
 
     #мм та часть в которой хуе мое waiting list что делать господи дай пожалуйста патисипы по итп
 
