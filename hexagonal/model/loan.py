@@ -167,6 +167,9 @@ class Loan(db.Model):
         """
         Gives number of overdued days of loan.
 
+        Overdued or overdue? English is my second language.
+        But Leonid Lyigin says that my eNgLiSh is finish <3
+
         :return: number of days
         """
 
