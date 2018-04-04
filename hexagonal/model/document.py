@@ -66,8 +66,14 @@ class Document(db.Model, Searchable):
         ).all()
 
     def outstanding_request(self):
+        from hexagonal.model.loan import Loan
+        import datetime
         self.outstanding = True
         db.session.add(self)
         for qr in self.queued_requests:
             db.session.delete(qr)
+        loans = Loan.query.filter(Loan.document == self).all()
+        for loan in loans:
+            db.session.add(loan)
+            loan.due_date = datetime.date.today()
         db.session.commit()
