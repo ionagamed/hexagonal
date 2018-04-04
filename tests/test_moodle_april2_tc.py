@@ -13,7 +13,6 @@ from hexagonal import User, Loan, Patron, QueuedRequest, Professor
 from hexagonal.model.visiting_professor_patron import VisitingProfessorPatron
 
 
-
 def state_of_system():
     d1 = create_instance(Book, title='Introduction to Algorithms',
                          authors=['Thomas H. Cormen', 'Charles E. Leiserson', 'Ronald L. Rivest', 'Clifford Stein'],
@@ -167,6 +166,7 @@ def test_tc3_patron_check_out_some_docs_and_due_date_is_correct():
     assert v_docs[0] == d2_copies[1]
     assert loan_v_d2.due_date == datetime.date(2018, 4, 9)
 
+
 def test_tc4_patrons_checkout_docs_and_due_date_is_correct():
     reload_db()
     documents, patrons, students, visiting_profs = state_of_system()
@@ -203,6 +203,7 @@ def test_tc4_patrons_checkout_docs_and_due_date_is_correct():
     assert loan_s_d2.due_date == datetime.date(2018, 4, 2)
     assert v_docs[0] == d2_copies[1]
     assert loan_v_d2.due_date == datetime.date(2018, 4, 2)
+
 
 def test_tc5_waiting_list_with_1_user_is_correct():
     reload_db()
@@ -275,6 +276,7 @@ def test_tc6_waiting_list_with_3_users_is_correct():
     assert waiting_list[1].patron == v
     assert waiting_list[2].patron == p3
 
+
 def test_tc7_():
     reload_db()
     documents, patrons, students, visiting_profs = state_of_system()
@@ -320,6 +322,7 @@ def test_tc7_():
     # p1 and p2 notified that they should return books
     # s, v, p1 notified that d3 is no longer available
 
+
 def tests_tc8_notificatioin_about_availibility_of_d3_book_from_waiting_list():
     reload_db()
     documents, patrons, students, visiting_profs = state_of_system()
@@ -360,11 +363,11 @@ def tests_tc8_notificatioin_about_availibility_of_d3_book_from_waiting_list():
     waiting_list = sorted(waiting_list, key=lambda x: (x.priority, x.created_at))
 
     # s is notified about d3
-
     assert p2.get_loans() == []
     assert waiting_list[0].patron == s
     assert waiting_list[1].patron == v
     assert waiting_list[2].patron == p3
+
 
 def test_tc9_():
     reload_db()
@@ -413,6 +416,7 @@ def test_tc9_():
     assert waiting_list[1].patron == v
     assert waiting_list[2].patron == p3
 
+
 def test_tc10_():
     reload_db()
     documents, patrons, students, visiting_profs = state_of_system()
@@ -436,7 +440,6 @@ def test_tc10_():
         loan_v_d1.renew_document()
 
     with freeze_time('April 2nd, 2018'):
-
         with pytest.raises(ValueError):
             loan_p1_d1.renew_document()
         loan_v_d1.renew_document()
