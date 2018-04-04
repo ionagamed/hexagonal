@@ -41,7 +41,7 @@ This is the whole lifecycle of one `Loan`.
 
 
 Priority Queue
-==============
+--------------
 
 The :py:class:`~hexagonal.model.queued_request.QueuedRequest` is the single class responsible for the priority queue.
 It uses SQL `ORDER BY`'s to implement the required behaviour, and contains indices for them to be fast enough.
