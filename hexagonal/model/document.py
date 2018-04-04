@@ -44,6 +44,8 @@ class Document(db.Model, Searchable):
     queued_requests = db.relationship('QueuedRequest', back_populates='document')
     awaiting_patrons = association_proxy('queued_requests', 'patron')
 
+    outstanding = db.Column(db.Boolean, default=False)
+
     __mapper_args__ = {
         'polymorphic_on': type,
         'polymorphic_identity': 'document'
@@ -62,3 +64,10 @@ class Document(db.Model, Searchable):
         return DocumentCopy.query.filter(
             DocumentCopy.document == self, DocumentCopy.loan == None
         ).all()
+
+    def outstanding_request(self):
+        self.outstanding = True
+        db.session.add(self)
+        for qr in self.queued_requests:
+            db.session.delete(qr)
+        db.session.commit()

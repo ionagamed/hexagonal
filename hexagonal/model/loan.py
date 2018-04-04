@@ -183,6 +183,9 @@ class Loan(db.Model):
         :return: new date, when book will become overdued
         """
 
+        if self.document.outstanding:
+            raise ValueError
+
         if self.can_be_renewed():
             self.renewed = True
             delta = self.user.get_checkout_period_for(self.document)

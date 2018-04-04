@@ -42,7 +42,7 @@ def state_of_system():
                               card_number=1101)
     v = register_test_account(VisitingProfessorPatron, name='Veronika Rama', address='Stret Atocha, 27', phone='30005',
                               card_number=1110)
-    docs_set = [copies_d1, copies_d2, copies_d3]
+    docs_set = [copies_d1, copies_d2, copies_d3, d1, d2, d3]
     users_set_patrons = [p1, p2, p3]
     users_set_students = [s]
     users_set_visiting_profs = [v]
@@ -150,10 +150,15 @@ def test_tc3_patron_check_out_some_docs_and_due_date_is_correct():
         loan_v_d2 = v.checkout(d2_copies[1])
         loan_v_d2.status = Loan.Status.approved
 
+    documents[4].outstanding_request()
+
     with freeze_time('April 2nd, 2018'):
-        loan_p1_d1.renew_document()
-        loan_s_d2.renew_document()
-        loan_v_d2.renew_document()
+        try:
+            loan_p1_d1.renew_document()
+            loan_s_d2.renew_document()
+            loan_v_d2.renew_document()
+        except:
+            pass
 
     p1_docs = p1.get_borrowed_document_copies()
     s_docs = s.get_borrowed_document_copies()
@@ -177,30 +182,33 @@ def test_tc4_patrons_checkout_docs_and_due_date_is_correct():
     d1_copies = documents[0]
     d2_copies = documents[1]
 
-    datetime.today = datetime.date(2018, 3, 29)
-    loan_p1_d1 = p1.checkout(d1_copies[0])
-    loan_p1_d1.status = Loan.Status.approved
-    loan_s_d2 = s.checkout(d2_copies[0])
-    loan_s_d2.status = Loan.Status.approved
-    loan_v_d2 = v.checkout(d2_copies[1])
-    loan_v_d2.status = Loan.Status.approved
+    with freeze_time('March 29th, 2018'):
+        loan_p1_d1 = p1.checkout(d1_copies[0])
+        loan_p1_d1.status = Loan.Status.approved
+        loan_s_d2 = s.checkout(d2_copies[0])
+        loan_s_d2.status = Loan.Status.approved
+        loan_v_d2 = v.checkout(d2_copies[1])
+        loan_v_d2.status = Loan.Status.approved
 
     # datetime.today() = datetime.date(2018,4,2)
 
-    loan_p1_d1.renew_document()
-    loan_s_d2.renew_document()
-    loan_v_d2.renew_document()
+
+
+    with freeze_time('April 2nd, 2018'):
+        loan_p1_d1.renew_document()
+        loan_s_d2.renew_document()
+        loan_v_d2.renew_document()
 
     p1_docs = p1.get_borrowed_document_copies()
     s_docs = s.get_borrowed_document_copies()
     v_docs = v.get_borrowed_document_copies()
 
     assert p1_docs[0] == d1_copies[0]
-    # assert loan_p1_d1.due_date == datetime.date(2018, 4, 30)
+    assert loan_p1_d1.due_date == datetime.date(2018, 4, 30)
     assert s_docs[0] == d2_copies[0]
-    # assert loan_s_d2.due_date == datetime.date(2018, 4, 2)
+    assert loan_s_d2.due_date == datetime.date(2018, 4, 2)
     assert v_docs[0] == d2_copies[1]
-    # assert loan_v_d2.due_date == datetime.date(2018, 4, 2)
+    assert loan_v_d2.due_date == datetime.date(2018, 4, 2)
 
 def test_tc5_waiting_list_with_1_user_is_correct():
     reload_db()
