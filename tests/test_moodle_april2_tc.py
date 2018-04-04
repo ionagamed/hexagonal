@@ -150,8 +150,6 @@ def test_tc3_patron_check_out_some_docs_and_due_date_is_correct():
         loan_v_d2 = v.checkout(d2_copies[1])
         loan_v_d2.status = Loan.Status.approved
 
-    documents[4].outstanding_request()
-
     with freeze_time('April 2nd, 2018'):
         try:
             loan_p1_d1.renew_document()
@@ -190,9 +188,7 @@ def test_tc4_patrons_checkout_docs_and_due_date_is_correct():
         loan_v_d2 = v.checkout(d2_copies[1])
         loan_v_d2.status = Loan.Status.approved
 
-    # datetime.today() = datetime.date(2018,4,2)
-
-
+    documents[4].outstanding_request()
 
     with freeze_time('April 2nd, 2018'):
         loan_p1_d1.renew_document()
