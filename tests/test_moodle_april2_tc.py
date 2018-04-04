@@ -9,8 +9,9 @@ from hexagonal.model.book import Book
 from hexagonal.model.document_copy import DocumentCopy
 from hexagonal import Librarian, AVMaterial
 from hexagonal.model.student_patron import StudentPatron
-from hexagonal import User, Loan, Patron, QueuedRequest
+from hexagonal import User, Loan, Patron, QueuedRequest, Professor
 from hexagonal.model.visiting_professor_patron import VisitingProfessorPatron
+
 
 
 def state_of_system():
@@ -32,11 +33,11 @@ def state_of_system():
     copies_d2 = [create_instance(DocumentCopy, document=d2) for i in range(3)]
     copies_d3 = [create_instance(DocumentCopy, document=d3) for i in range(2)]
 
-    p1 = register_test_account(FacultyPatron, name='Sergey Afonso', address='Via Margutta, 3', phone='30001',
+    p1 = register_test_account(Professor, name='Sergey Afonso', address='Via Margutta, 3', phone='30001',
                                card_number=1010)
-    p2 = register_test_account(FacultyPatron, name='Nadia Teixeira', address='Via Sacra, 13', phone='30002',
+    p2 = register_test_account(Professor, name='Nadia Teixeira', address='Via Sacra, 13', phone='30002',
                                card_number=1011)
-    p3 = register_test_account(FacultyPatron, name='Elvira Espindola', address='Via del Corso, 22', phone='30003',
+    p3 = register_test_account(Professor, name='Elvira Espindola', address='Via del Corso, 22', phone='30003',
                                card_number=1100)
     s = register_test_account(StudentPatron, name='Andrey Velo', address=': Avenida Mazatlan 250', phone='30004',
                               card_number=1101)
@@ -231,12 +232,6 @@ def test_tc5_waiting_list_with_1_user_is_correct():
     assert len(waiting_list) == 1
     assert waiting_list[0].patron.id == v.id
 
-    #мм та часть в которой хуе мое waiting list что делать господи дай пожалуйста патисипы по итп
-
-    # loan_v_d3 = v.checkout(d3_copies[1])
-    #
-    # assert waiting_list[0] == v
-
 
 def test_tc6_waiting_list_with_3_users_is_correct():
     reload_db()
@@ -255,12 +250,30 @@ def test_tc6_waiting_list_with_3_users_is_correct():
     loan_p2_d3 = p2.checkout(d3_copies[1])
     loan_p2_d3.status = Loan.Status.approved
 
-    # # мм та часть в которой у нас все должно работать
-    # loan_s_d3 = s.checkout(d3_copies)
-    # loan_v_d3 = v.checkout(d3_copies)
-    # loan_p3_d3 = p3.checkout(d3_copies)
-    #
-    # assert waiting_list[0] == s and waiting_list[1] == v and waiting_list[2] == p3
+    qr_s_d3 = QueuedRequest(
+        patron=s,
+        document=documents[5]
+    )
+    db.session.add(qr_s_d3)
+    qr_v_d3 = QueuedRequest(
+        patron=v,
+        document=documents[5]
+    )
+    db.session.add(qr_v_d3)
+    qr_p3_d3 = QueuedRequest(
+        patron=p3,
+        document=documents[5]
+    )
+    db.session.add(qr_p3_d3)
+
+    db.session.commit()
+
+    waiting_list = QueuedRequest.query.order_by(QueuedRequest.created_at).all()
+    waiting_list = sorted(waiting_list, key=lambda x: (x.priority, x.created_at))
+
+    assert waiting_list[0].patron == s
+    assert waiting_list[1].patron == v
+    assert waiting_list[2].patron == p3
 
 def test_tc7_():
     reload_db()
