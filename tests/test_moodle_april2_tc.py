@@ -102,8 +102,6 @@ def test_tc2_patron_check_out_some_docs_and_some_of_them_are_overdued():
         loan_v_d2 = v.checkout(d2_copies[2])
         loan_v_d2.status = Loan.Status.approved
 
-    # loan_p1_b1.due_date = datetime.date(2018, 2, 9) + (loan_p1_b1.due_date - datetime.date.today())
-
     with freeze_time('April 2nd, 2018'):
         p1_overdued_docs = p1.get_overdue_loans()
         p1_fines = [loan_p1_d1.get_overdue_fine(), loan_p1_d2.get_overdue_fine()]
@@ -133,23 +131,6 @@ def test_tc2_patron_check_out_some_docs_and_some_of_them_are_overdued():
         assert v_overdued_docs[1].get_overdue_fine() == 1700
 
 
-
-    # #     loan_p1_b1.due_date = datetime.date(2018, 2, 9) + (loan_p1_b1.due_date - datetime.date.today())
-    # ПОДУМАТЬ НАД ЗАМОРОЗКОЙ ВРЕМЕНИ
-
-    # assert len(p1_overdued_docs) == 0 and p1_fines[0] == 0 and p1_fines[1] == 0
-    #
-    # assert loan_s_d1.due_date == datetime.date(2018, 4, 2)
-    #
-    # assert s_overdued_docs == 0
-    #
-    # assert s_overdued_docs[0].overdued_days == 7+2 and s_overdued_docs[1].overdued_days == 14+2
-    # assert s_fines[0] == 700 and s_fines[1] == 1400
-    #
-    # assert v_overdued_docs[0].overdued_days == 21+2 and v_overdued_docs[1].overdued_days == 21+2
-    # assert v_fines[0] == 2100 and v_fines[1] == 2100
-
-
 def test_tc3_patron_check_out_some_docs_and_due_date_is_correct():
     reload_db()
     documents, patrons, students, visiting_profs = state_of_system()
@@ -161,24 +142,29 @@ def test_tc3_patron_check_out_some_docs_and_due_date_is_correct():
     d1_copies = documents[0]
     d2_copies = documents[1]
 
-    datetime.today = datetime.date(2018, 3, 29)
-    loan_p1_d1 = p1.checkout(d1_copies[0])
-    loan_p1_d1.status = Loan.Status.approved
-    loan_s_d2 = s.checkout(d2_copies[0])
-    loan_s_d2.status = Loan.Status.approved
-    loan_v_d2 = v.checkout(d2_copies[1])
-    loan_v_d2.status = Loan.Status.approved
+    with freeze_time('March 29th, 2018'):
+        loan_p1_d1 = p1.checkout(d1_copies[0])
+        loan_p1_d1.status = Loan.Status.approved
+        loan_s_d2 = s.checkout(d2_copies[0])
+        loan_s_d2.status = Loan.Status.approved
+        loan_v_d2 = v.checkout(d2_copies[1])
+        loan_v_d2.status = Loan.Status.approved
+
+    with freeze_time('April 2nd, 2018'):
+        loan_p1_d1.renew_document()
+        loan_s_d2.renew_document()
+        loan_v_d2.renew_document()
 
     p1_docs = p1.get_borrowed_document_copies()
     s_docs = s.get_borrowed_document_copies()
     v_docs = v.get_borrowed_document_copies()
 
     assert p1_docs[0] == d1_copies[0]
-    # assert loan_p1_d1.due_date == datetime.date(2018, 4, 30)
+    assert loan_p1_d1.due_date == datetime.date(2018, 4, 30)
     assert s_docs[0] == d2_copies[0]
-    # assert loan_s_d2.due_date == datetime.date(2018, 4, 16)
+    assert loan_s_d2.due_date == datetime.date(2018, 4, 16)
     assert v_docs[0] == d2_copies[1]
-    # assert loan_v_d2.due_date == datetime.date(2018, 4, 9)
+    assert loan_v_d2.due_date == datetime.date(2018, 4, 9)
 
 def test_tc4_patrons_checkout_docs_and_due_date_is_correct():
     reload_db()
