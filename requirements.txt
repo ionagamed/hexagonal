@@ -4,3 +4,4 @@ flask_sqlalchemy
 bson
 itsdangerous
 pytest
+freezegun

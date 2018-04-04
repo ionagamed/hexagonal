@@ -1,3 +1,4 @@
+from freezegun import freeze_time
 import datetime
 
 import pytest
@@ -57,16 +58,16 @@ def test_tc1__patron_checkout_a_document_and_doc_is_not_overdued():
     d1_copies = documents[0]
     d2_copies = documents[1]
 
-    datetime.today = datetime.date(2018, 3, 5)
-    loan_p1_d1 = p1.checkout(d1_copies[0])
-    loan_p1_d2 = p1.checkout(d2_copies[0])
+    with freeze_time('March 5th, 2018'):
+        loan_p1_d1 = p1.checkout(d1_copies[0])
+        loan_p1_d2 = p1.checkout(d2_copies[0])
 
-    datetime.today = datetime.date(2018, 4, 2)
     db.session.delete(loan_p1_d2)
     db.session.commit()
 
-    overdued_docs_of_p1 = p1.get_overdue_loans()
-    overdued_fine_of_p1_by_d1 = loan_p1_d1.get_overdue_fine()
+    with freeze_time('April 2nd, 2018'):
+        overdued_docs_of_p1 = p1.get_overdue_loans()
+        overdued_fine_of_p1_by_d1 = loan_p1_d1.get_overdue_fine()
 
     assert len(overdued_docs_of_p1) == 0 and overdued_fine_of_p1_by_d1 == 0
 
@@ -82,58 +83,71 @@ def test_tc2_patron_check_out_some_docs_and_some_of_them_are_overdued():
     d1_copies = documents[0]
     d2_copies = documents[1]
 
-    datetime.today = datetime.date(2018, 3, 5)
-    loan_p1_d1 = p1.checkout(d1_copies[0])
-    loan_p1_d1.status = Loan.Status.approved
-    loan_p1_d1.due_date = datetime.date(2018, 3, 5) + (loan_p1_d1.due_date - datetime.date.today())
+    with freeze_time('March 5th, 2018'):
+        loan_p1_d1 = p1.checkout(d1_copies[0])
+        loan_p1_d1.status = Loan.Status.approved
 
-    loan_p1_d2 = p1.checkout(d2_copies[0])
-    loan_p1_d2.status = Loan.Status.approved
-    loan_p1_d2.due_date = datetime.date(2018, 3, 5) + (loan_p1_d2.due_date - datetime.date.today())
+        loan_p1_d2 = p1.checkout(d2_copies[0])
+        loan_p1_d2.status = Loan.Status.approved
 
-    loan_s_d1 = s.checkout(d1_copies[1])
-    loan_s_d1.status = Loan.Status.approved
-    loan_s_d1.due_date = datetime.date(2018, 3, 5) + (loan_s_d1.due_date - datetime.date.today())
+        loan_s_d1 = s.checkout(d1_copies[1])
+        loan_s_d1.status = Loan.Status.approved
 
-    loan_s_d2 = s.checkout(d2_copies[1])
-    loan_s_d2.status = Loan.Status.approved
-    loan_s_d2.due_date = datetime.date(2018, 3, 5) + (loan_s_d2.due_date - datetime.date.today())
+        loan_s_d2 = s.checkout(d2_copies[1])
+        loan_s_d2.status = Loan.Status.approved
 
-    loan_v_d1 = v.checkout(d1_copies[2])
-    loan_v_d1.status = Loan.Status.approved
-    loan_v_d1.due_date = datetime.date(2018, 3, 5) + (loan_v_d1.due_date - datetime.date.today())
+        loan_v_d1 = v.checkout(d1_copies[2])
+        loan_v_d1.status = Loan.Status.approved
 
-    loan_v_d2 = v.checkout(d2_copies[2])
-    loan_v_d2.status = Loan.Status.approved
-    loan_v_d2.due_date = datetime.date(2018, 3, 5) + (loan_v_d2.due_date - datetime.date.today())
+        loan_v_d2 = v.checkout(d2_copies[2])
+        loan_v_d2.status = Loan.Status.approved
 
     # loan_p1_b1.due_date = datetime.date(2018, 2, 9) + (loan_p1_b1.due_date - datetime.date.today())
 
-    p1_overdued_docs = p1.get_overdue_loans()
-    p1_fines = [loan_p1_d1.get_overdue_fine(), loan_p1_d2.get_overdue_fine()]
+    with freeze_time('April 2nd, 2018'):
+        p1_overdued_docs = p1.get_overdue_loans()
+        p1_fines = [loan_p1_d1.get_overdue_fine(), loan_p1_d2.get_overdue_fine()]
 
-    s_overdued_docs = s.get_overdue_loans()
-    s_fines = [loan_s_d1.get_overdue_fine(), loan_s_d2.get_overdue_fine()]
+        s_overdued_docs = s.get_overdue_loans()
+        s_fines = [loan_s_d1.get_overdue_fine(), loan_s_d2.get_overdue_fine()]
 
-    v_overdued_docs = v.get_overdue_loans()
-    v_fines = [loan_v_d1, loan_v_d2]
+        v_overdued_docs = v.get_overdue_loans()
+        v_fines = [loan_v_d1.get_overdue_fine(), loan_v_d2.get_overdue_fine()]
+
+        assert len(p1_overdued_docs) == 0
+
+        assert len(s_overdued_docs) == 2
+
+        assert s_overdued_docs[0].overdue_days() == 7
+        assert s_overdued_docs[0].get_overdue_fine() == 700
+
+        assert s_overdued_docs[1].overdue_days() == 14
+        assert s_overdued_docs[1].get_overdue_fine() == 1400
+
+        assert len(v_overdued_docs) == 2
+
+        assert v_overdued_docs[0].overdue_days() == 21
+        assert v_overdued_docs[0].get_overdue_fine() == 2100
+
+        assert v_overdued_docs[0].overdue_days() == 21
+        assert v_overdued_docs[1].get_overdue_fine() == 1700
 
 
 
     # #     loan_p1_b1.due_date = datetime.date(2018, 2, 9) + (loan_p1_b1.due_date - datetime.date.today())
     # ПОДУМАТЬ НАД ЗАМОРОЗКОЙ ВРЕМЕНИ
 
-    assert len(p1_overdued_docs) == 0 and p1_fines[0] == 0 and p1_fines[1] == 0
-
-    assert loan_s_d1.due_date == datetime.date(2018, 4, 2)
-
-    assert s_overdued_docs == 0
-
-    assert s_overdued_docs[0].overdued_days == 7+2 and s_overdued_docs[1].overdued_days == 14+2
-    assert s_fines[0] == 700 and s_fines[1] == 1400
-
-    assert v_overdued_docs[0].overdued_days == 21+2 and v_overdued_docs[1].overdued_days == 21+2
-    assert v_fines[0] == 2100 and v_fines[1] == 2100
+    # assert len(p1_overdued_docs) == 0 and p1_fines[0] == 0 and p1_fines[1] == 0
+    #
+    # assert loan_s_d1.due_date == datetime.date(2018, 4, 2)
+    #
+    # assert s_overdued_docs == 0
+    #
+    # assert s_overdued_docs[0].overdued_days == 7+2 and s_overdued_docs[1].overdued_days == 14+2
+    # assert s_fines[0] == 700 and s_fines[1] == 1400
+    #
+    # assert v_overdued_docs[0].overdued_days == 21+2 and v_overdued_docs[1].overdued_days == 21+2
+    # assert v_fines[0] == 2100 and v_fines[1] == 2100
 
 
 def test_tc3_patron_check_out_some_docs_and_due_date_is_correct():
