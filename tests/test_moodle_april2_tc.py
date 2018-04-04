@@ -349,33 +349,52 @@ def tests_tc8_notificatioin_about_availibility_of_d3_book_from_waiting_list():
     # assert p2.get_loans() == []
     # # assert waiting_list == [s,v,p3]
 
-# def test_tc9_():
-#     reload_db()
-#     documents, patrons, students, visiting_profs = state_of_system()
-#
-#     p1 = patrons[0]
-#     p3 = patrons[2]
-#     s = students[0]
-#     p2 = patrons[1]
-#     v = visiting_profs[0]
-#
-#     d3_copies = documents[2]
-#
-#     loan_p1_d3 = p1.checkout(d3_copies[0])
-#     loan_p1_d3.status = Loan.Status.approved
-#     loan_p2_d3 = p2.checkout(d3_copies[1])
-#     loan_p2_d3.status = Loan.Status.approved
-#
-#     # # мм та часть в которой у нас все должно работать
-#     # loan_s_d3 = s.checkout(d3_copies)
-#     # loan_v_d3 = v.checkout(d3_copies)
-#     # loan_p3_d3 = p3.checkout(d3_copies)
-#
-#     loan_p1_d3.renew()
-#
-#     assert loan_p1_d3.due_date() == datetime.date(2018, 4, 30)
-#     assert loan_p1_d3.document_copy() == d3_copies[0]
-#     # assert waiting_list == [s,v,p3]
+def test_tc9_():
+    reload_db()
+    documents, patrons, students, visiting_profs = state_of_system()
+
+    p1 = patrons[0]
+    p2 = patrons[1]
+    p3 = patrons[2]
+    s = students[0]
+    v = visiting_profs[0]
+
+    d3_copies = documents[2]
+
+    loan_p1_d3 = p1.checkout(d3_copies[0])
+    loan_p1_d3.status = Loan.Status.approved
+    loan_p2_d3 = p2.checkout(d3_copies[1])
+    loan_p2_d3.status = Loan.Status.approved
+
+    qr_s_d3 = QueuedRequest(
+        patron=s,
+        document=documents[5]
+    )
+    db.session.add(qr_s_d3)
+    qr_v_d3 = QueuedRequest(
+        patron=v,
+        document=documents[5]
+    )
+    db.session.add(qr_v_d3)
+    qr_p3_d3 = QueuedRequest(
+        patron=p3,
+        document=documents[5]
+    )
+    db.session.add(qr_p3_d3)
+
+    db.session.commit()
+
+    waiting_list = QueuedRequest.query.order_by(QueuedRequest.created_at).all()
+    waiting_list = sorted(waiting_list, key=lambda x: (x.priority, x.created_at))
+
+    with freeze_time('April 2nd, 2018'):
+        loan_p1_d3.renew_document()
+
+    assert loan_p1_d3.due_date == datetime.date(2018, 4, 30)
+    assert loan_p1_d3.document_copy == d3_copies[0]
+    assert waiting_list[0].patron == s
+    assert waiting_list[1].patron == v
+    assert waiting_list[2].patron == p3
 
 # def test_tc10_():
 #     reload_db()
