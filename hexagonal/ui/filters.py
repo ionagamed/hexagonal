@@ -34,6 +34,7 @@ HUMANIZE_MAP = {
     'prof-patron': 'professor',
     'ta-patron': 'teaching assistant',
     'vp-patron': 'visiting professor',
+    'admin': 'admin'
 }
 
 
@@ -48,6 +49,7 @@ HUMANIZE_ARTICLE_MAP = {
     'prof-patron': 'a',
     'ta-patron': 'a',
     'vp-patron': 'a',
+    'admin': 'an'
 }
 
 

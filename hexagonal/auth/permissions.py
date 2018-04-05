@@ -12,6 +12,20 @@ class Permission(enum.Enum):
     checkout = 'checkout'
     manage = 'manage'
 
+    create_patron = 'create_patron'
+    modify_patron = 'modify_patron'
+    delete_patron = 'delete_patron'
+
+    create_document = 'create_document'
+    modify_document = 'modify_document'
+    delete_document = 'delete_document'
+
+    create_librarian = 'create_librarian'
+    modify_librarian = 'modify_librarian'
+    delete_librarian = 'delete_librarian'
+
+    oustanding_request = 'outstanding_request'
+
 
 def required_permission(permission):
     """

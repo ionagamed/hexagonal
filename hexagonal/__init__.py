@@ -38,6 +38,7 @@ from hexagonal.model.instructor import Instructor
 from hexagonal.model.professor import Professor
 from hexagonal.model.teaching_assistant import TeachingAssistant
 from hexagonal.model.queued_request import QueuedRequest
+from hexagonal.model.admin import Admin
 
 if env != 'docs':
     db.create_all()

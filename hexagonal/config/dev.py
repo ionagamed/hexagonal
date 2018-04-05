@@ -7,7 +7,7 @@ config = {
 
     'ROOT_LOGIN': 'root',
     'ROOT_PASSWORD': 'toor',
-    'ROOT_ROLE': 'librarian',
+    'ROOT_ROLE': 'admin',
 
     'UI_ROOT': '/',
     'TEMPLATES_AUTO_RELOAD': True,

@@ -12,7 +12,7 @@ def index():
 @app.route('/login', methods=['GET'])
 def login_view():
     if 'role' in session and session['role'] is not None:
-        if session['role'] == 'librarian':
+        if session['role'] == 'librarian' or session['role'] == 'admin':
             return redirect('/admin/documents')
         else:
             return redirect('/user/borrowed')
@@ -39,7 +39,7 @@ def login():
 
     session['uid'] = user.id
 
-    if session['role'] == 'librarian':
+    if session['role'] == 'librarian' or session['role'] == 'admin':
         return redirect('/admin/documents')
     else:
         return redirect('/user/borrowed')
