@@ -1,8 +1,11 @@
 from hexagonal import app, db, AVMaterial, JournalArticle
-from flask import render_template, redirect, request
+from flask import render_template, redirect, request, session
 from hexagonal import Document, Book, DocumentCopy, QueuedRequest
 from hexagonal.ui.helpers import comma_to_list, loading_list
 from hexagonal.auth.permissions import required_permission, Permission
+# from hexagonal.auth import permissions
+
+from hexagonal import log
 
 
 @app.route('/admin/documents')
@@ -34,6 +37,8 @@ def document_delete(document_id):
     """
     Delete a document by id.
     """
+
+    log(session['login'], 'deleted', 'document {}'.format(document_id))
 
     doc = Document.query.filter(Document.id == document_id).first_or_404()
     db.session.delete(doc)
@@ -99,6 +104,8 @@ def document_new():
     db.session.add(doc)
     db.session.commit()
 
+    log(session['login'], 'created', 'document {}'.format(doc.id))
+
     # TODO
     return redirect('/admin/documents')
 
@@ -125,6 +132,8 @@ def document_edit(document_id):
         - if  N, adds blank copies of the document.
         - if -N, removes all unused copies from the db.
     """
+
+    log(session['login'], 'updated', 'document {}'.format(document_id))
 
     doc = Document.query.filter(Document.id == document_id).first_or_404()
     doc.title = request.form['title']
@@ -182,6 +191,8 @@ def document_outstanding_request(document_id):
     """
     Delete the priority queue for the document.
     """
+
+    log(session['login'], 'placed an outstanding request on', 'document {}'.format(document_id))
 
     from hexagonal import QueuedRequest
 

@@ -1,8 +1,9 @@
 from hexagonal import app, Loan, db, User, DocumentCopy
-from flask import request, render_template, redirect
+from flask import request, render_template, redirect, session
 import datetime
 from hexagonal.auth.permissions import *
 from hexagonal.ui.helpers import loading_list
+from hexaongal import log
 
 
 @app.route('/admin/loans')
@@ -99,6 +100,8 @@ def loan_confirm(loan_id):
     Changes the status to approved, and sets due_date to calculated date for user.
     """
 
+    log(session['login'], 'confirmed', 'loan {}'.format(loan_id))
+
     loan = Loan.query.filter(Loan.id == loan_id).first()
     loan.status = Loan.Status.approved
     loan.due_date = datetime.date.today() + loan.user.get_checkout_period_for(loan.document_copy.document)
@@ -115,6 +118,8 @@ def loan_refuse(loan_id):
     Deletes the loan from the db.
     """
 
+    log(session['login'], 'confirmed', 'loan {}'.format(loan_id))
+
     loan = Loan.query.filter(Loan.id == loan_id).first()
     db.session.delete(loan)
     db.session.commit()
@@ -128,6 +133,8 @@ def loan_return(loan_id):
     Confirm the returning of the loan by id.
     Deletes the loan from the db.
     """
+
+    log(session['login'], 'confirmed return of', 'loan {}'.format(loan_id))
 
     loan = Loan.query.filter(Loan.id == loan_id).first()
     db.session.delete(loan)

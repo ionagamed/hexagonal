@@ -1,7 +1,8 @@
 from hexagonal import app, User, auth, db
-from flask import request, redirect, render_template
+from flask import request, redirect, render_template, session
 from hexagonal.auth.permissions import *
 from hexagonal.ui.helpers import loading_list
+from hexagonal import log
 
 
 @app.route('/admin/users')
@@ -43,7 +44,7 @@ def users_new():
     Actually registers a new account.
     """
 
-    auth.register_account(
+    u = auth.register_account(
         login=request.form['login'],
         password=request.form['password'],
         reset_password=False,  # TODO
@@ -54,6 +55,8 @@ def users_new():
         card_number=request.form['card_number']
     )
 
+    log(session['login'], 'created', 'user {}'.format(u.id))
+
     return redirect('/admin/users')
 
 
@@ -63,6 +66,8 @@ def users_delete(user_id):
     """
     Delete a user by id.
     """
+
+    log(session['login'], 'deleted', 'user {}'.format(user_id))
 
     user = User.query.filter(User.id == user_id).first_or_404()
     db.session.delete(user)
@@ -88,6 +93,8 @@ def users_edit(user_id):
     Actually update the user from the form parameters.
     If password changes (if it is present and non-empty in form), then set reset_password of user to True).
     """
+
+    log(session['login'], 'updated', 'user {}'.format(user_id))
 
     if 'password' in request.form and len(request.form['password'].strip()) > 0:
         auth.change_password(user_id, request.form['password'])

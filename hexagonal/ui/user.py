@@ -5,6 +5,7 @@ User routes
 from hexagonal import app, User, Loan, db, Document, DocumentCopy
 from flask import request, redirect, render_template, session
 from hexagonal.auth.permissions import *
+from hexagonal import log
 
 
 @app.route('/user/borrowed')
@@ -90,6 +91,8 @@ def user_claim(document_id):
     Claim first available copy of the specified document.
     """
 
+    log(session['login'], 'claimed', 'document {}'.format(document_id))
+
     copy = DocumentCopy.query.filter(DocumentCopy.document_id == document_id, DocumentCopy.loan == None).first_or_404()
     user = User.query.filter(User.login == session['login']).first()
     user.checkout(copy)
@@ -102,6 +105,8 @@ def user_enqueue(document_id):
     """
     Enqueue the document. Patron will get a notification when the copy is available.
     """
+
+    log(session['login'], 'enqueued', 'document {}'.format(document_id))
 
     from hexagonal import QueuedRequest
 
