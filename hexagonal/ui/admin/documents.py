@@ -32,7 +32,7 @@ def document_index_load():
 
 
 @app.route('/admin/documents/<int:document_id>/delete')
-@required_permission(Permission.manage)
+@required_permission(Permission.delete_document)
 def document_delete(document_id):
     """
     Delete a document by id.
@@ -47,7 +47,7 @@ def document_delete(document_id):
 
 
 @app.route('/admin/documents/new', methods=['GET'])
-@required_permission(Permission.manage)
+@required_permission(Permission.create_document)
 def document_new_view():
     """
     New document view.
@@ -58,7 +58,7 @@ def document_new_view():
 
 # noinspection PyArgumentList
 @app.route('/admin/documents/new', methods=['POST'])
-@required_permission(Permission.manage)
+@required_permission(Permission.create_document)
 def document_new():
     """
     Create a new document from form data.
@@ -111,7 +111,7 @@ def document_new():
 
 
 @app.route('/admin/documents/<int:document_id>/edit')
-@required_permission(Permission.manage)
+@required_permission(Permission.modify_document)
 def document_edit_view(document_id):
     """
     View for editing a document.
@@ -122,7 +122,7 @@ def document_edit_view(document_id):
 
 
 @app.route('/admin/documents/<int:document_id>/edit', methods=['POST'])
-@required_permission(Permission.manage)
+@required_permission(Permission.modify_document)
 def document_edit(document_id):
     """
     Actual edit for document.
@@ -186,7 +186,7 @@ def document_view(document_id):
 
 
 @app.route('/admin/documents/<int:document_id>/outstanding_request')
-@required_permission(Permission.manage)
+@required_permission(Permission.oustanding_request)
 def document_outstanding_request(document_id):
     """
     Delete the priority queue for the document.

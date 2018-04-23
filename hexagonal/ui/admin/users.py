@@ -44,6 +44,15 @@ def users_new():
     Actually registers a new account.
     """
 
+    user = User.query.filter(User.login == session['login']).first()
+
+    if request.form['role'].startswith('librarian'):
+        if not user.has_permission(Permission.create_librarian):
+            return 'no perm', 403
+
+    if not user.has_permission(Permission.create_patron):
+        return 'no perm', 403
+
     u = auth.register_account(
         login=request.form['login'],
         password=request.form['password'],
@@ -67,6 +76,16 @@ def users_delete(user_id):
     Delete a user by id.
     """
 
+    s_user = User.query.filter(User.login == session['login']).first()
+    user = User.query.filter(User.id == user_id).first()
+
+    if user.role.startswith('librarian'):
+        if not s_user.has_permission(Permission.delete_librarian):
+            return 'no perm', 403
+
+    if not user.has_permission(Permission.delete_patron):
+        return 'no perm', 403
+
     log(session['login'], 'deleted', 'user {}'.format(user_id))
 
     user = User.query.filter(User.id == user_id).first_or_404()
@@ -82,7 +101,16 @@ def users_edit_view(user_id):
     Edit view for a user by id.
     """
 
-    user = User.query.filter(User.id == user_id).first_or_404()
+    s_user = User.query.filter(User.login == session['login']).first()
+    user = User.query.filter(User.id == user_id).first()
+
+    if user.role.startswith('librarian'):
+        if not s_user.has_permission(Permission.modify_librarian):
+            return 'no perm', 403
+
+    if not user.has_permission(Permission.modify_patron):
+        return 'no perm', 403
+
     return render_template('admin/users/edit.html', user=user, path='/admin/users')
 
 
@@ -93,6 +121,16 @@ def users_edit(user_id):
     Actually update the user from the form parameters.
     If password changes (if it is present and non-empty in form), then set reset_password of user to True).
     """
+
+    s_user = User.query.filter(User.login == session['login']).first()
+    user = User.query.filter(User.id == user_id).first()
+
+    if user.role.startswith('librarian'):
+        if not s_user.has_permission(Permission.modify_librarian):
+            return 'no perm', 403
+
+    if not user.has_permission(Permission.modify_patron):
+        return 'no perm', 403
 
     log(session['login'], 'updated', 'user {}'.format(user_id))
 
