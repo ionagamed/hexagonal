@@ -1,3 +1,5 @@
+from sqlalchemy import text
+
 from hexagonal import app, db
 
 
@@ -12,6 +14,8 @@ class LogEntry(db.Model):
 
     obj = db.Column(db.String(256))
 
+    when = db.Column(db.DateTime(), default=text('NOW()'))
+
     def __repr__(self):
         return ' '.join([self.who, self.what, self.obj])
 
@@ -23,4 +27,4 @@ def log(who, what, obj):
         obj=obj
     )
     db.session.add(entry)
-    db.session.save()
+    db.session.commit()

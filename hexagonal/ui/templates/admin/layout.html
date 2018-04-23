@@ -2,124 +2,134 @@
 
 {% block body %}
 
-  <br><br>
-  <div class="ui fluid container">
-    <div class="ui stackable grid">
-      <div class="column"></div>
-      <div class="three wide column">
-        <div class="ui fluid vertical pointing menu">
-          <div class="item {% if path == '/admin/search' %} active {% endif %}" id="menu-search-field-item">
-            <form action="/admin/search" method="GET">
-              <div class="ui search">
-                <div class="ui fluid transparent icon input">
-                  <input name="search" placeholder="Search..."
-                          {% if 'search' in request.args %}
-                            value="{{ request.args['search'] }}"
-                          {% elif 'search' in session %}
-                            value="{{ session['search'] }}"
-                          {% endif %}
-                         id="search-field" class="prompt">
-                  <i class="search link icon"></i>
+    <br><br>
+    <div class="ui fluid container">
+        <div class="ui stackable grid">
+            <div class="column"></div>
+            <div class="three wide column">
+                <div class="ui fluid vertical pointing menu">
+                    <div class="item {% if path == '/admin/search' %} active {% endif %}" id="menu-search-field-item">
+                        <form action="/admin/search" method="GET">
+                            <div class="ui search">
+                                <div class="ui fluid transparent icon input">
+                                    <input name="search" placeholder="Search..."
+                                            {% if 'search' in request.args %}
+                                           value="{{ request.args['search'] }}"
+                                            {% elif 'search' in session %}
+                                           value="{{ session['search'] }}"
+                                            {% endif %}
+                                           id="search-field" class="prompt">
+                                    <i class="search link icon"></i>
+                                </div>
+                                <div class="results">
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    {% if session['role'] == 'admin' %}
+                        <a class="item {% if path == '/admin/logs' %} active {% endif %}" href="/admin/logs">
+                            <i class="database icon"></i>
+                            Logs
+                        </a>
+                    {% endif %}
+                    <div class="item">
+                        <div class="header">
+                            <i class="file alternate outline icon"></i>
+                            Documents
+                        </div>
+                        <div class="menu">
+                            <a href="/admin/documents"
+                               class="item {% if path == '/admin/documents' %} active {% endif %}">
+                                <i class="bars icon"></i>
+                                List
+                            </a>
+                            <a href="/admin/documents/new"
+                               class="item {% if path == '/admin/documents/new' %} active {% endif %}">
+                                <i class="plus icon"></i>
+                                New
+                            </a>
+                        </div>
+                    </div>
+                    <div class="item">
+                        <div class="header">
+                            <i class="users icon"></i>
+                            Users
+                        </div>
+                        <div class="menu">
+                            <a href="/admin/users" class="item {% if path == '/admin/users' %} active {% endif %}">
+                                <i class="bars icon"></i>
+                                List
+                            </a>
+                            <a href="/admin/users/new"
+                               class="item {% if path == '/admin/users/new' %} active {% endif %}">
+                                <i class="plus icon"></i>
+                                New
+                            </a>
+                        </div>
+                    </div>
+                    <div class="item">
+                        <div class="header">
+                            <i class="copy outline icon"></i>
+                            Loans
+                        </div>
+                        <div class="menu">
+                            <a href="/admin/loans" class="item {% if path == '/admin/loans' %} active {% endif %}">
+                                <i class="bars icon"></i>
+                                List
+                            </a>
+                            <a href="/admin/loans/requested"
+                               class="teal item {% if path == '/admin/loans/requested' %} active {% endif %}">
+                                <i class="question outline icon"></i>
+                                Requests
+                                {% if get_all_requested_loan_count() > 0 %}
+                                    <div class="ui teal label">
+                                        {{ get_all_requested_loan_count() }}
+                                    </div>
+                                {% endif %}
+                            </a>
+                            <a href="/admin/loans/overdue"
+                               class="red item {% if path == '/admin/loans/overdue' %} active {% endif %}">
+                                <i class="exclamation icon"></i>
+                                Overdue
+                                {% if get_all_overdue_loan_count() > 0 %}
+                                    <div class="ui red label">
+                                        {{ get_all_overdue_loan_count() }}
+                                    </div>
+                                {% endif %}
+                            </a>
+                            <a href="/admin/loans/returned"
+                               class="item {% if path == '/admin/loans/returned' %} active {% endif %}">
+                                <i class="undo icon"></i>
+                                Returned
+                                {% if get_all_returned_loan_count() > 0 %}
+                                    <div class="ui label">
+                                        {{ get_all_returned_loan_count() }}
+                                    </div>
+                                {% endif %}
+                            </a>
+                        </div>
+                    </div>
+                    {% include "menu-footer.html" %}
                 </div>
-                <div class="results">
-                </div>
-              </div>
-            </form>
-          </div>
-          <div class="item">
-            <div class="header">
-              <i class="file alternate outline icon"></i>
-              Documents
             </div>
-            <div class="menu">
-              <a href="/admin/documents" class="item {% if path == '/admin/documents' %} active {% endif %}">
-                <i class="bars icon"></i>
-                List
-              </a>
-              <a href="/admin/documents/new" class="item {% if path == '/admin/documents/new' %} active {% endif %}">
-                <i class="plus icon"></i>
-                New
-              </a>
+            <div class="eleven wide column transition fade in" id="page-container">
+                {% block admin_body %} {% endblock %}
             </div>
-          </div>
-          <div class="item">
-            <div class="header">
-              <i class="users icon"></i>
-              Users
-            </div>
-            <div class="menu">
-              <a href="/admin/users" class="item {% if path == '/admin/users' %} active {% endif %}">
-                <i class="bars icon"></i>
-                List
-              </a>
-              <a href="/admin/users/new" class="item {% if path == '/admin/users/new' %} active {% endif %}">
-                <i class="plus icon"></i>
-                New
-              </a>
-            </div>
-          </div>
-          <div class="item">
-            <div class="header">
-              <i class="copy outline icon"></i>
-              Loans
-            </div>
-            <div class="menu">
-              <a href="/admin/loans" class="item {% if path == '/admin/loans' %} active {% endif %}">
-                <i class="bars icon"></i>
-                List
-              </a>
-              <a href="/admin/loans/requested"
-                 class="teal item {% if path == '/admin/loans/requested' %} active {% endif %}">
-                <i class="question outline icon"></i>
-                Requests
-                {% if get_all_requested_loan_count() > 0 %}
-                  <div class="ui teal label">
-                    {{ get_all_requested_loan_count() }}
-                  </div>
-                {% endif %}
-              </a>
-              <a href="/admin/loans/overdue"
-                 class="red item {% if path == '/admin/loans/overdue' %} active {% endif %}">
-                <i class="exclamation icon"></i>
-                Overdue
-                {% if get_all_overdue_loan_count() > 0 %}
-                  <div class="ui red label">
-                    {{ get_all_overdue_loan_count() }}
-                  </div>
-                {% endif %}
-              </a>
-              <a href="/admin/loans/returned" class="item {% if path == '/admin/loans/returned' %} active {% endif %}">
-                <i class="undo icon"></i>
-                Returned
-                {% if get_all_returned_loan_count() > 0 %}
-                  <div class="ui label">
-                    {{ get_all_returned_loan_count() }}
-                  </div>
-                {% endif %}
-              </a>
-            </div>
-          </div>
-          {% include "menu-footer.html" %}
         </div>
-      </div>
-      <div class="eleven wide column transition fade in" id="page-container">
-        {% block admin_body %} {% endblock %}
-      </div>
     </div>
-  </div>
 
-  <style>
-    body {
-      background: #f8f8f8;
-    }
+    <style>
+        body {
+            background: #f8f8f8;
+        }
 
-    #menu-search-field-item, .active#menu-search-field-item:after {
-      background: white;
-    }
-  </style>
+        #menu-search-field-item, .active#menu-search-field-item:after {
+            background: white;
+        }
+    </style>
 
-  {% if path != '/admin/search' %}
-    <script src="/static/search_inplace.js?{{ rnd() }}"></script>
-  {% endif %}
+    {% if path != '/admin/search' %}
+        <script src="/static/search_inplace.js?{{ rnd() }}"></script>
+    {% endif %}
 
 {% endblock %}

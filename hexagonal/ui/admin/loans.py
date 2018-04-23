@@ -3,7 +3,7 @@ from flask import request, render_template, redirect, session
 import datetime
 from hexagonal.auth.permissions import *
 from hexagonal.ui.helpers import loading_list
-from hexaongal import log
+from hexagonal import log
 
 
 @app.route('/admin/loans')

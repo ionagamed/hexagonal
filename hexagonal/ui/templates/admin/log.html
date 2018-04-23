@@ -1,0 +1,24 @@
+{% extends "admin/layout.html" %}
+
+{% block admin_body %}
+    <table class="ui celled striped table">
+    <thead>
+    <tr>
+        <th>Who</th>
+        <th>What</th>
+        <th>Object</th>
+        <th>When</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for entry in entries %}
+        <tr>
+            <td>{{ entry.who }}</td>
+            <td>{{ entry.what }}</td>
+            <td>{{ entry.obj }}</td>
+            <td>{{ entry.when }}</td>
+        </tr>
+    {% endfor %}
+    </tbody>
+    </table>
+{% endblock %}
