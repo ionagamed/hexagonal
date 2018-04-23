@@ -40,7 +40,7 @@ class Librarian(User):
                 Permission.modify_patron,
                 Permission.create_document,
                 Permission.create_patron,
-                Permission.oustanding_request
+                Permission.outstanding_request
             ],
             [
                 Permission.manage,

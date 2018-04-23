@@ -9,3 +9,4 @@ class Admin(User):
 
     def has_permission(self, permission):
         return True
+

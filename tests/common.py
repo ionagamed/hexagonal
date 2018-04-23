@@ -67,7 +67,16 @@ def create_instance(cls, **fields):
 
 
 def register_test_account(role, **kwargs):
-    login, password = get_login_pair()
+    login = password = None
+    if 'login' in kwargs:
+        login = kwargs['login']
+    if 'password' in kwargs:
+        password = kwargs['password']
+    t_login, t_password = get_login_pair()
+    if login is None:
+        login = t_login
+    if password is None:
+        password = t_password
     args = {
         'login': login,
         'password': password,

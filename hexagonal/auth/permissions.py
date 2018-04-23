@@ -24,7 +24,7 @@ class Permission(enum.Enum):
     modify_librarian = 'modify_librarian'
     delete_librarian = 'delete_librarian'
 
-    oustanding_request = 'outstanding_request'
+    outstanding_request = 'outstanding_request'
 
 
 def required_permission(permission):
