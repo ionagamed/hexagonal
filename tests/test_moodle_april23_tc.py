@@ -92,10 +92,12 @@ def test_tc3_l1_creates_l1_checks_and_nothing():
 
     assert not l1.has_permission(Permission.create_document)
 
+
 def test_4_inside():
-    reload_db()
     librs = state_of_system_librarians()
+    l1 = librs.filter(Librarian.login == 'librarian1').first()
     l2 = librs.filter(Librarian.login == 'librarian2').first()
+    l3 = librs.filter(Librarian.login == 'librarian3').first()
 
     if (l2.has_permission(Permission.create_document)):
         d1 = create_instance(Book, title='Introduction to Algorithms',
@@ -132,45 +134,40 @@ def test_4_inside():
         v = register_test_account(VisitingProfessorPatron, name='Veronika Rama', address='Stret Atocha, 27',
                                   phone='30005',
                                   card_number=1110)
-        patrons_created = True;
-
+        patrons_created = True
+        librarians = [l1, l2, l3]
         flags = [docs_created, patrons_created]
         docs_set = [d1, d2, d3, copies_d1, copies_d2, copies_d3]
         users_set_patrons = [p1, p2, p3]
         users_set_students = [s]
         users_set_visiting_profs = [v]
-        return flags,docs_set,users_set_patrons, users_set_students, users_set_visiting_profs
+        return librarians, docs_set, users_set_patrons, users_set_students, users_set_visiting_profs, flags
 
 
 def test_tc4_l2_creates_lots_of_thigns_and_that_works_wow():
     # l2 creates 3 copies of d1, 3 copies of d2, and 3 copies of d3.
     # patrons s, p1, p2, p3 and v.
     # l2 checks inf of system
+    reload_db()
     inf = test_4_inside()
-    flags = inf[0]
+    flags = inf[len(inf) - 1]
     docs_created = flags[0]
     patrons_created = flags[1]
     assert docs_created and patrons_created
 
-# def test_5_inside():
-#     reload_db()
-#     inf = test_4_inside()
-#     librs = state_of_system_librarians()
-#     l3 = librs.filter(Librarian.login == 'librarian3').first()
-#     flags = inf[0]
-#     users_set_patrons = inf[2]
-#     users_set_students = inf[3]
-#     users_set_visiting_profs = inf[4]
-#     if l3.has_permission(Permission.delete_document):
-#         docs_set = inf[1]
-#         db.session.delete(docs_set[3][0])
-#         db.session.commit()
-#
-#     return flags,docs_set,users_set_patrons, users_set_students, users_set_visiting_profs
-#
-#
-# def test_tc5_l3_works_with_docs():
-#     reload_db()
-#     inf = test_5_inside()
-#     docs = inf[1]
-#     assert len(docs[4].copies) == 2
+def test_5_inside():
+    inf = test_4_inside()
+    l3 = inf[0][2]
+    if l3.has_permission(Permission.delete_document):
+        docs_set = inf[1]
+        db.session.delete(docs_set[0].copies[0])
+        db.session.commit()
+
+    return inf[0], docs_set, inf[2], inf[3], inf[4], inf[5]
+
+def test_tc5_l3_works_with_docs():
+    reload_db()
+    inf = test_5_inside()
+    docs = inf[1]
+    # assert docs[4] is DocumentCopy
+    assert len(docs[0].copies) == 2
