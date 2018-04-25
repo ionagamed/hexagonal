@@ -19,9 +19,7 @@ client = app.test_client()
 
 def state_of_system_librarians():
     reload_db()
-    l1 = register_test_account(Librarian, login='librarian1', password='yolo69')
-    l1.access_level = 1
-    log('admin', 'created', 'librarian1')
+    l1 = register_test_account(Librarian, login='librarian1', password='yolo69') l1.access_level = 1 log('admin', 'created', 'librarian1')
     l2 = register_test_account(Librarian, login='librarian2', password='yolo69')
     l2.access_level = 2
     log('admin', 'created', 'librarian2')
@@ -195,58 +193,68 @@ def test_tc6_p1_p2_p3_s_v_has_no_permission_to_checkout_and_l1_cant_place_outsta
     flags = inf[6]
     assert flags
 
-# def test_7_inside():
-#     inf = test_4_inside()
-#     l3 = inf[0][2]
-#     p1 = inf[2][0]
-#     p2 = inf[2][1]
-#     p3 = inf[2][2]
-#     s = inf[3][0]
-#     v = inf[4][0]
-#     copies_d3 = inf[1][5]
-#     d3 = inf[1][2]
-#     loan_p1_d3 = p1.checkout(copies_d3[0])
-#     loan_p1_d3.status = Loan.Status.approved
-#     loan_p2_d3 = p2.checkout(copies_d3[1])
-#     loan_p2_d3.status = Loan.Status.approved
-#     loan_s_d3 = s.checkout(copies_d3[2])
-#     loan_s_d3.status = Loan.Status.approved
-#
-#     qr_v_d3 = QueuedRequest(
-#         patron=v,
-#         document=d3)
-#     db.session.add(qr_v_d3)
-#     qr_p3_d3 = QueuedRequest(
-#         patron=v,
-#         document=d3
-#     )
-#     db.session.add(qr_p3_d3)
-#
-#     if (l3.has_permission(Permission.outstanding_request)):
-#         d3.outstanding_request()
-#
-#     waiting_list = QueuedRequest.query.order_by(QueuedRequest.created_at).all()
-#     waiting_list = sorted(waiting_list, key=lambda x: (x.priority, x.created_at))
-#
-#     if waiting_list == []:
-#         flag_waiting_list_empty = True
-#
-#     if v.queued_documents() == [] and p3.queued_documents() == []:
-#         flag_v_and_p3_no_docs = True
-#     loans = []
-#     flags = flag_waiting_list_empty and flag_v_and_p3_no_docs
-#     return inf[0], inf[1], loans, inf[3], inf[4], inf[5], flags
-#
-#
-# def test_tc7_checkout_outstanding_request_and_sys_is_empty_changes():
-#     reload_db()
-#     inf = test_7_inside()
-#     assert inf[6]
-#
-# # def test_tc8_log_check_after_tc6():
-# #
-# # def test_tc9_log_check_after_tc7():
-# #
+
+def test_7_inside():
+    inf = test_4_inside()
+    l3 = inf[0][2]
+    p1 = inf[2][0]
+    p2 = inf[2][1]
+    p3 = inf[2][2]
+    s = inf[3][0]
+    v = inf[4][0]
+    copies_d3 = inf[1][5]
+    d3 = inf[1][2]
+    loan_p1_d3 = p1.checkout(copies_d3[0])
+    loan_p1_d3.status = Loan.Status.approved
+    log('p1', 'checkouted', '1 copy d3')
+    loan_p2_d3 = p2.checkout(copies_d3[1])
+    loan_p2_d3.status = Loan.Status.approved
+    log('p2', 'checkouted', '1 copy d3')
+    loan_s_d3 = s.checkout(copies_d3[2])
+    loan_s_d3.status = Loan.Status.approved
+    log('s', 'checkouted', '1 copy d3')
+
+    qr_v_d3 = QueuedRequest(
+        patron=v,
+        document=d3)
+    log('v', 'checkout', '1 copy d3')
+    db.session.add(qr_v_d3)
+    qr_p3_d3 = QueuedRequest(
+        patron=v,
+        document=d3
+    )
+    log('p3', 'checkout', '1 copy d3')
+    db.session.add(qr_p3_d3)
+
+    if (l3.has_permission(Permission.outstanding_request)):
+        log('l3','outst req','d3')
+        d3.outstanding_request()
+
+    waiting_list = QueuedRequest.query.order_by(QueuedRequest.created_at).all()
+    waiting_list = sorted(waiting_list, key=lambda x: (x.priority, x.created_at))
+
+    if waiting_list == []:
+        flag_waiting_list_empty = True
+
+    if v.queued_documents() == [] and p3.queued_documents() == []:
+        flag_v_and_p3_no_docs = True
+    loans = []
+    flags = flag_waiting_list_empty and flag_v_and_p3_no_docs
+    return inf[0], inf[1], loans, inf[3], inf[4], inf[5], flags
+
+
+def test_tc7_checkout_outstanding_request_and_sys_is_empty_changes():
+    reload_db()
+    inf = test_7_inside()
+    assert inf[6]
+
+def test_tc8_log_check_after_tc6():
+    pass
+
+def test_tc9_log_check_after_tc7():
+    pass
+
+
 def test_tc10_search_for_a_book_by_full_title():
     reload_db()
     state = test_4_inside()
