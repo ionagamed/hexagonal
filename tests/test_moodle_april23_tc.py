@@ -12,7 +12,7 @@ from hexagonal import Librarian, AVMaterial
 from hexagonal.model.student_patron import StudentPatron
 from hexagonal import User, Loan, Patron, QueuedRequest, Professor
 from hexagonal.model.visiting_professor_patron import VisitingProfessorPatron
-from hexagonal.model.log_entry import log
+from hexagonal.model.log_entry import log, LogEntry
 
 app.testing = True
 client = app.test_client()
@@ -249,10 +249,66 @@ def test_tc7_checkout_outstanding_request_and_sys_is_empty_changes():
     assert inf[6]
 
 def test_tc8_log_check_after_tc6():
-    pass
+    test_6_inside()
+    actual_entries = LogEntry.query.all()
+    output = [
+        'admin created librarian1',
+        'admin created librarian2',
+        'admin created librarian3',
+        'l2 created d1',
+        'l2 created d2',
+        'l2 created d3',
+        'l2 created 3 copy d1',
+        'l2 created 3 copy d2',
+        'l2 created 3 copy d3',
+        'l2 created p1',
+        'l2 created p2',
+        'l2 created p3',
+        'l2 created s',
+        'l2 created v',
+        'p1 checkouted 1 copy d3',
+        'p2 checkouted 1 copy d3',
+        's checkouted 1 copy d3'
+    ]
+
+    actual_output = []
+    for i in actual_entries:
+        actual_output.append(' '.join([i.who, i.what, i.obj]))
+
+    assert output == actual_output
+
 
 def test_tc9_log_check_after_tc7():
-    pass
+    test_7_inside()
+    actual_entries = LogEntry.query.all()
+    output = [
+        'admin created librarian1',
+        'admin created librarian2',
+        'admin created librarian3',
+        'l2 created d1',
+        'l2 created d2',
+        'l2 created d3',
+        'l2 created 3 copy d1',
+        'l2 created 3 copy d2',
+        'l2 created 3 copy d3',
+        'l2 created p1',
+        'l2 created p2',
+        'l2 created p3',
+        'l2 created s',
+        'l2 created v',
+        'p1 checkouted 1 copy d3',
+        'p2 checkouted 1 copy d3',
+        's checkouted 1 copy d3'
+    ]
+
+    for entry in
+
+    actual_output = []
+    for i in actual_entries:
+        actual_output.append(' '.join([i.who, i.what, i.obj]))
+
+    assert output == actual_output
+
 
 
 def test_tc10_search_for_a_book_by_full_title():
