@@ -145,15 +145,14 @@ def test_4_inside():
 
 
 def test_tc4_l2_creates_lots_of_thigns_and_that_works_wow():
-    # l2 creates 3 copies of d1, 3 copies of d2, and 3 copies of d3.
-    # patrons s, p1, p2, p3 and v.
-    # l2 checks inf of system
+
     reload_db()
     inf = test_4_inside()
     flags = inf[len(inf) - 1]
     docs_created = flags[0]
     patrons_created = flags[1]
     assert docs_created and patrons_created
+
 
 def test_5_inside():
     inf = test_4_inside()
@@ -165,9 +164,128 @@ def test_5_inside():
 
     return inf[0], docs_set, inf[2], inf[3], inf[4], inf[5]
 
+
 def test_tc5_l3_works_with_docs():
     reload_db()
     inf = test_5_inside()
     docs = inf[1]
-    # assert docs[4] is DocumentCopy
+    l2 = inf[0][1]
     assert len(docs[0].copies) == 2
+
+
+def test_6_inside():
+    # доделать ЧЕКАУТ: словить ошибки чекаута и вывести
+    inf = test_4_inside()
+    l1 = inf[0][0]
+    p1 = inf[2][0]
+    p2 = inf[2][1]
+    p3 = inf[2][2]
+    s = inf[3][0]
+    v = inf[4][0]
+    copies_d3 = inf[1][5]
+    loan_p1_d3 = p1.checkout(copies_d3[0])
+    loan_p1_d3.status = Loan.Status.approved
+    loan_p2_d3 = p2.checkout(copies_d3[1])
+    loan_p2_d3.status = Loan.Status.approved
+    loan_s_d3 = s.checkout(copies_d3[2])
+    loan_s_d3.status = Loan.Status.approved
+    loans = [loan_p1_d3, loan_p2_d3, loan_s_d3]
+    if not l1.has_permission(Permission.outstanding_request):
+        flag_l1_no_out_req = True
+    return inf[0], inf[1], loans, inf[3], inf[4], inf[5], flag_l1_no_out_req
+
+
+def test_tc6_p1_p2_p3_s_v_has_no_permission_to_checkout_and_l1_cant_place_outstanding_request():
+    reload_db()
+    inf = test_6_inside()
+    flags = inf[6]
+    assert flags
+
+
+# def test_7_inside():
+#     inf = test_4_inside()
+#     l3 = inf[0][2]
+#     p1 = inf[2][0]
+#     p2 = inf[2][1]
+#     p3 = inf[2][2]
+#     s = inf[3][0]
+#     v = inf[4][0]
+#     copies_d3 = inf[1][5]
+#     d3 = inf[1][2]
+#     loan_p1_d3 = p1.checkout(copies_d3[0])
+#     loan_p1_d3.status = Loan.Status.approved
+#     loan_p2_d3 = p2.checkout(copies_d3[1])
+#     loan_p2_d3.status = Loan.Status.approved
+#     loan_s_d3 = s.checkout(copies_d3[2])
+#     loan_s_d3.status = Loan.Status.approved
+#
+#     qr_v_d3 = QueuedRequest(
+#         patron=v,
+#         document=d3)
+#     db.session.add(qr_v_d3)
+#     qr_p3_d3 = QueuedRequest(
+#         patron=v,
+#         document=d3
+#     )
+#
+#     if (l3.has_permission(Permission.outstanding_request)):
+#         d3.outstanding_request()
+#
+#     waiting_list = QueuedRequest.query.order_by(QueuedRequest.created_at).all()
+#     waiting_list = sorted(waiting_list, key=lambda x: (x.priority, x.created_at))
+#
+#     if waiting_list == []:
+#         flag_waiting_list_empty = True
+#
+#     if v.queued_documents() == [] and p3.queued_documents() == []:
+#         flag_v_and_p3_no_docs = True
+#     loans = []
+#     flags = flag_waiting_list_empty and flag_v_and_p3_no_docs
+#     return inf[0], inf[1], loans, inf[3], inf[4], inf[5], flags
+#
+#
+# def test_tc7_checkout_outstanding_request_and_sys_is_empty_changes():
+#     reload_db()
+#     inf = test_7_inside()
+#     assert inf[6]
+#
+# # def test_tc8_log_check_after_tc6():
+# #
+# # def test_tc9_log_check_after_tc7():
+# #
+# def test_tc10_search_for_a_book_by_full_title():
+#     reload_db()
+#     state = test_4_inside()
+#     exists = search_for(title = "Introduction to Algorithms")
+#     assert exists
+#
+# def test_tc11_search_for_a_book_by_title_word():
+#     reload_db()
+#     state = test_4_inside()
+#     search_result = search_for(title = "Algorithms")
+#     assert search_result[0].authors == "Cormen et al."
+#     assert search_result[1].authors == "Niklaus Wirth"
+#
+# def test_tc12_search_for_books_with_keywords():
+#     reload_db()
+#     state = test_4_inside()
+#     search_results = search_for(keywords = 'Algorithms')
+#     assert search_results[0].author == "Cormen et al."
+#     assert search_results[1].author == "Niklaus Wirth"
+#     assert search_results[2].author == "Donald E. Knuth"
+#
+# def test_tc13_patron_searchs_by_keywords_AND():
+#     reload_db()
+#     state = test_4_inside()
+#     search_results = search_for(keywords = 'Algorithms' and keywords = "Programming")
+#     assert search_results == []
+#
+# def def test_tc14_patron_searchs_by_keywords_OR():
+#     reload_db()
+#     state = test_4_inside()
+#     search_results = search_for(keywords = 'Algorithms' or keywords = "Programming")
+#
+#     assert search_results[0].author == "Cormen et al."
+#     assert search_results[1].author == "Niklaus Wirth"
+#     assert search_results[2].author == "Donald E. Knuth"
+
