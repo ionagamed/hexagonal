@@ -62,7 +62,7 @@ def test_tc3_l1_creates_l1_checks_and_nothing():
     assert not l1.has_permission(Permission.create_document)
 
 
-def test_4_inside():
+def tc4_inside():
     librs = state_of_system_librarians()
     l1 = librs.filter(Librarian.login == 'librarian1').first()
     l2 = librs.filter(Librarian.login == 'librarian2').first()
@@ -74,7 +74,7 @@ def test_4_inside():
                              publisher='MIT Press', publishment_year=2009, edition=3,
                              reference=False, price=5000,
                              keywords=['Algorithms', 'Data Structures', 'Complexity', 'Computational Theory'])
-        log('l2','created','d1')
+        log('l2', 'created', 'd1')
         d2 = create_instance(Book, title='Algorithms + Data Structures = Programs',
                              authors=['Niklaus Wirth'],
                              publisher='Prentice Hall PTR', publishment_year=1978, edition=1,
@@ -93,7 +93,7 @@ def test_4_inside():
         log('l2', 'created', '3 copy d2')
         copies_d3 = [create_instance(DocumentCopy, document=d3) for i in range(3)]
         log('l2', 'created', '3 copy d3')
-        docs_created = True;
+        docs_created = True
     if (l2.has_permission(Permission.create_patron)):
         p1 = register_test_account(Professor, name='Sergey Afonso', address='Via Margutta, 3', phone='30001',
                                    card_number=1010)
@@ -124,19 +124,19 @@ def test_4_inside():
 
 def test_tc4_l2_creates_lots_of_thigns_and_that_works_wow():
     reload_db()
-    inf = test_4_inside()
+    inf = tc4_inside()
     flags = inf[len(inf) - 1]
     docs_created = flags[0]
     patrons_created = flags[1]
     assert docs_created and patrons_created
 
 
-def test_5_inside():
-    inf = test_4_inside()
+def tc5_inside():
+    inf = tc4_inside()
     l3 = inf[0][2]
     if l3.has_permission(Permission.delete_document):
         docs_set = inf[1]
-        log('l3','deleted','1 copy d1')
+        log('l3', 'deleted', '1 copy d1')
         db.session.delete(docs_set[0].copies[0])
         db.session.commit()
 
@@ -145,15 +145,14 @@ def test_5_inside():
 
 def test_tc5_l3_works_with_docs():
     reload_db()
-    inf = test_5_inside()
+    inf = tc5_inside()
     docs = inf[1]
     l2 = inf[0][1]
     assert len(docs[0].copies) == 2
 
 
-def test_6_inside():
-    # доделать ЧЕКАУТ: словить ошибки чекаута и вывести
-    inf = test_4_inside()
+def tc6_inside():
+    inf = tc4_inside()
     l1 = inf[0][0]
     p1 = inf[2][0]
     p2 = inf[2][1]
@@ -184,24 +183,38 @@ def test_6_inside():
     )
     log('p3', 'checkout','1 copy d3')
     db.session.add(qr_p3_d3)
+
     flag_l1_no_out_req = False
+
+    db.session.commit()
+
+    response = client.post('/login', data={
+        'login': 'librarian1',
+        'password': 'yolo69'
+    })
+
+    db.session.commit()
+
+    response = client.get('/admin/documents/3/outstanding_request')
+    print(response)
+
     if not l1.has_permission(Permission.outstanding_request):
         flag_l1_no_out_req = True
         log('l1','outst req','d3')
     if not flag_l1_no_out_req:
         log('l1', 'fail outst req', 'd3')
+
     return inf[0], inf[1], loans, inf[3], inf[4], inf[5], flag_l1_no_out_req
 
 
 def test_tc6_p1_p2_p3_s_v_has_no_permission_to_checkout_and_l1_cant_place_outstanding_request():
     reload_db()
-    inf = test_6_inside()
+    inf = tc6_inside()
     flags = inf[6]
     assert flags
 
-
-def test_7_inside():
-    inf = test_4_inside()
+def tc7_inside():
+    inf = tc4_inside()
     l3 = inf[0][2]
     p1 = inf[2][0]
     p2 = inf[2][1]
@@ -259,7 +272,7 @@ def test_tc7_checkout_outstanding_request_and_sys_is_empty_changes():
     assert inf[6]
 
 def test_tc8_log_check_after_tc6():
-    test_6_inside()
+    tc6_inside()
     actual_entries = LogEntry.query.all()
     output = [
         'admin created librarian1',
@@ -292,7 +305,7 @@ def test_tc8_log_check_after_tc6():
 
 
 def test_tc9_log_check_after_tc7():
-    test_7_inside()
+    tc7_inside()
     actual_entries = LogEntry.query.all()
     output = [
         'admin created librarian1',
@@ -327,14 +340,14 @@ def test_tc9_log_check_after_tc7():
 
 def test_tc10_search_for_a_book_by_full_title():
     reload_db()
-    state = test_4_inside()
+    state = tc4_inside()
     doc = Document._search_in_fields("Introduction to Algorithms", ['title'])
     assert doc is not None
 
 
 def test_tc11_search_for_a_book_by_title_word():
     reload_db()
-    state = test_4_inside()
+    state = tc4_inside()
     search_results = Document._search_in_fields("Algorithms", ['title'])
     assert ['Thomas H. Cormen', 'Charles E. Leiserson', 'Ronald L. Rivest', 'Clifford Stein'] == search_results[0].authors
     assert ['Niklaus Wirth'] == search_results[1].authors
@@ -342,7 +355,7 @@ def test_tc11_search_for_a_book_by_title_word():
 
 def test_tc12_search_for_books_with_keywords():
     reload_db()
-    state = test_4_inside()
+    state = tc4_inside()
     search_results = Document._search_in_fields('Algorithms', array_fields=['keywords'])
     assert ['Thomas H. Cormen', 'Charles E. Leiserson', 'Ronald L. Rivest', 'Clifford Stein'] == search_results[0].authors
     assert ["Niklaus Wirth"] == search_results[1].authors
@@ -351,7 +364,7 @@ def test_tc12_search_for_books_with_keywords():
 
 def test_tc13_patron_searchs_by_keywords_AND():
     reload_db()
-    state = test_4_inside()
+    state = tc4_inside()
     first_clause = Document._search_in_fields_query('Algorithms', array_fields=['keywords'])
     results = Document._search_in_fields_query('Programming', array_fields=['keywords'], apply_to_query=first_clause).all()
     assert results == []
@@ -359,7 +372,7 @@ def test_tc13_patron_searchs_by_keywords_AND():
 
 def test_tc14_patron_searchs_by_keywords_OR():
     reload_db()
-    state = test_4_inside()
+    state = tc4_inside()
     first_clause = Document._search_in_fields_query('Algorithms', array_fields=['keywords'])
     second_clause = Document._search_in_fields_query("Programming", array_fields=['keywords'])
 
