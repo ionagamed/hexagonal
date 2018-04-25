@@ -3,7 +3,7 @@ import datetime
 
 import pytest
 
-from hexagonal import db, FacultyPatron, app, Document
+from hexagonal import db, FacultyPatron, app, Document, Admin
 from hexagonal.auth.permissions import Permission
 from tests.common import call, root_login, register_test_account, create_instance, reload_db
 from hexagonal.model.book import Book
@@ -16,6 +16,12 @@ from hexagonal.model.log_entry import log, LogEntry
 
 app.testing = True
 client = app.test_client()
+
+
+def create_admin():
+    if Admin.query.count() > 0:
+        raise ValueError
+
 
 def state_of_system_librarians():
     reload_db()
@@ -36,11 +42,11 @@ def state_of_system_librarians():
 
     return sys_librarians
 
-# def test_tc1_only_one_admin():
-#     permission = False
-#     if (create admin one more ):
-#         permission = True
-#     assert not permission
+
+def test_tc1_only_one_admin():
+    with pytest.raises(ValueError):
+        create_admin()
+
 
 def test_tc2_admin_creates_3_librarians():
     reload_db()
