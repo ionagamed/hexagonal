@@ -16,50 +16,6 @@ from hexagonal.model.visiting_professor_patron import VisitingProfessorPatron
 app.testing = True
 client = app.test_client()
 
-
-def state_of_system():
-    d1 = create_instance(Book, title='Introduction to Algorithms',
-                         authors=['Thomas H. Cormen', 'Charles E. Leiserson', 'Ronald L. Rivest', 'Clifford Stein'],
-                         publisher='MIT Press', publishment_year=2009, edition=3,
-                         reference=False, price=5000,
-                         keywords=['Algorithms', 'Data Structures', 'Complexity', 'Computational Theory'])
-
-    d2 = create_instance(Book, title='Algorithms + Data Structures = Programs',
-                         authors=['Niklaus Wirth'],
-                         publisher='Prentice Hall PTR', publishment_year=1978, edition=1,
-                         reference=False, price=5000,
-                         keywords=['Algorithms', 'Data Structures', 'Search Algorithms', 'Pascal'])
-
-    d3 = create_instance(Book, title='The Art of Computer Programming',
-                         authors=['Donald E. Knuth'],
-                         publisher='Addison Wesley Longman Publishing Co., Inc.',
-                         publishment_year=1997, edition=3, price=5000,
-                         keywords=['Algorithms', 'Combinatorial Algorithms', 'Recursion'])
-
-    # copies_d1 = [create_instance(DocumentCopy, document=d1) for i in range(3)]
-    # copies_d2 = [create_instance(DocumentCopy, document=d2) for i in range(3)]
-    # copies_d3 = [create_instance(DocumentCopy, document=d3) for i in range(2)]
-
-    p1 = register_test_account(Professor, name='Sergey Afonso', address='Via Margutta, 3', phone='30001',
-                               card_number=1010)
-    p2 = register_test_account(Professor, name='Nadia Teixeira', address='Via Sacra, 13', phone='30002',
-                               card_number=1011)
-    p3 = register_test_account(Professor, name='Elvira Espindola', address='Via del Corso, 22', phone='30003',
-                               card_number=1100)
-    s = register_test_account(StudentPatron, name='Andrey Velo', address=': Avenida Mazatlan 250', phone='30004',
-                              card_number=1101)
-    v = register_test_account(VisitingProfessorPatron, name='Veronika Rama', address='Stret Atocha, 27', phone='30005',
-                              card_number=1110)
-
-    # docs_set = [copies_d1, copies_d2, copies_d3, d1, d2, d3]
-    docs_set = [d1, d2, d3]
-    users_set_patrons = [p1, p2, p3]
-    users_set_students = [s]
-    users_set_visiting_profs = [v]
-
-    return docs_set, users_set_patrons, users_set_students, users_set_visiting_profs
-
-
 def state_of_system_librarians():
     reload_db()
     l1 = register_test_account(Librarian, login='librarian1', password='yolo69')
@@ -78,6 +34,11 @@ def state_of_system_librarians():
 
     return sys_librarians
 
+# def test_tc1_only_one_admin():
+#     permission = False
+#     if (create admin one more ):
+#         permission = True
+#     assert not permission
 
 def test_tc2_admin_creates_3_librarians():
     reload_db()
@@ -175,7 +136,6 @@ def test_tc5_l3_works_with_docs():
 
 def test_6_inside():
     # доделать ЧЕКАУТ: словить ошибки чекаута и вывести
-    # gospodi za chto
     inf = test_4_inside()
     l1 = inf[0][0]
     p1 = inf[2][0]
@@ -202,7 +162,7 @@ def test_tc6_p1_p2_p3_s_v_has_no_permission_to_checkout_and_l1_cant_place_outsta
     flags = inf[6]
     assert flags
 
-
+#
 # def test_7_inside():
 #     inf = test_4_inside()
 #     l3 = inf[0][2]
@@ -228,6 +188,7 @@ def test_tc6_p1_p2_p3_s_v_has_no_permission_to_checkout_and_l1_cant_place_outsta
 #         patron=v,
 #         document=d3
 #     )
+#     db.session.add(qr_p3_d3)
 #
 #     if (l3.has_permission(Permission.outstanding_request)):
 #         d3.outstanding_request()
