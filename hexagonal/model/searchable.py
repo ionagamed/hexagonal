@@ -54,7 +54,7 @@ class Searchable:
         return actual_search
 
     @classmethod
-    def _search_in_fields(cls, term, fields=None, array_fields=None):
+    def _search_in_fields_query(cls, term, fields=None, array_fields=None, apply_to_query=None):
         """
         Perform the actual search in specified fields.
 
@@ -72,9 +72,18 @@ class Searchable:
 
         ``array_to_string`` is ``sqlalchemy.func.array_to_string``.
 
+        ``apply_to_query`` can be used for chaining multiple logical searches.
+
+        .. sourcecode:: python
+
+            first_clause = Model._search_in_fields_query('term', ['whatever'])
+            results = Model._search_in_fields_query('term2', ['whatever2'], apply_to_query=first_clause).all()
+
+
         :param term: term to search for.
         :param fields: usual text fields to perform search in.
         :param array_fields: array fields to perform search in.
+        :param apply_to_query: chaining helper.
         :return: list of results.
         """
 
@@ -82,12 +91,22 @@ class Searchable:
             fields = []
         if array_fields is None:
             array_fields = []
+        if apply_to_query is None:
+            apply_to_query = cls.query
         filters = [
-            getattr(cls, field).ilike('%' + term + '%') for field in fields
-        ] + [
-            func.array_to_string(getattr(cls, field), ',').ilike('%' + term + '%') for field in array_fields
-        ]
-        return cls.query.filter(or_(*filters)).all()
+                      getattr(cls, field).ilike('%' + term + '%') for field in fields
+                  ] + [
+                      func.array_to_string(getattr(cls, field), ',').ilike('%' + term + '%') for field in array_fields
+                  ]
+        return apply_to_query.filter(or_(*filters))
+
+    @classmethod
+    def _search_in_fields(cls, term, fields=None, array_fields=None):
+        """
+        Wrapper function which just returns all the records that match the query
+        """
+
+        return cls._search_in_fields_query(term, fields, array_fields).all()
 
     @classmethod
     def fuzzy_search(cls, term):

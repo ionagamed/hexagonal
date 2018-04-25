@@ -186,7 +186,7 @@ def document_view(document_id):
 
 
 @app.route('/admin/documents/<int:document_id>/outstanding_request')
-@required_permission(Permission.oustanding_request)
+@required_permission(Permission.outstanding_request)
 def document_outstanding_request(document_id):
     """
     Delete the priority queue for the document.

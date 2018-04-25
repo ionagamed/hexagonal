@@ -3,7 +3,7 @@ import datetime
 
 import pytest
 
-from hexagonal import db, FacultyPatron, app
+from hexagonal import db, FacultyPatron, app, Document
 from hexagonal.auth.permissions import Permission
 from tests.common import call, root_login, register_test_account, create_instance, reload_db
 from hexagonal.model.book import Book
@@ -238,44 +238,51 @@ def test_tc6_p1_p2_p3_s_v_has_no_permission_to_checkout_and_l1_cant_place_outsta
 #     inf = test_7_inside()
 #     assert inf[6]
 #
-def test_tc8_log_check_after_tc6():
+# # def test_tc8_log_check_after_tc6():
+# #
+# # def test_tc9_log_check_after_tc7():
+# #
+def test_tc10_search_for_a_book_by_full_title():
+    reload_db()
+    state = test_4_inside()
+    doc = Document._search_in_fields("Introduction to Algorithms", ['title'])
+    assert doc is not None
 
-def test_tc9_log_check_after_tc7():
+
+def test_tc11_search_for_a_book_by_title_word():
+    reload_db()
+    state = test_4_inside()
+    search_results = Document._search_in_fields("Algorithms", ['title'])
+    assert ['Thomas H. Cormen', 'Charles E. Leiserson', 'Ronald L. Rivest', 'Clifford Stein'] == search_results[0].authors
+    assert ['Niklaus Wirth'] == search_results[1].authors
 
 
-# def test_tc10_search_for_a_book_by_full_title():
-#     reload_db()
-#     state = test_4_inside()
-#     exists = search_for(title = "Introduction to Algorithms")
-#     assert exists
-#
-# def test_tc11_search_for_a_book_by_title_word():
-#     reload_db()
-#     state = test_4_inside()
-#     search_result = search_for(title = "Algorithms")
-#     assert search_result[0].authors == "Cormen et al."
-#     assert search_result[1].authors == "Niklaus Wirth"
-#
-# def test_tc12_search_for_books_with_keywords():
-#     reload_db()
-#     state = test_4_inside()
-#     search_results = search_for(keywords = 'Algorithms')
-#     assert search_results[0].author == "Cormen et al."
-#     assert search_results[1].author == "Niklaus Wirth"
-#     assert search_results[2].author == "Donald E. Knuth"
-#
-# def test_tc13_patron_searchs_by_keywords_AND():
-#     reload_db()
-#     state = test_4_inside()
-#     search_results = search_for(keywords = 'Algorithms' and keywords = "Programming")
-#     assert search_results == []
-#
-# def def test_tc14_patron_searchs_by_keywords_OR():
-#     reload_db()
-#     state = test_4_inside()
-#     search_results = search_for(keywords = 'Algorithms' or keywords = "Programming")
-#
-#     assert search_results[0].author == "Cormen et al."
-#     assert search_results[1].author == "Niklaus Wirth"
-#     assert search_results[2].author == "Donald E. Knuth"
+def test_tc12_search_for_books_with_keywords():
+    reload_db()
+    state = test_4_inside()
+    search_results = Document._search_in_fields('Algorithms', array_fields=['keywords'])
+    assert ['Thomas H. Cormen', 'Charles E. Leiserson', 'Ronald L. Rivest', 'Clifford Stein'] == search_results[0].authors
+    assert ["Niklaus Wirth"] == search_results[1].authors
+    assert ['Donald E. Knuth'] == search_results[2].authors
+
+
+def test_tc13_patron_searchs_by_keywords_AND():
+    reload_db()
+    state = test_4_inside()
+    first_clause = Document._search_in_fields_query('Algorithms', array_fields=['keywords'])
+    results = Document._search_in_fields_query('Programming', array_fields=['keywords'], apply_to_query=first_clause).all()
+    assert results == []
+
+
+def test_tc14_patron_searchs_by_keywords_OR():
+    reload_db()
+    state = test_4_inside()
+    first_clause = Document._search_in_fields_query('Algorithms', array_fields=['keywords'])
+    second_clause = Document._search_in_fields_query("Programming", array_fields=['keywords'])
+
+    results = first_clause.union(second_clause).all()
+
+    assert results[0].authors == ['Thomas H. Cormen', 'Charles E. Leiserson', 'Ronald L. Rivest', 'Clifford Stein']
+    assert results[1].authors == ["Niklaus Wirth"]
+    assert results[2].authors == ['Donald E. Knuth']
 
