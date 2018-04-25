@@ -156,6 +156,7 @@ def test_6_inside():
     p3 = inf[2][2]
     s = inf[3][0]
     v = inf[4][0]
+    d3 = inf[1][2]
     copies_d3 = inf[1][5]
     loan_p1_d3 = p1.checkout(copies_d3[0])
     loan_p1_d3.status = Loan.Status.approved
@@ -168,19 +169,23 @@ def test_6_inside():
     log('s', 'checkouted', '1 copy d3')
     loans = [loan_p1_d3, loan_p2_d3, loan_s_d3]
 
-    # qr_v_d3 = QueuedRequest(
-    #     patron=v,
-    #     document=d3)
-    #     db.session.add(qr_v_d3)
-    # qr_p3_d3 = QueuedRequest(
-    #     patron=v,
-    #     document=d3
-    # )
-    # db.session.add(qr_p3_d3)
-
+    qr_v_d3 = QueuedRequest(
+        patron=v,
+        document=d3)
+    log('v','checkout','1 copy d3')
+    db.session.add(qr_v_d3)
+    qr_p3_d3 = QueuedRequest(
+        patron=v,
+        document=d3
+    )
+    log('p3', 'checkout','1 copy d3')
+    db.session.add(qr_p3_d3)
+    flag_l1_no_out_req = False
     if not l1.has_permission(Permission.outstanding_request):
         flag_l1_no_out_req = True
-        log()
+        log('l1','outst req','d3')
+    if not flag_l1_no_out_req:
+        log('l1', 'fail outst req', 'd3')
     return inf[0], inf[1], loans, inf[3], inf[4], inf[5], flag_l1_no_out_req
 
 
@@ -285,4 +290,5 @@ def test_tc14_patron_searchs_by_keywords_OR():
     assert results[0].authors == ['Thomas H. Cormen', 'Charles E. Leiserson', 'Ronald L. Rivest', 'Clifford Stein']
     assert results[1].authors == ["Niklaus Wirth"]
     assert results[2].authors == ['Donald E. Knuth']
+
 
