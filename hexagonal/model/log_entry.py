@@ -21,6 +21,7 @@ class LogEntry(db.Model):
 
 
 def log(who, what, obj):
+    db.session.commit()
     entry = LogEntry(
         who=who,
         what=what,

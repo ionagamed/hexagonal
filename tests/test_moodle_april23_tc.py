@@ -173,7 +173,7 @@ def test_6_inside():
     log('v','checkout','1 copy d3')
     db.session.add(qr_v_d3)
     qr_p3_d3 = QueuedRequest(
-        patron=v,
+        patron=p3,
         document=d3
     )
     log('p3', 'checkout','1 copy d3')
@@ -206,12 +206,15 @@ def test_7_inside():
     d3 = inf[1][2]
     loan_p1_d3 = p1.checkout(copies_d3[0])
     loan_p1_d3.status = Loan.Status.approved
+    db.session.add(loan_p1_d3)
     log('p1', 'checkouted', '1 copy d3')
     loan_p2_d3 = p2.checkout(copies_d3[1])
     loan_p2_d3.status = Loan.Status.approved
+    db.session.add(loan_p2_d3)
     log('p2', 'checkouted', '1 copy d3')
     loan_s_d3 = s.checkout(copies_d3[2])
     loan_s_d3.status = Loan.Status.approved
+    db.session.add(loan_p2_d3)
     log('s', 'checkouted', '1 copy d3')
 
     qr_v_d3 = QueuedRequest(
@@ -220,11 +223,12 @@ def test_7_inside():
     log('v', 'checkout', '1 copy d3')
     db.session.add(qr_v_d3)
     qr_p3_d3 = QueuedRequest(
-        patron=v,
+        patron=p3,
         document=d3
     )
     log('p3', 'checkout', '1 copy d3')
     db.session.add(qr_p3_d3)
+    db.session.commit()
 
     if (l3.has_permission(Permission.outstanding_request)):
         log('l3','outst req','d3')
@@ -236,7 +240,7 @@ def test_7_inside():
     if waiting_list == []:
         flag_waiting_list_empty = True
 
-    if v.queued_documents() == [] and p3.queued_documents() == []:
+    if v.queued_documents == [] and p3.queued_documents == []:
         flag_v_and_p3_no_docs = True
     loans = []
     flags = flag_waiting_list_empty and flag_v_and_p3_no_docs
@@ -268,7 +272,10 @@ def test_tc8_log_check_after_tc6():
         'l2 created v',
         'p1 checkouted 1 copy d3',
         'p2 checkouted 1 copy d3',
-        's checkouted 1 copy d3'
+        's checkouted 1 copy d3',
+        'v checkout 1 copy d3',
+        'p3 checkout 1 copy d3',
+        'l1 outst req d3'
     ]
 
     actual_output = []
@@ -298,10 +305,11 @@ def test_tc9_log_check_after_tc7():
         'l2 created v',
         'p1 checkouted 1 copy d3',
         'p2 checkouted 1 copy d3',
-        's checkouted 1 copy d3'
+        's checkouted 1 copy d3',
+        'v checkout 1 copy d3',
+        'p3 checkout 1 copy d3',
+        'l3 outst req d3'
     ]
-
-    for entry in
 
     actual_output = []
     for i in actual_entries:
