@@ -196,13 +196,14 @@ def tc6_inside():
     db.session.commit()
 
     response = client.get('/admin/documents/3/outstanding_request')
-    print(response)
-
-    if not l1.has_permission(Permission.outstanding_request):
+    if response.status == '302 FOUND' and response.location == 'http://localhost/login':
         flag_l1_no_out_req = True
-        log('l1','outst req','d3')
-    if not flag_l1_no_out_req:
-        log('l1', 'fail outst req', 'd3')
+
+    # if not l1.has_permission(Permission.outstanding_request):
+    #     flag_l1_no_out_req = True
+    #     log('l1','outst req','d3')
+    # if not flag_l1_no_out_req:
+    #     log('l1', 'fail outst req', 'd3')
 
     return inf[0], inf[1], loans, inf[3], inf[4], inf[5], flag_l1_no_out_req
 
@@ -268,7 +269,7 @@ def tc7_inside():
 
 def test_tc7_checkout_outstanding_request_and_sys_is_empty_changes():
     reload_db()
-    inf = test_7_inside()
+    inf = tc7_inside()
     assert inf[6]
 
 def test_tc8_log_check_after_tc6():
@@ -293,8 +294,7 @@ def test_tc8_log_check_after_tc6():
         'p2 checkouted 1 copy d3',
         's checkouted 1 copy d3',
         'v checkout 1 copy d3',
-        'p3 checkout 1 copy d3',
-        'l1 outst req d3'
+        'p3 checkout 1 copy d3'
     ]
 
     actual_output = []
