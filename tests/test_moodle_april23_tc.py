@@ -175,6 +175,7 @@ def test_tc5_l3_works_with_docs():
 
 def test_6_inside():
     # доделать ЧЕКАУТ: словить ошибки чекаута и вывести
+    # gospodi za chto
     inf = test_4_inside()
     l1 = inf[0][0]
     p1 = inf[2][0]
