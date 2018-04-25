@@ -12,6 +12,7 @@ from hexagonal import Librarian, AVMaterial
 from hexagonal.model.student_patron import StudentPatron
 from hexagonal import User, Loan, Patron, QueuedRequest, Professor
 from hexagonal.model.visiting_professor_patron import VisitingProfessorPatron
+from hexagonal.model.log_entry import log
 
 app.testing = True
 client = app.test_client()
@@ -20,10 +21,13 @@ def state_of_system_librarians():
     reload_db()
     l1 = register_test_account(Librarian, login='librarian1', password='yolo69')
     l1.access_level = 1
+    log('admin', 'created', 'librarian1')
     l2 = register_test_account(Librarian, login='librarian2', password='yolo69')
     l2.access_level = 2
+    log('admin', 'created', 'librarian2')
     l3 = register_test_account(Librarian, login='librarian3', password='yolo69')
     l3.access_level = 3
+    log('admin', 'created', 'librarian3')
 
     db.session.add(l1)
     db.session.add(l2)
@@ -66,47 +70,55 @@ def test_4_inside():
                              publisher='MIT Press', publishment_year=2009, edition=3,
                              reference=False, price=5000,
                              keywords=['Algorithms', 'Data Structures', 'Complexity', 'Computational Theory'])
-
+        log('l2','created','d1')
         d2 = create_instance(Book, title='Algorithms + Data Structures = Programs',
                              authors=['Niklaus Wirth'],
                              publisher='Prentice Hall PTR', publishment_year=1978, edition=1,
                              reference=False, price=5000,
                              keywords=['Algorithms', 'Data Structures', 'Search Algorithms', 'Pascal'])
-
+        log('l2', 'created', 'd2')
         d3 = create_instance(Book, title='The Art of Computer Programming',
                              authors=['Donald E. Knuth'],
                              publisher='Addison Wesley Longman Publishing Co., Inc.',
                              publishment_year=1997, edition=3, price=5000,
                              keywords=['Algorithms', 'Combinatorial Algorithms', 'Recursion'])
-
+        log('l2', 'created', 'd3')
         copies_d1 = [create_instance(DocumentCopy, document=d1) for i in range(3)]
+        log('l2', 'created', '3 copy d1')
         copies_d2 = [create_instance(DocumentCopy, document=d2) for i in range(3)]
+        log('l2', 'created', '3 copy d2')
         copies_d3 = [create_instance(DocumentCopy, document=d3) for i in range(3)]
+        log('l2', 'created', '3 copy d3')
         docs_created = True;
     if (l2.has_permission(Permission.create_patron)):
         p1 = register_test_account(Professor, name='Sergey Afonso', address='Via Margutta, 3', phone='30001',
                                    card_number=1010)
+        log('l2', 'created', 'p1')
         p2 = register_test_account(Professor, name='Nadia Teixeira', address='Via Sacra, 13', phone='30002',
                                    card_number=1011)
+        log('l2', 'created', 'p2')
         p3 = register_test_account(Professor, name='Elvira Espindola', address='Via del Corso, 22', phone='30003',
                                    card_number=1100)
+        log('l2', 'created', 'p3')
         s = register_test_account(StudentPatron, name='Andrey Velo', address=': Avenida Mazatlan 250', phone='30004',
                                   card_number=1101)
+        log('l2', 'created', 's')
         v = register_test_account(VisitingProfessorPatron, name='Veronika Rama', address='Stret Atocha, 27',
                                   phone='30005',
                                   card_number=1110)
+        log('l2', 'created', 'v')
         patrons_created = True
-        librarians = [l1, l2, l3]
-        flags = [docs_created, patrons_created]
-        docs_set = [d1, d2, d3, copies_d1, copies_d2, copies_d3]
-        users_set_patrons = [p1, p2, p3]
-        users_set_students = [s]
-        users_set_visiting_profs = [v]
-        return librarians, docs_set, users_set_patrons, users_set_students, users_set_visiting_profs, flags
+
+    librarians = [l1, l2, l3]
+    flags = [docs_created, patrons_created]
+    docs_set = [d1, d2, d3, copies_d1, copies_d2, copies_d3]
+    users_set_patrons = [p1, p2, p3]
+    users_set_students = [s]
+    users_set_visiting_profs = [v]
+    return librarians, docs_set, users_set_patrons, users_set_students, users_set_visiting_profs, flags
 
 
 def test_tc4_l2_creates_lots_of_thigns_and_that_works_wow():
-
     reload_db()
     inf = test_4_inside()
     flags = inf[len(inf) - 1]
@@ -120,6 +132,7 @@ def test_5_inside():
     l3 = inf[0][2]
     if l3.has_permission(Permission.delete_document):
         docs_set = inf[1]
+        log('l3','deleted','1 copy d1')
         db.session.delete(docs_set[0].copies[0])
         db.session.commit()
 
@@ -146,13 +159,28 @@ def test_6_inside():
     copies_d3 = inf[1][5]
     loan_p1_d3 = p1.checkout(copies_d3[0])
     loan_p1_d3.status = Loan.Status.approved
+    log('p1', 'checkouted', '1 copy d3')
     loan_p2_d3 = p2.checkout(copies_d3[1])
     loan_p2_d3.status = Loan.Status.approved
+    log('p2', 'checkouted', '1 copy d3')
     loan_s_d3 = s.checkout(copies_d3[2])
     loan_s_d3.status = Loan.Status.approved
+    log('s', 'checkouted', '1 copy d3')
     loans = [loan_p1_d3, loan_p2_d3, loan_s_d3]
+
+    # qr_v_d3 = QueuedRequest(
+    #     patron=v,
+    #     document=d3)
+    #     db.session.add(qr_v_d3)
+    # qr_p3_d3 = QueuedRequest(
+    #     patron=v,
+    #     document=d3
+    # )
+    # db.session.add(qr_p3_d3)
+
     if not l1.has_permission(Permission.outstanding_request):
         flag_l1_no_out_req = True
+        log()
     return inf[0], inf[1], loans, inf[3], inf[4], inf[5], flag_l1_no_out_req
 
 
@@ -162,7 +190,6 @@ def test_tc6_p1_p2_p3_s_v_has_no_permission_to_checkout_and_l1_cant_place_outsta
     flags = inf[6]
     assert flags
 
-#
 # def test_7_inside():
 #     inf = test_4_inside()
 #     l3 = inf[0][2]
@@ -211,10 +238,11 @@ def test_tc6_p1_p2_p3_s_v_has_no_permission_to_checkout_and_l1_cant_place_outsta
 #     inf = test_7_inside()
 #     assert inf[6]
 #
-# # def test_tc8_log_check_after_tc6():
-# #
-# # def test_tc9_log_check_after_tc7():
-# #
+def test_tc8_log_check_after_tc6():
+
+def test_tc9_log_check_after_tc7():
+
+
 # def test_tc10_search_for_a_book_by_full_title():
 #     reload_db()
 #     state = test_4_inside()
